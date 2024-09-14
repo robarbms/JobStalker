@@ -1,11 +1,13 @@
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 import time
+import re
+import json
 
 """
 This function is used to get the job details from a given position element
 """
-def getJobDetails(position):
+def getJobDetails(position: BeautifulSoup):
     details = {}
     title = position.find('h1', {'class': 'position-title'})
     if title:
@@ -58,6 +60,12 @@ def getJobs(query):
         position_container = page.locator('div.position-container') # Get the container for the selected job description
         jobs.append(getJobDetails(BeautifulSoup(position_container.inner_html(), 'html.parser'))) # The first job is selected get it's description first
 
+        # Parse JSON about the different job positions
+        page_html = page.content()
+        positions = re.search(r'"positions": ?\[( ?{[^\}]*"locations": ?\[[^\]]*[\}]*.*},?)*\]', page_html, re.MULTILINE | re.DOTALL)
+        positions_json = "{" + positions.group(0) + "}"
+        job_info = json.loads(positions_json)["positions"]
+
         for x in range(1, len(cards)): # skipping the first job as it's already been added to jobs
             cards[x].click() # Click the job card to select it and show it's description
             time.sleep(1) # Wait for the description to load
@@ -65,6 +73,11 @@ def getJobs(query):
             # Get the job description and add it to the list of jobs
             html = position_container.inner_html()
             details = getJobDetails(BeautifulSoup(html, 'html.parser'))
+            for pid in job_info:
+                if pid['display_job_id'] == details['job_id']:
+                    details['link'] = pid['canonicalPositionUrl']
+                    break
+
             jobs.append(details)
 
         browser.close()  # Close the browser after scraping
@@ -75,12 +88,14 @@ def getJobs(query):
 Collects job postings from Netflix's careers page for a list of queries
 """
 def getNetflixJobs():
+    print("Fetching jobs for Netflix...")
     base_url = "https://jobs.netflix.com/"
     queries = ["frontend", "ux", "ui"]
     jobs = []
 
     for query in queries:
         job_results = getJobs(query)
+        print("Number of positions found for {query}: {count}".format(query=query, count=len(job_results)))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -94,4 +109,5 @@ def getNetflixJobs():
                 if (not found):
                     jobs.append(job)
 
+    print("Total number of positions found: {count}".format(count=len(jobs)))
     return jobs

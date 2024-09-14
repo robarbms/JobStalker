@@ -1,7 +1,7 @@
 from scrapers import getNetflixJobs
 
 def main():
-    print("Executing main()ven")
+    print("Executing main()")
     netflix_jobs = getNetflixJobs()
 
 if __name__ == "__main__":
