@@ -90,7 +90,7 @@ Collects job postings from Netflix's careers page for a list of queries
 def getNetflixJobs():
     print("Fetching jobs for Netflix...")
     base_url = "https://jobs.netflix.com/"
-    queries = ["frontend", "ux", "ui"]
+    queries = ["frontend", "ux", "ui", "web"]
     jobs = []
 
     for query in queries:
