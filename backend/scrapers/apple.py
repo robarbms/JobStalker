@@ -73,7 +73,7 @@ def getJobs(query):
 def getAppleJobs():
     print("Fetching jobs for Apple...")
     base_url = "https://jobs.apple.com/en-us/search?location=united-states-USA"
-    queries = ["web", "engineering", "frontend"]
+    queries = ["web", "engineering", "prototype"]
     jobs = []
 
     for query in queries:
