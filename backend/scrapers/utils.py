@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
+from playwright.sync_api import sync_playwright, Page
+from datetime import datetime
 
 """
     Gets the contents of a page and returns it as a soup object
@@ -25,7 +27,24 @@ def getPage(url):
         return {
             'error': msg
         }
+
+class Extractor:
+    def __init__(self, page: Page, company: str, job_id: str):
+        self.page = page
+        self.company = company
+        self.job_id = job_id
     
+    def getText(self, selector: str, required=True) -> str:
+        if self.page.query_selector(selector):
+            return self.page.locator(selector).text_content().strip()
+        else:
+            if required:
+                log("Missing required field '{0}' for company {1} and job id {2}".format(selector, self.company, self.job_id), level="error")
+            return ""
+
+def log(message: str, level="info"):
+    ct = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print("{0} [{1}]: {2}".format(ct, level.upper(), message))
 
 queries = [
     "frontend",

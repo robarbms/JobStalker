@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
+from .utils import Extractor, log
 import time
 import re
 import json
@@ -18,16 +19,19 @@ def getJobDetails(position: BeautifulSoup):
         details['location'] = location_container.find_all()[-1].text
 
     jd_container = position.find('div', {'class': 'custom-jd-container'})
-    fields = jd_container.find_all('div', {'class': 'custom-jd-field'})
-    for field in fields:
-        type = field.find('h4').text
-        content = field.find('div').text
-        if " ID" in type:
-            details['job_id'] = content
-        elif "Date" in type:
-            details['date_posted'] = content
-        elif type == "Teams":
-            details['team'] = content
+    if jd_container:
+        fields = jd_container.find_all('div', {'class': 'custom-jd-field'})
+        for field in fields:
+            type = field.find('h4').text
+            content = field.find('div').text
+            if " ID" in type:
+                details['job_id'] = content
+            elif "Date" in type:
+                details['date_posted'] = content
+            elif type == "Teams":
+                details['team'] = content
+    else:
+        return None
 
     description_container = position.find('div', {'class': 'position-job-description'})
     if description_container:
@@ -58,7 +62,6 @@ def getJobs(query):
 
         cards = page.locator('div.card').all() # Get all job cards on the page
         position_container = page.locator('div.position-container') # Get the container for the selected job description
-        jobs.append(getJobDetails(BeautifulSoup(position_container.inner_html(), 'html.parser'))) # The first job is selected get it's description first
 
         # Parse JSON about the different job positions
         page_html = page.content()
@@ -66,19 +69,21 @@ def getJobs(query):
         positions_json = "{" + positions.group(0) + "}"
         job_info = json.loads(positions_json)["positions"]
 
-        for x in range(1, len(cards)): # skipping the first job as it's already been added to jobs
+        for x in range(len(cards)): # skipping the first job as it's already been added to jobs
             cards[x].click() # Click the job card to select it and show it's description
             time.sleep(1) # Wait for the description to load
 
             # Get the job description and add it to the list of jobs
             html = position_container.inner_html()
             details = getJobDetails(BeautifulSoup(html, 'html.parser'))
-            for pid in job_info:
-                if pid['display_job_id'] == details['job_id']:
-                    details['link'] = pid['canonicalPositionUrl']
-                    break
+            
+            if details:
+                for pid in job_info:
+                    if pid['display_job_id'] == details['job_id']:
+                        details['link'] = pid['canonicalPositionUrl']
+                        break
 
-            jobs.append(details)
+                jobs.append(details)
 
         browser.close()  # Close the browser after scraping
 
@@ -88,14 +93,14 @@ def getJobs(query):
 Collects job postings from Netflix's careers page for a list of queries
 """
 def getNetflixJobs():
-    print("Fetching jobs for Netflix...")
+    log("Fetching jobs for Netflix...")
     base_url = "https://jobs.netflix.com/"
     queries = ["frontend", "ux", "ui", "web"]
     jobs = []
 
     for query in queries:
         job_results = getJobs(query)
-        print("Number of positions found for {query}: {count}".format(query=query, count=len(job_results)))
+        log("Number of positions found for {query}: {count}".format(query=query, count=len(job_results)))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -109,5 +114,5 @@ def getNetflixJobs():
                 if (not found):
                     jobs.append(job)
 
-    print("Total number of positions found: {count}".format(count=len(jobs)))
+    log("Total number of positions found: {count}".format(count=len(jobs)))
     return jobs

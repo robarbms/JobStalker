@@ -1,8 +1,8 @@
-from scrapers import getNetflixJobs, getAppleJobs
+from scrapers import getAllJobs
 
 def main():
-    # netflix_jobs = getNetflixJobs()
-    apple_jobs = getAppleJobs()
+    jobs = getAllJobs()
+    print(len(jobs))
 
 if __name__ == "__main__":
     main()
