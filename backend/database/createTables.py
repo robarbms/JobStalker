@@ -3,6 +3,9 @@ from dotenv import load_dotenv
 import os
 from .connection import connect_to_db
 
+"""
+Creates the tables in the database that are needed for storing job information
+"""
 def createTables():
     """ create tables in the PostgreSQL database"""
     commands = (
