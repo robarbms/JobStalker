@@ -1,3 +1,5 @@
 beautifulsoup4
 playwright
 requests
+psycopg
+python-dotenv
