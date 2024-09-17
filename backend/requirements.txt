@@ -3,3 +3,6 @@ playwright
 requests
 psycopg
 python-dotenv
+psycopg2-binary
+flask
+flask_sqlalchemy

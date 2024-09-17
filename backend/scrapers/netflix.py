@@ -44,6 +44,12 @@ def getJobDetails(position: BeautifulSoup):
 
         details['description'] = description
 
+    details['salary_min'] = 0
+    details['salary_max'] = 0
+    details['notes'] = ""
+    details['summary'] = ""
+    details['company'] = "Netflix"
+
     return details
 
 """

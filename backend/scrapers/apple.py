@@ -26,13 +26,17 @@ def getJobDetails(job_id: str, browser):
         'title': title,
         'location': location,
         'date_posted': date_posted,
-        'summary': summary,
         'min_qualifications': min_qualifications,
         'preferred_qualifications': preferred_qualifications,
         'job_description': job_description,
         'description': description,
         'team': team,
         'link': "https://jobs.apple.com/en-us/details/{id}".format(id=job_id),
+        'salary_min': 0,
+        'salary_max': 0,
+        'notes': "",
+        'summary': "",
+        'company': 'Apple',
     }
 
 
