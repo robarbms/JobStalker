@@ -1,10 +1,10 @@
 from .connection import connect_to_db
-from .getJobs import get_jobs
+from .getJobs import get_jobs, get_job_ids
 
 # Checks if a job already exists in the database
 def in_db(jobs, job, company_id=None) -> bool:
     for db_job in jobs:
-        if db_job['job_id'] == job['job_id'] and db_job['company'] == company_id[job['company']]:
+        if db_job['job_id'] == job['job_id'] and db_job['company_id'] == company_id[job['company']]:
             return True
         
     return False
@@ -32,14 +32,19 @@ def insert_jobs (jobs, cur=None, conn=None):
     company_id = get_company_ids(cur, conn)
 
 
-    db_jobs = get_jobs(cur, conn)
+    db_jobs = get_job_ids(cur, conn)
+
+    jobs_inserted = 0
 
     for job in jobs:
         if in_db(db_jobs, job, company_id) == False:
             insert_job(job, cur, conn, company_id)
+            jobs_inserted += 1
     
     cur.close()
     conn.commit()
+
+    print("Jobs inserted into the database: {0}".format(jobs_inserted))
 
 # Inserts a job into the database    
 def insert_job(job, cur=None, conn=None, company_id=None):
