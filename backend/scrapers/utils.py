@@ -34,7 +34,7 @@ class Extractor:
         self.company = company
         self.job_id = job_id
     
-    def getText(self, selector: str, required=True) -> str:
+    def getText(self, selector: str, required=False) -> str:
         if self.page.query_selector(selector):
             return self.page.locator(selector).text_content().strip()
         else:
@@ -44,10 +44,28 @@ class Extractor:
 
 def log(message: str, level="info"):
     ct = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    print("{0} [{1}]: {2}".format(ct, level.upper(), message))
+    fd = datetime.now().strftime("%Y-%m-%d")
+    log_file = "logs/{0}.log".format(fd)
+    error_file = "logs/errors/{0}.log".format(fd)
+
+    log_msg = message
+    if level != None:
+        log_msg = "[{0}] {1}: {2}".format(level.upper(), ct, message)
+
+    with open(log_file, "a") as f:
+        f.write(log_msg + "\n")
+
+    if level == "error":
+        with open(error_file, "a") as f:
+            f.write(log_msg + "\n")
+        
+    print(log_msg)
 
 queries = [
     "frontend",
     "ui",
     "ux",
+    "web",
+    "full stack",
+    "prototype"
 ]

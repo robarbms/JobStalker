@@ -45,6 +45,7 @@ def insert_jobs (jobs, cur=None, conn=None):
     conn.commit()
 
     print("Jobs inserted into the database: {0}".format(jobs_inserted))
+    return jobs_inserted
 
 # Inserts a job into the database    
 def insert_job(job, cur=None, conn=None, company_id=None):
