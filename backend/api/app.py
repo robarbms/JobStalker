@@ -1,19 +1,47 @@
+import sys
 import os
 import psycopg2
 from dotenv import load_dotenv
-from flask import Flask
-
-load_dotenv()  # Load environment variables from .env file
+from flask import Flask, jsonify
+from connection import connect_to_db
 
 app = Flask(__name__)
-host = os.getenv("DB_HOST")  # Get the host from environment variables
-port = os.getenv("DB_PORT")  # Get the port from environment variables
-dbname = os.getenv("DB_NAME")  # Get the database name from environment variables
-user = os.getenv("DB_USER")  # Get the username from environment variables
-password = os.getenv("DB_PASSWORD")  # Get the password from environment variables
 
+cur, conn = connect_to_db()
 
+def getCompanyName(companies, companyId):
+    for company in companies:
+        if company[0] == companyId:
+            return company[1]
+        
+    return ""
 
-@app.route("/")
+@app.route("/api", methods=['GET'])
 def api():
-    return "Hello, World!"
+    try:
+        # Get all the companies from the database
+        company_query = "SELECT id, name FROM companies"
+        cur.execute(company_query)
+        companies = cur.fetchall()
+
+        # Get all the jobs from the database table
+        jobs_query = "SELECT id, job_id, title, company_id, created_at, date_posted, link, description FROM jobs"
+        cur.execute(jobs_query)
+        jobs = cur.fetchall()
+
+        job_results = [
+            {'id': row[0], 'job_id': row[1], 'title': row[2], 'company': getCompanyName(companies=companies, companyId=row[3]), 'created_at': row[4], 'date_posted': row[5], 'link': row[6], 'description': row[7]}
+            for row in jobs
+        ]
+    
+        return jsonify(job_results), 200
+
+    except Exception as e:
+        print("Error: {0}".format(e))
+
+    finally:
+        cur.close()
+        conn.close()
+
+if __name__== '__main__':
+    app.run(debug=True)
