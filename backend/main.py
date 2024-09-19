@@ -1,6 +1,7 @@
 from scrapers import getAllJobs
 from scrapers.utils import log
 from database import insert_jobs
+from scrapers import job
 
 def main():
     jobs = getAllJobs()

@@ -26,8 +26,8 @@ export default function Job(props: JobDetails) {
     return(
         <tr>
             <td>{props.company}</td>
-            <td><a href={props.link} target="_blank">{props.title}</a></td>
             <td>{getDateString(props.date_posted)}</td>
+            <td><a href={props.link} target="_blank">{props.title}</a></td>
         </tr>
     )
 }
