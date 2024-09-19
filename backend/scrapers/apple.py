@@ -90,7 +90,7 @@ def getAppleJobs():
             for job in job_results:
                 found = False
                 for existing_job in jobs:
-                    if (job and 'job_id' in job and existing_job['job_id'] == job['job_id']):
+                    if (job and 'job_id' in job and existing_job and 'job_id' in existing_job and existing_job['job_id'] == job['job_id']):
                         found = True
                         break
                 if (not found):

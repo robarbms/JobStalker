@@ -20,7 +20,7 @@ export default function Table () {
         <table>
             <thead>
                 <tr>
-                    <th>Company Name</th>
+                    <th>Company</th>
                     <th>Date Posted</th>
                     <th>Job Title</th>
                 </tr>

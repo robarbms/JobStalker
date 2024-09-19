@@ -1,5 +1,13 @@
 import React from 'react';
 import { months, weekDays } from '../utils/date';
+import { ReactComponent as AppleIcon } from '../static/apple.svg';
+import { ReactComponent as NetflixIcon } from '../static/netflix.svg';
+import { ReactComponent as GoogleIcon } from '../static/google.svg';
+import { ReactComponent as MicrosoftIcon } from '../static/microsoft.svg';
+import { ReactComponent as AdobeIcon } from '../static/adobe.svg';
+import { ReactComponent as AmazonIcon } from '../static/amazon.svg';
+import { ReactComponent as HuggingfaceIcon } from '../static/huggingface.svg';
+import { ReactComponent as OpenaiIcon } from '../static/openai.svg';
 
 export type JobDetails = {
     id: string,
@@ -22,12 +30,27 @@ const getDateString = (date: string) => {
 
 
 export default function Job(props: JobDetails) {
+    const { company, date_posted, title, link } = props;
+    const icons: {[key: string]: JSX.Element} = {
+        Apple: <AppleIcon className="icon" />,
+        Netflix: <NetflixIcon className="icon" />,
+        Microsoft: <MicrosoftIcon className="icon" />,
+        Adobe: <AdobeIcon className="icon" />,
+        Google: <GoogleIcon className="icon" />,
+        Amazon: <AmazonIcon className="icon" />,
+        OpenAI: <OpenaiIcon className="icon" />,
+        HuggingFace: <HuggingfaceIcon className="icon" />,
+    }
 
     return(
         <tr>
-            <td>{props.company}</td>
-            <td>{getDateString(props.date_posted)}</td>
-            <td><a href={props.link} target="_blank">{props.title}</a></td>
+            <td>
+                {company in icons &&
+                    icons[company.replace(/ /g, '')]
+                }
+                {props.company}</td>
+            <td>{getDateString(date_posted)}</td>
+            <td><a href={link} target="_blank">{title}</a></td>
         </tr>
     )
 }

@@ -26,6 +26,17 @@ th {
     min-width: 150px;
 }
 
+td {
+    padding: 5px 10px;
+}
+
+.icon {
+    width: 15px;
+    height: 15px;
+    fill: #ddd;
+    margin: 0 5px 0 0;
+}
+
 .show-more {
     padding: 10px;
     margin: 20px 0;
