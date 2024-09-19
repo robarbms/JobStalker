@@ -6,3 +6,5 @@ python-dotenv
 psycopg2-binary
 flask
 flask_sqlalchemy
+flask_cors
+apscheduler

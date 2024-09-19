@@ -3,11 +3,11 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 from flask import Flask, jsonify
+from flask_cors import CORS
 from connection import connect_to_db
 
 app = Flask(__name__)
-
-cur, conn = connect_to_db()
+CORS(app)
 
 def getCompanyName(companies, companyId):
     for company in companies:
@@ -19,18 +19,19 @@ def getCompanyName(companies, companyId):
 @app.route("/api", methods=['GET'])
 def api():
     try:
+        cur, conn = connect_to_db()
         # Get all the companies from the database
         company_query = "SELECT id, name FROM companies"
         cur.execute(company_query)
         companies = cur.fetchall()
 
         # Get all the jobs from the database table
-        jobs_query = "SELECT id, job_id, title, company_id, created_at, date_posted, link, description FROM jobs"
+        jobs_query = "SELECT id, job_id, title, company_id, created_at, date_posted, link, description, location FROM jobs"
         cur.execute(jobs_query)
         jobs = cur.fetchall()
 
         job_results = [
-            {'id': row[0], 'job_id': row[1], 'title': row[2], 'company': getCompanyName(companies=companies, companyId=row[3]), 'created_at': row[4], 'date_posted': row[5], 'link': row[6], 'description': row[7]}
+            {'id': row[0], 'job_id': row[1], 'title': row[2], 'company': getCompanyName(companies=companies, companyId=row[3]), 'created_at': row[4], 'date_posted': row[5], 'link': row[6], 'description': row[7], 'location': row[8]}
             for row in jobs
         ]
     
