@@ -18,6 +18,27 @@ a {
     color: inherit;
 }
 
+.job-list {
+    width: 800px;
+}
+
+.job-list table {
+    width: 100%;
+}
+
+.filters {
+    padding: 10px;
+    text-align: right;
+}
+
+.filter-item {
+    margin: 0 0 0 40px;
+}
+
+.filter-item input {
+    margin: 0 5px 0 0;
+}
+
 th {
     background: #aaa;
     color: #333;
@@ -41,3 +62,4 @@ td {
     padding: 10px;
     margin: 20px 0;
 }
+

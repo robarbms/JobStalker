@@ -19,6 +19,8 @@ export type JobDetails = {
     link: string,
     description: string,
     location: string,
+    is_frontend?: boolean,
+    is_manager?: boolean,
 }
 
 const getDateString = (date: string) => {
