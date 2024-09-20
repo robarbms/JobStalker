@@ -11,6 +11,12 @@ interface IContext {
   toggleOnlyFrontend: () => void;
   hideManager: boolean;
   onlyFrontend: boolean;
+  companyFilter: string;
+  setCompanyFilter: React.Dispatch<React.SetStateAction<string>>;
+  sortColumn: string;
+  setSortColumn: React.Dispatch<React.SetStateAction<string>>;
+  companies: string[];
+  setCompanies: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export const JobContext = createContext({} as IContext);
@@ -20,6 +26,9 @@ function App() {
   const [jobs, setJobs] = useState([] as JobDetails[]);
   const [hideManager, setHideManager] = useState(false);
   const [onlyFrontend, setOnlyFrontend] = useState(false);
+  const [ companyFilter, setCompanyFilter] = useState("All");
+  const [ sortColumn, setSortColumn ] = useState("date_posted");
+  const [ companies, setCompanies] = useState([] as string[]);
 
   const value: IContext = { 
     jobs,
@@ -27,7 +36,13 @@ function App() {
     hideManager,
     onlyFrontend,
     toggleOnlyFrontend: () => setOnlyFrontend(!onlyFrontend),
-    toggleHideManager: () => setHideManager(!hideManager)
+    toggleHideManager: () => setHideManager(!hideManager),
+    companyFilter,
+    setCompanyFilter,
+    sortColumn,
+    setSortColumn,
+    companies,
+    setCompanies,
   };
 
   const getJobs = useCallback(async () => {
@@ -44,6 +59,13 @@ function App() {
     });
 
     stored_jobs.current = data_options;
+    const companies = data_options.reduce((c: string[], job: JobDetails) => {
+        if (!c.includes(job.company)) {
+            c.push(job.company);
+        }
+        return c;
+    }, []).sort();
+    setCompanies(["All", ...companies]);
     setJobs(data_options);
   }, []);
 
@@ -52,16 +74,30 @@ function App() {
   }, []);
 
   useEffect(() => {
-    setJobs(stored_jobs.current.filter((job: JobDetails) => {
+    console.log(sortColumn);
+    const filtered_jobs = stored_jobs.current.filter((job: JobDetails) => {
       if (hideManager && job.is_manager) {
         return false;
       }
       if (onlyFrontend && !job.is_frontend) {
         return false;
       }
+      if (companyFilter !=="All" && job.company!==companyFilter) {
+        return false;
+      }
       return true;
-    }));
-  }, [hideManager, onlyFrontend]);
+    });
+    const sorted_jobs = filtered_jobs.sort((a: any, b: any) => {
+      if (sortColumn === "date_posted" || sortColumn === "created_at") {
+        a = new Date(a[sortColumn]).getTime();
+        b = new Date(b[sortColumn]).getTime();
+        return a - b;
+      }
+      return a[sortColumn] > b[sortColumn] ? 1 : -1;
+    })
+
+    setJobs(sorted_jobs);
+  }, [hideManager, onlyFrontend, companyFilter, sortColumn]);
 
   return (
     <JobContext.Provider value={value}>
@@ -69,8 +105,13 @@ function App() {
         <header className="App-header">
           <h1>Job Stalker</h1>
         </header>
-        <div className="job-list">
+        <div className="job-list-container">
+          <div className="job-list-header">
+            <div className="job-count">
+              {jobs.length} / {stored_jobs.current.length} jobs
+            </div>
             <Filters />
+          </div>
             <Table></Table>
           </div>
       </div>
