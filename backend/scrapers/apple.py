@@ -47,7 +47,7 @@ def getJobDetails(job_id: str, browser):
     return details
 
 
-def getJobs(query):
+def getJobs(query, job_ids):
     query_url = "https://jobs.apple.com/en-us/search?search={query}&sort=newest&location=seattle-SEA"
     url = query_url.format(query=query)
     jobs = []
@@ -66,22 +66,25 @@ def getJobs(query):
                 for cell in job_cells:
                     cell_id = cell.get_attribute('id')
                     job_id = re.split(r'[\-_]', cell_id)
-                    if (job_id and len(job_id) > 2):
-                        job_details = getJobDetails(job_id[2], browser)
-                        jobs.append(job_details)
+                    if job_id and len(job_id) > 2:
+                        if str(job_id[2]) in job_ids:
+                            print('Found job:', str(job_id[2]))
+                        else:
+                            job_details = getJobDetails(job_id[2], browser)
+                            jobs.append(job_details)
 
         browser.close()
 
     return jobs
 
 
-def getAppleJobs():
+def getAppleJobs(job_ids):
     log("Fetching jobs for Apple...")
     base_url = "https://jobs.apple.com/en-us/search?location=united-states-USA"
     jobs = []
 
     for query in queries:
-        job_results = getJobs(query)
+        job_results = getJobs(query, job_ids)
         log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
 
         if (len(jobs) == 0):

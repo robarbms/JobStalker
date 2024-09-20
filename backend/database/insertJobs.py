@@ -1,5 +1,5 @@
 from .connection import connect_to_db
-from .getJobs import get_jobs, get_job_ids
+from .getJobIds import get_job_ids
 
 # Checks if a job already exists in the database
 def in_db(jobs, job, company_id=None) -> bool:
@@ -32,12 +32,12 @@ def insert_jobs (jobs, cur=None, conn=None):
     company_id = get_company_ids(cur, conn)
 
 
-    db_jobs = get_job_ids(cur, conn)
+    job_ids = get_job_ids(cur, conn)
 
     jobs_inserted = 0
 
     for job in jobs:
-        if in_db(db_jobs, job, company_id) == False:
+        if job['job_id'] not in job_ids[job['company']]:
             insert_job(job, cur, conn, company_id)
             jobs_inserted += 1
     
@@ -54,6 +54,10 @@ def insert_job(job, cur=None, conn=None, company_id=None):
     
     if company_id == None:
         company_id = get_company_ids(cur, conn)
+    
+    try:
+        insert_query = "INSERT INTO jobs (job_id, title, description, location, company_id, salary_min, salary_max, date_posted, link, notes, summary) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        cur.execute(insert_query,(job['job_id'], job['title'], job['description'], job['location'], company_id[job['company']], job['salary_min'], job['salary_max'], job['date_posted'], job['link'], job['notes'], job['summary']))
 
-    insert_query = "INSERT INTO jobs (job_id, title, description, location, company_id, salary_min, salary_max, date_posted, link, notes, summary) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    cur.execute(insert_query,(job['job_id'], job['title'], job['description'], job['location'], company_id[job['company']], job['salary_min'], job['salary_max'], job['date_posted'], job['link'], job['notes'], job['summary']))
+    except Exception as e:
+        print("Error inserting job: ", e)

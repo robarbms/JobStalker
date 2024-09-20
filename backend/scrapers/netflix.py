@@ -55,7 +55,7 @@ def getJobDetails(position: BeautifulSoup):
 """
 This function is used to get the job details for a given query
 """
-def getJobs(query):
+def getJobs(query, job_ids):
     query_url = "https://explore.jobs.netflix.net/careers?query={query}&location=Seattle%2C%20WA%2C%20United%20States&sort_by=new"
     url = query_url.format(query=query)
     jobs = []
@@ -98,13 +98,13 @@ def getJobs(query):
 """
 Collects job postings from Netflix's careers page for a list of queries
 """
-def getNetflixJobs():
+def getNetflixJobs(job_ids):
     log("Fetching jobs for Netflix...")
     base_url = "https://jobs.netflix.com/"
     jobs = []
 
     for query in queries:
-        job_results = getJobs(query)
+        job_results = getJobs(query, job_ids)
         log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
 
         if (len(jobs) == 0):

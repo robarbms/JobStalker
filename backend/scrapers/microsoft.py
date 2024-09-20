@@ -25,7 +25,7 @@ def getJobDetails(job_number: str, page: Page):
     details = {
         "title": title,
         "job_id": job_number,
-        "company": "Microsoft",
+        "company": 'Microsoft',
         "link": url,
         "salary_min": 0,
         "salary_max": 0,
@@ -40,9 +40,8 @@ def getJobDetails(job_number: str, page: Page):
     return details
 
 
-def getJobs(query):
-    log(f"Getting jobs for query \"{query}\"".format(query=query))
-    query_url = "https://jobs.careers.microsoft.com/global/en/search?lc=Seattle%2C%20Washington%2C%20United%20States&lc=Redmond%2C%20Washington%2C%20United%20States&lc=Bellevue%2C%20Washington%2C%20United%20States&p={query}&l=en_us&pg=1&pgSz=20&o=Recent"
+def getJobs(query, job_ids):
+    query_url = "https://jobs.careers.microsoft.com/global/en/search?q={query}&lc=Bellevue%2C%20Washington%2C%20United%20States&lc=Redmond%2C%20Washington%2C%20United%20States&lc=Seattle%2C%20Washington%2C%20United%20States&p=Software%20Engineering&l=en_us&pg=1&pgSz=20&o=Recent&flt=true"
     url = query_url.format(query=query)
     jobs = []
 
@@ -60,7 +59,10 @@ def getJobs(query):
             job_nums.append(job_num_cont.get_attribute('aria-label').replace('Job item ', ''))
 
         for job_num in job_nums:
-            jobs.append(getJobDetails(job_num, page))
+            if job_num not in job_ids:
+                job_details = getJobDetails(job_num, page)
+                if job_details['date_posted'] != '':
+                    jobs.append(job_details)
 
         browser.close()
         return jobs
@@ -68,12 +70,12 @@ def getJobs(query):
 
         
 
-def getMicrosoftJobs():
+def getMicrosoftJobs(job_ids):
     log("Fetching jobs for Microsoft...")
     jobs = []
 
     for query in queries:
-        job_results = getJobs(query)
+        job_results = getJobs(query, job_ids)
         log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
 
         if (len(jobs) == 0):

@@ -19,7 +19,6 @@ function App() {
     const response = await fetch('http://localhost:5000/api');
     const data = await response.json();
     setJobs(data);
-    console.log(data);
   }, []);
 
   useEffect(() => {
