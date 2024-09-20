@@ -68,7 +68,7 @@ def getJobs(query, job_ids):
                     job_id = re.split(r'[\-_]', cell_id)
                     if job_id and len(job_id) > 2:
                         if str(job_id[2]) in job_ids:
-                            print('Found job:', str(job_id[2]))
+                            continue
                         else:
                             job_details = getJobDetails(job_id[2], browser)
                             jobs.append(job_details)

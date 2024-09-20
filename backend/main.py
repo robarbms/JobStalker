@@ -2,6 +2,7 @@ from scrapers import getAllJobs
 from scrapers.utils import log
 from database import insert_jobs, connect_to_db, get_job_ids
 from scrapers import job
+import time
 
 def main():
     cur, conn = connect_to_db()
@@ -12,6 +13,8 @@ def main():
     log("Adding jobs to database")
     new_job_count = insert_jobs(jobs)
     log(f"Successfully added {new_job_count} new job(s) to the database")
+    time.sleep(60 * 60)
+    main()
 
 if __name__ == "__main__":
     main()
