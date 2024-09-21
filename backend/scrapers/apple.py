@@ -3,11 +3,10 @@ from .utils import Extractor, log, queries
 import time
 import re
 
-def getJobDetails(job_id: str, browser):
+def getJobDetails(job_id: str, page):
     details = {}
     try:
         url = "https://jobs.apple.com/en-us/details/{job_id}"
-        page = browser.new_page()
         page.goto(url.format(job_id=job_id))
         extract = Extractor(page, "Apple", job_id)
 
@@ -56,31 +55,37 @@ def getJobs(query, job_ids):
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
-        page.goto(url)
 
-        results_table = page.locator('div.results__table')
-        if results_table:
-            job_cells = results_table.locator('tbody').all()
+        try:
+            page.goto(url)
 
-            if job_cells:
-                for cell in job_cells:
-                    cell_id = cell.get_attribute('id')
-                    job_id = re.split(r'[\-_]', cell_id)
-                    if job_id and len(job_id) > 2:
-                        if str(job_id[2]) in job_ids:
-                            continue
-                        else:
-                            job_details = getJobDetails(job_id[2], browser)
-                            jobs.append(job_details)
+            results_table = page.locator('div.results__table')
+            if results_table:
+                job_cells = results_table.locator('tbody').all()
 
-        browser.close()
+                if job_cells:
+                    for cell in job_cells:
+                        cell_id = cell.get_attribute('id')
+                        job_id = re.split(r'[\-_]', cell_id)
+                        if job_id and len(job_id) > 2:
+                            if str(job_id[2]) in job_ids:
+                                continue
+                            else:
+                                job_details = getJobDetails(job_id[2], page)
+                                jobs.append(job_details)
+
+        except Exception as e:
+            log(f"Could not fetch results from Apple for query \"{query}\"".format(query=query), "error")
+            log(str(e), "error")
+
+        finally:
+            browser.close()
 
     return jobs
 
 
 def getAppleJobs(job_ids):
     log("Fetching jobs for Apple...")
-    base_url = "https://jobs.apple.com/en-us/search?location=united-states-USA"
     jobs = []
 
     for query in queries:

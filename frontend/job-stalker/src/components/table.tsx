@@ -4,7 +4,6 @@ import Job, { JobDetails } from './job';
 
 export default function Table () {
     const {jobs, sortColumn, setSortColumn} = useContext(JobContext);
-    const sorted_jobs = jobs.sort((a: JobDetails, b: JobDetails) => new Date(b.date_posted).getTime() - new Date(a.date_posted).getTime());
     const [showCount, setShowCount] = useState(20);
 
     const handleShowMore = () => {
@@ -15,7 +14,7 @@ export default function Table () {
         setShowCount(20);
     }
 
-    const handleSort = (column: string) => () => setSortColumn(column);
+    const handleSort = (column: string) => () => setSortColumn(column as keyof JobDetails);
 
     return(
         <div className="job-list">
@@ -41,13 +40,13 @@ export default function Table () {
                 </tr>
             </thead>
             <tbody>
-                {sorted_jobs.filter((x, idx) => showCount < 0 || idx < showCount).map((job, idx) => <Job key={idx} {...job} />)}
+                {jobs.filter((x, idx) => showCount < 0 || idx < showCount).map((job, idx) => <Job key={idx} {...job} />)}
             </tbody>
         </table>
-        {showCount < sorted_jobs.length && 
+        {showCount < jobs.length && 
             <button className="show-more" onClick={handleShowMore}>Show More Jobs</button>
         }
-        {showCount >= sorted_jobs.length &&
+        {showCount >= jobs.length &&
             <button className="show-more" onClick={handleShowLess}>Show Less Jobs</button>
         }
         </div>

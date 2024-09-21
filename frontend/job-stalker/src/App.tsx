@@ -13,8 +13,8 @@ interface IContext {
   onlyFrontend: boolean;
   companyFilter: string;
   setCompanyFilter: React.Dispatch<React.SetStateAction<string>>;
-  sortColumn: string;
-  setSortColumn: React.Dispatch<React.SetStateAction<string>>;
+  sortColumn: keyof JobDetails;
+  setSortColumn: React.Dispatch<React.SetStateAction<keyof JobDetails>>;
   companies: string[];
   setCompanies: React.Dispatch<React.SetStateAction<string[]>>;
 }
@@ -27,7 +27,7 @@ function App() {
   const [hideManager, setHideManager] = useState(false);
   const [onlyFrontend, setOnlyFrontend] = useState(false);
   const [ companyFilter, setCompanyFilter] = useState("All");
-  const [ sortColumn, setSortColumn ] = useState("date_posted");
+  const [ sortColumn, setSortColumn ] = useState("date_posted" as keyof JobDetails);
   const [ companies, setCompanies] = useState([] as string[]);
 
   const value: IContext = { 
@@ -45,11 +45,11 @@ function App() {
     setCompanies,
   };
 
-  const getJobs = useCallback(async () => {
+  const getJobs = async () => {
     const response = await fetch('http://localhost:5000/api');
     const data = await response.json();
     const data_options = data.map((job: JobDetails) => {
-      if (job.description.match(/react|typescript/i)) {
+      if (job.description.match(/\W(react|typescript)\W/i)) {
         job.is_frontend = true;
       }
       if (job.title.match(/manager/i)) {
@@ -66,16 +66,32 @@ function App() {
         return c;
     }, []).sort();
     setCompanies(["All", ...companies]);
-    setJobs(data_options);
-  }, []);
+    const processed_jobs = processJobs(data_options);
+    setJobs(processed_jobs);
+  };
 
   useEffect(() => {
     getJobs();
   }, []);
 
-  useEffect(() => {
-    console.log(sortColumn);
-    const filtered_jobs = stored_jobs.current.filter((job: JobDetails) => {
+  const processJobs = (jobs: JobDetails[]) => {
+    const sorted_jobs = jobs.sort((a: JobDetails, b: JobDetails) => {
+      if (sortColumn === "date_posted" || sortColumn === "created_at") {
+        const sort_a = new Date(a[sortColumn].replace(/ gmt/i, '')).getTime();
+        const sort_b = new Date(b[sortColumn].replace(/ gmt/i, '')).getTime();
+        return sort_a > sort_b ? -1 : 1;
+      }
+      if (sortColumn !== undefined && a !== undefined && b !== undefined && 
+        sortColumn in a && sortColumn in b) {
+        const sort_a = a[sortColumn];
+        const sort_b = b[sortColumn];
+        if (sort_a !== undefined && sort_b !== undefined) {
+          return (sort_a as string).localeCompare(sort_b as string)
+        }
+      }
+      return -1;
+    });
+    const filtered_jobs = sorted_jobs.filter((job: JobDetails) => {
       if (hideManager && job.is_manager) {
         return false;
       }
@@ -87,16 +103,17 @@ function App() {
       }
       return true;
     });
-    const sorted_jobs = filtered_jobs.sort((a: any, b: any) => {
-      if (sortColumn === "date_posted" || sortColumn === "created_at") {
-        a = new Date(a[sortColumn]).getTime();
-        b = new Date(b[sortColumn]).getTime();
-        return a - b;
-      }
-      return a[sortColumn] > b[sortColumn] ? 1 : -1;
-    })
+    console.log(sortColumn);
 
-    setJobs(sorted_jobs);
+    console.log({jobs, filtered_jobs});
+
+    return filtered_jobs;
+  }
+
+  useEffect(() => {
+    if (stored_jobs.current) {
+      setJobs(processJobs(stored_jobs.current));
+    }
   }, [hideManager, onlyFrontend, companyFilter, sortColumn]);
 
   return (
