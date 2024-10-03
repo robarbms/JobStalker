@@ -17,6 +17,7 @@ interface IContext {
   setSortColumn: React.Dispatch<React.SetStateAction<keyof JobDetails>>;
   companies: string[];
   setCompanies: React.Dispatch<React.SetStateAction<string[]>>;
+  lastUpdated: Date;
 }
 
 export const JobContext = createContext({} as IContext);
@@ -24,11 +25,12 @@ export const JobContext = createContext({} as IContext);
 function App() {
   let stored_jobs = useRef([]);
   const [jobs, setJobs] = useState([] as JobDetails[]);
-  const [hideManager, setHideManager] = useState(false);
-  const [onlyFrontend, setOnlyFrontend] = useState(false);
+  const [hideManager, setHideManager] = useState(true);
+  const [onlyFrontend, setOnlyFrontend] = useState(true);
   const [ companyFilter, setCompanyFilter] = useState("All");
-  const [ sortColumn, setSortColumn ] = useState("date_posted" as keyof JobDetails);
+  const [ sortColumn, setSortColumn ] = useState("created_at" as keyof JobDetails);
   const [ companies, setCompanies] = useState([] as string[]);
+  const [ lastUpdated, setLastUpdated] = useState(new Date());
 
   const value: IContext = { 
     jobs,
@@ -43,6 +45,7 @@ function App() {
     setSortColumn,
     companies,
     setCompanies,
+    lastUpdated
   };
 
   const getJobs = async () => {
@@ -68,6 +71,8 @@ function App() {
     setCompanies(["All", ...companies]);
     const processed_jobs = processJobs(data_options);
     setJobs(processed_jobs);
+    setLastUpdated(new Date());
+    setTimeout(getJobs, 5000);
   };
 
   useEffect(() => {
@@ -103,9 +108,6 @@ function App() {
       }
       return true;
     });
-    console.log(sortColumn);
-
-    console.log({jobs, filtered_jobs});
 
     return filtered_jobs;
   }
@@ -121,6 +123,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <h1>Job Stalker</h1>
+          <label>Last updated: </label><span className="update_time">{lastUpdated.toString()}</span>
         </header>
         <div className="job-list-container">
           <div className="job-list-header">
