@@ -8,6 +8,7 @@ import { ReactComponent as AdobeIcon } from '../static/adobe.svg';
 import { ReactComponent as AmazonIcon } from '../static/amazon.svg';
 import { ReactComponent as HuggingfaceIcon } from '../static/huggingface.svg';
 import { ReactComponent as OpenaiIcon } from '../static/openai.svg';
+import { ReactComponent as NvidiaIcon } from '../static/nvidia.svg';
 
 export type JobDetails = {
     id: string,
@@ -50,6 +51,7 @@ export default function Job(props: JobDetails) {
         Amazon: <AmazonIcon className="icon" />,
         OpenAI: <OpenaiIcon className="icon" />,
         HuggingFace: <HuggingfaceIcon className="icon" />,
+        Nvidia: <NvidiaIcon className="icon" />,
     }
 
     return(

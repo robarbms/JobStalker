@@ -50,7 +50,6 @@ def getJobs(query, job_ids):
     query_url = "https://jobs.apple.com/en-us/search?search={query}&sort=newest&location=seattle-SEA"
     url = query_url.format(query=query)
     jobs = []
-    job_cells = []
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
