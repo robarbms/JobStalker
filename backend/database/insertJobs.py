@@ -37,7 +37,6 @@ def insert_jobs (jobs, cur=None, conn=None):
     jobs_inserted = 0
 
     for job in jobs:
-        print(job)
         if job['company'] not in job_ids or job['job_id'] not in job_ids[job['company']]:
             insert_job(job, cur, conn, company_id)
             jobs_inserted += 1

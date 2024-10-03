@@ -27,10 +27,15 @@ function App() {
   const [jobs, setJobs] = useState([] as JobDetails[]);
   const [hideManager, setHideManager] = useState(true);
   const [onlyFrontend, setOnlyFrontend] = useState(true);
-  const [ companyFilter, setCompanyFilter] = useState("All");
+  const [ companyFilter, setCompanyFilterMaster] = useState("All");
   const [ sortColumn, setSortColumn ] = useState("created_at" as keyof JobDetails);
   const [ companies, setCompanies] = useState([] as string[]);
   const [ lastUpdated, setLastUpdated] = useState(new Date());
+
+  const setCompanyFilter = (value: any) => {
+    console.log("set filter called with: ", value);
+    setCompanyFilterMaster(value);
+  }
 
   const value: IContext = { 
     jobs,
@@ -69,17 +74,21 @@ function App() {
         return c;
     }, []).sort();
     setCompanies(["All", ...companies]);
-    const processed_jobs = processJobs(data_options);
+    const processed_jobs = processJobs(data_options, sortColumn, companyFilter, hideManager, onlyFrontend);
     setJobs(processed_jobs);
     setLastUpdated(new Date());
-    setTimeout(getJobs, 5000);
   };
 
   useEffect(() => {
-    getJobs();
-  }, []);
+    const updateJobs = () => {
+      getJobs();
+    }
+    updateJobs();
+    const jobHandle = setInterval(updateJobs, 5000);
+    return () => clearInterval(jobHandle);
+  }, [sortColumn, companyFilter, hideManager, onlyFrontend]);
 
-  const processJobs = (jobs: JobDetails[]) => {
+  const processJobs = (jobs: JobDetails[], sortColumn: keyof JobDetails, companyFilter: string, hideManager: boolean, onlyFrontend: boolean) => {
     const sorted_jobs = jobs.sort((a: JobDetails, b: JobDetails) => {
       if (sortColumn === "date_posted" || sortColumn === "created_at") {
         const sort_a = new Date(a[sortColumn].replace(/ gmt/i, '')).getTime();
@@ -110,11 +119,11 @@ function App() {
     });
 
     return filtered_jobs;
-  }
+  };
 
   useEffect(() => {
     if (stored_jobs.current) {
-      setJobs(processJobs(stored_jobs.current));
+      setJobs(processJobs(stored_jobs.current, sortColumn, companyFilter, hideManager, onlyFrontend));
     }
   }, [hideManager, onlyFrontend, companyFilter, sortColumn]);
 
