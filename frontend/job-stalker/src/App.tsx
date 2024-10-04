@@ -33,7 +33,6 @@ function App() {
   const [ lastUpdated, setLastUpdated] = useState(new Date());
 
   const setCompanyFilter = (value: any) => {
-    console.log("set filter called with: ", value);
     setCompanyFilterMaster(value);
   }
 

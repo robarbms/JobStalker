@@ -2,6 +2,7 @@ from .apple import getAppleJobs
 from .netflix import getNetflixJobs
 from .microsoft import getMicrosoftJobs
 from .nvidia import getNvidiaJobs
+from .google import getGoogleJobs
 from .utils import log
 from datetime import datetime
 
@@ -11,6 +12,10 @@ def getAllJobs(job_ids):
     jobs = []
     count = 0
 
+    googleJobs = job_ids['Google'] if 'Google' in job_ids else []
+
+    jobs += getGoogleJobs(googleJobs)
+    count += 1
     jobs += getNvidiaJobs(job_ids['Nvidia'])
     count += 1
     jobs += getAppleJobs(job_ids['Apple'])

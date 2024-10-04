@@ -4,6 +4,7 @@ import time
 import datetime
 import re
 
+# Converts a date string (e.g., "Posted 2 Days Ago") to a datetime object
 def getDate(date_str):
     date_str = date_str.replace("Posted ", "")
     date_str = date_str.replace(" Ago", "")
@@ -26,7 +27,8 @@ def getDate(date_str):
 
     return date.strftime("%Y-%m-%d")
 
-def getJobDetails(url, page: Page):
+# Extracts job details from a Nvidia job posting
+def getJobDetails(url: str, page: Page):
     details = {
         'link': url,
         'company': 'Nvidia',
@@ -68,7 +70,7 @@ def getJobDetails(url, page: Page):
     finally:
         return details
 
-def getJobs(query, job_ids):
+def getJobs(query: str, job_ids: list[str]):
     query_url = "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/jobs?q={query}&locations=91336993fab910af6d716528e9d4c406&locations=d2088e737cbb01d5e2be9e52ce01926f&locations=16fc4607fc4310011e929f7115f90000&locations=91336993fab910af6d701e82d004c2c0"
     url = query_url.format(query=query)
     jobs = []
@@ -102,7 +104,12 @@ def getJobs(query, job_ids):
 
     return jobs
 
-def getNvidiaJobs(job_ids):
+"""
+    Gets jobs based on a list of queries
+    Args:
+    - job_ids: List of job IDs already in the database
+"""
+def getNvidiaJobs(job_ids: list[str]):
     log("Fetching jobs for Nvidia...")
     jobs = []
 

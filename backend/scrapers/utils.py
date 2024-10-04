@@ -6,13 +6,14 @@ from datetime import datetime
 """
     Gets the contents of a page and returns it as a soup object
 """
-def getPage(url):
+def getPage(url, cookies=None):
     request_headers = {
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
     }
 
     print("Getting page for {0}...".format(url))
-    response = requests.get(url, headers=request_headers)
+    response = requests.get(url, headers=request_headers, cookies=cookies)
     if response.status_code == 200:
         print("Page successfully downloaded.")
         html_doc = response.text
