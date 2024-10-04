@@ -3,6 +3,7 @@ from .netflix import getNetflixJobs
 from .microsoft import getMicrosoftJobs
 from .nvidia import getNvidiaJobs
 from .google import getGoogleJobs
+from .amazon import getAmazonJobs
 from .meta import getMetaJobs
 from .utils import log
 from datetime import datetime
@@ -17,7 +18,9 @@ def getAllJobs(job_ids):
         if company in job_ids:
             return job_ids[company]
         return []
-
+    
+    jobs += getAmazonJobs(getJobIds('Amazon'))
+    count += 1
     jobs += getGoogleJobs(getJobIds('Google'))
     count += 1
     jobs += getNvidiaJobs(getJobIds('Nvidia'))
