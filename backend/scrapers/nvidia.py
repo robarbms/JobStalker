@@ -1,8 +1,7 @@
 from playwright.sync_api import sync_playwright, Page, Locator
-from .utils import Extractor, log, queries
+from .utils import log, queries
 import time
 import datetime
-import re
 
 # Converts a date string (e.g., "Posted 2 Days Ago") to a datetime object
 def getDate(date_str):

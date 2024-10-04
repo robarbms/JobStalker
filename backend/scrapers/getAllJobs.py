@@ -3,6 +3,7 @@ from .netflix import getNetflixJobs
 from .microsoft import getMicrosoftJobs
 from .nvidia import getNvidiaJobs
 from .google import getGoogleJobs
+from .meta import getMetaJobs
 from .utils import log
 from datetime import datetime
 
@@ -12,17 +13,20 @@ def getAllJobs(job_ids):
     jobs = []
     count = 0
 
-    googleJobs = job_ids['Google'] if 'Google' in job_ids else []
+    def getJobIds(company):
+        if company in job_ids:
+            return job_ids[company]
+        return []
 
-    jobs += getGoogleJobs(googleJobs)
+    jobs += getGoogleJobs(getJobIds('Google'))
     count += 1
-    jobs += getNvidiaJobs(job_ids['Nvidia'])
+    jobs += getNvidiaJobs(getJobIds('Nvidia'))
     count += 1
-    jobs += getAppleJobs(job_ids['Apple'])
+    jobs += getAppleJobs(getJobIds('Apple'))
     count += 1
-    jobs += getNetflixJobs(job_ids['Netflix'])
+    jobs += getNetflixJobs(getJobIds('Netflix'))
     count += 1
-    jobs += getMicrosoftJobs(job_ids['Microsoft'])
+    jobs += getMicrosoftJobs(getJobIds('Microsoft'))
     count += 1
 
     log(f"Found a total of {len(jobs)} unique jobs in {count} companies")
