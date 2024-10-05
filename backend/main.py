@@ -13,8 +13,8 @@ def main():
     log("Adding jobs to database")
     new_job_count = insert_jobs(jobs)
     log(f"Successfully added {new_job_count} new job(s) to the database")
-#    time.sleep(60 * 60)
-#    main()
+    time.sleep(60 * 60)
+    main()
 
 if __name__ == "__main__":
     main()
