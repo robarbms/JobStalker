@@ -131,5 +131,5 @@ def getNvidiaJobs(job_ids: list[str]):
                     if (not found):
                         jobs.append(job)
 
-    log("Total number of positions found: {count}".format(count=len(jobs)))
+    log("Total number of positions found for Nvidia: {count}".format(count=len(jobs)))
     return jobs

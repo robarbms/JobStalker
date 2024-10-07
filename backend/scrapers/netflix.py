@@ -131,5 +131,5 @@ def getNetflixJobs(job_ids):
                 if (not found):
                     jobs.append(job)
 
-    log("Total number of positions found: {count}".format(count=len(jobs)))
+    log("Total number of positions found for Netflix: {count}".format(count=len(jobs)))
     return jobs

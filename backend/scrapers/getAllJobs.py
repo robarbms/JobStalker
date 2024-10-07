@@ -5,6 +5,7 @@ from .nvidia import getNvidiaJobs
 from .google import getGoogleJobs
 from .amazon import getAmazonJobs
 from .meta import getMetaJobs
+from .adobe import getAdobeJobs
 from .utils import log
 from datetime import datetime
 
@@ -30,6 +31,8 @@ def getAllJobs(job_ids):
     jobs += getNetflixJobs(getJobIds('Netflix'))
     count += 1
     jobs += getMicrosoftJobs(getJobIds('Microsoft'))
+    count += 1
+    jobs += getAdobeJobs(getJobIds('Adobe'))
     count += 1
 
     log(f"Found a total of {len(jobs)} unique jobs in {count} companies")

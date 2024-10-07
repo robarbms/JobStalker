@@ -113,6 +113,6 @@ def getGoogleJobs(job_ids: list[str]):
                 if not found:
                     jobs.append(job)
 
-    log("Total number of positions foundfor Google: {count}".format(count=len(jobs)))
+    log("Total number of positions found for Google: {count}".format(count=len(jobs)))
 
     return jobs

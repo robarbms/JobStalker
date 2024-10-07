@@ -102,5 +102,5 @@ def getMicrosoftJobs(job_ids):
 
         time.sleep(1)
 
-    log("Total number of positions found: {count}".format(count=len(jobs)))
+    log("Total number of positions found for Microsoft: {count}".format(count=len(jobs)))
     return jobs

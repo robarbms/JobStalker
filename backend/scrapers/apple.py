@@ -105,5 +105,5 @@ def getAppleJobs(job_ids):
 
         time.sleep(1)
 
-    log("Total number of positions found: {count}".format(count=len(jobs)))
+    log("Total number of positions found for Apple: {count}".format(count=len(jobs)))
     return job_results
