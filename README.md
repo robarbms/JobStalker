@@ -8,6 +8,7 @@ Companies:
 - Amazon
 - Apple
 - Google
+- Meta
 - Microsoft
 - Netflix
 - Nvidia

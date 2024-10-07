@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright, Page, Locator
 from .utils import Extractor, log, queries
 import time
-import datetime
+from datetime import datetime
 import re
 from bs4 import BeautifulSoup
 
@@ -13,6 +13,8 @@ def getJobDetails(link: Locator, page: Page):
         'salary_max': 0,
         'notes': '',
         'summary': '',
+        'location': 'Seattle, WWA',
+        'date_posted': datetime.now().strftime("%Y-%m-%d")
     }
 
     try:
@@ -21,7 +23,7 @@ def getJobDetails(link: Locator, page: Page):
             link.click()
 
         new_page = popup_info.value
-        time.sleep(3)  # Wait for the new page to load
+        time.sleep(5)  # Wait for the new page to load
 
         title = new_page.locator("div._9ata._8ww0")
 
@@ -32,8 +34,13 @@ def getJobDetails(link: Locator, page: Page):
         details['link'] = url
         job_id = re.search(r'jobs/(\d+)/', url).group(1)
         details['job_id'] = job_id
+        description = ""
+        description_conts = new_page.locator("div._8lfv div._8muv > div > div").all()
+        for cont in description_conts:
+            description += cont.text_content() + "\n\n"
 
-        print(details)
+        details['description'] = description
+
         return details
     
     except Exception as e:
@@ -43,7 +50,7 @@ def getJobDetails(link: Locator, page: Page):
 
 def getJobs(query: str, job_ids: list[int]) -> list[dict]:
     """Get jobs from a given query"""
-    query_url = "https://www.metacareers.com/jobs?q={query}&offices[0]=Seattle%2C%20WA"
+    query_url = "https://www.metacareers.com/jobs?offices[0]=Bellevue%2C%20WA&offices[1]=Seattle%2C%20WA&offices[2]=Redmond%2C%20WA&q={query}&sort_by_new=true"
     url = query_url.format(query=query)
     jobs = []
 
@@ -55,18 +62,14 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
             page.goto(url)
             time.sleep(5) # Wait for the page to load
 
-            print(page.inner_html('body'))
-
             result_list = page.locator("div[role=link]").all()
             if len(result_list) == 0:
                 log("Unable to connect to Meta.", "error")
                 return []
 
-            print(url, len(result_list))
-
             for link in result_list:
                 jobDetails = getJobDetails(link, page)
-                break
+                jobs.append(jobDetails)
 
         except Exception as e:
             log(f"Error fetching jobs from Meta: {e}")
@@ -83,4 +86,18 @@ def getMetaJobs(job_ids: list[int]):
     for query in queries:
         job_results = getJobs(query, job_ids)
         log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
-        return jobs
+
+        if (len(jobs) == 0):
+            jobs = job_results
+        else:
+            for job in job_results:
+                found = False
+                for existing_job in jobs:
+                    if (job and 'job_id' in job and existing_job and 'job_id' in existing_job and existing_job['job_id'] == job['job_id']):
+                        found = True
+                        break
+                if (not found):
+                    jobs.append(job)
+
+    log("Total number of positions found for Meta: {count}".format(count=len(jobs)))
+    return jobs

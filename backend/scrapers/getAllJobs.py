@@ -34,6 +34,8 @@ def getAllJobs(job_ids):
     count += 1
     jobs += getAdobeJobs(getJobIds('Adobe'))
     count += 1
+    jobs += getMetaJobs(getJobIds('Meta'))
+    count += 1
 
     log(f"Found a total of {len(jobs)} unique jobs in {count} companies")
     log("Finished job search")
