@@ -11,7 +11,12 @@ body {
 }
 
 h1 {
-    font-weight: 200;
+    font-weight: 400;
+}
+
+h2 {
+    font-weight: 400;
+    margin: 10px 0;
 }
 
 a {
@@ -73,3 +78,28 @@ td {
     margin: 20px 0;
 }
 
+path.recharts-sector {
+    stroke: transparent;
+}
+
+.company-chart,
+.week-chart,
+.trend-chart {
+    display: inline-block;
+    margin: 0 20px 0 0;
+}
+
+.filter-system {
+    max-width: 400px;
+}
+
+.filter-system .filter-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 10px;
+    margin: 0 0 10px;
+}
+
+.filter-item label {
+    text-align: right;
+}

@@ -3,8 +3,12 @@ import './styles/site.css';
 import { JobDetails } from './components/job';
 import Table from './components/table';
 import Filters from './components/filters';
+import CompanyChart from './components/charts/companies';
+import WeekChart from './components/charts/week';
+import AllTrendChart from './components/charts/allTrend';
 
 interface IContext {
+  allJobs: JobDetails[],
   jobs: JobDetails[],
   setJobs: React.Dispatch<React.SetStateAction<JobDetails[]>>,
   toggleHideManager: () => void;
@@ -23,7 +27,7 @@ interface IContext {
 export const JobContext = createContext({} as IContext);
 
 function App() {
-  let stored_jobs = useRef([]);
+  const [allJobs, setAllJobs] = useState([] as JobDetails[]);
   const [jobs, setJobs] = useState([] as JobDetails[]);
   const [hideManager, setHideManager] = useState(true);
   const [onlyFrontend, setOnlyFrontend] = useState(true);
@@ -37,6 +41,7 @@ function App() {
   }
 
   const value: IContext = { 
+    allJobs,
     jobs,
     setJobs,
     hideManager,
@@ -65,7 +70,7 @@ function App() {
       return job;
     });
 
-    stored_jobs.current = data_options;
+    setAllJobs(data_options);
     const companies = data_options.reduce((c: string[], job: JobDetails) => {
         if (!c.includes(job.company)) {
             c.push(job.company);
@@ -121,9 +126,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (stored_jobs.current) {
-      setJobs(processJobs(stored_jobs.current, sortColumn, companyFilter, hideManager, onlyFrontend));
-    }
+    setJobs(processJobs(allJobs, sortColumn, companyFilter, hideManager, onlyFrontend));
   }, [hideManager, onlyFrontend, companyFilter, sortColumn]);
 
   return (
@@ -133,10 +136,14 @@ function App() {
           <h1>Job Stalker</h1>
           <label>Last updated: </label><span className="update_time">{lastUpdated.toString()}</span>
         </header>
+        <CompanyChart />
+        <WeekChart />
+        <AllTrendChart />
+        
         <div className="job-list-container">
           <div className="job-list-header">
             <div className="job-count">
-              {jobs.length} / {stored_jobs.current.length} jobs
+              {jobs.length} / {allJobs.length} jobs
             </div>
             <Filters />
           </div>
