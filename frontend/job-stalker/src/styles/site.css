@@ -168,3 +168,7 @@ path.recharts-sector {
     width: 30px;
     height: 30px;
 }
+
+.company-selected {
+    border-color: green;
+}

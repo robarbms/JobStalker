@@ -94,6 +94,9 @@ function App() {
 
   const applyFilters = useCallback(() => {
      let filteredJobs = allJobs;
+     if (filter.companies.length > 0) {
+      filteredJobs = filteredJobs.filter(job => filter.companies.includes(job.company));
+     }
      if(filter.title_include) {
         filteredJobs = filteredJobs.filter(job => containsText(job.title, filter.title_include)); 
      }
@@ -114,8 +117,13 @@ function App() {
     setFilter({...filter, [name]: value});
   }
 
-  const toggleCompany = (company: string) => {
-
+  const toggleCompany = (company: string) => () => {
+    let filter_companies = filter.companies.includes(company) ? filter.companies.filter(c => c !== company) : [...filter.companies, company];
+    if (filter_companies.length === 0) {
+      filter_companies = companies;
+    }
+    const updatedFilter = {...filter, companies: filter_companies};
+    setFilter(updatedFilter);
   }
 
   useEffect(() => {
@@ -143,7 +151,7 @@ function App() {
           </h1>
         </header>
         <AllTrendChart />
-        <FilterSystem filterChanged={filterChanged} />
+        <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
         <CompanyChart />
         <WeekChart />
         <div className="job-list-container">
