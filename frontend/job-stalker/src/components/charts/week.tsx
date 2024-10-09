@@ -39,10 +39,10 @@ const WeekChart = () => {
     return (
         <div className="week-chart">
             <h2>Jobs over the last week</h2>
-            <BarChart width={600} height={300} data={data}>
+            <BarChart width={830} height={300} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis />
+                <YAxis dataKey="" />
                 <Tooltip />
                 {companies.map((company: string, idx: number) => <Bar key={idx} stackId="a" dataKey={company} fill={companyData[company].color} />)}
                 <Legend />

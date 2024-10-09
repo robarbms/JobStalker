@@ -12,6 +12,7 @@ body {
 
 h1 {
     font-weight: 400;
+    color: green;
 }
 
 h2 {
@@ -21,6 +22,18 @@ h2 {
 
 a {
     color: inherit;
+}
+
+h1 label,
+h1 span {
+    font-weight: 200;
+    color: #aaa;
+    font-size: small;
+}
+
+h1 label {
+    color: #fff;
+    margin: 0 5px 0 20px;
 }
 
 .job-list-container {
@@ -89,8 +102,30 @@ path.recharts-sector {
     margin: 0 20px 0 0;
 }
 
+.trend-chart {
+    margin: 0 20px 20px 0;
+}
+
 .filter-system {
-    max-width: 400px;
+    background: #0d0d0d;
+    padding: 10px 20px 30px;
+    max-width: 1350px;
+    box-sizing: border-box;
+}
+
+.filter-system fieldset {
+    max-width: 640px;
+    padding: 10px;
+}
+
+.filter-system fieldset + fieldset {
+    margin-top: 20px;
+}
+
+.text-search {
+    float: left;
+    width: 640px;
+    margin: 0 20px 0 0;
 }
 
 .filter-system .filter-item {
@@ -102,4 +137,34 @@ path.recharts-sector {
 
 .filter-item label {
     text-align: right;
+}
+
+.filter-item input {
+    border: 0;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.company-select {
+    display: inline-block;
+    width: 105px;
+    text-align: center;
+    border: 1px solid;
+    height: 80px;
+    vertical-align: top;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.company-select {
+    margin: 10px 0 10px 10px;
+}
+
+.company-select + .company-select {
+    margin-left: 10px;
+}
+
+.filter-system .icon {
+    width: 30px;
+    height: 30px;
 }

@@ -30,7 +30,7 @@ const AllTrendChart = () => {
     return (
         <div className="trend-chart">
             <h2>All Jobs</h2>
-            <BarChart width={1000} height={300} data={data}>
+            <BarChart width={1350} height={200} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />

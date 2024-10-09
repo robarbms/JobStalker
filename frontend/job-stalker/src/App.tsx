@@ -1,27 +1,28 @@
-import React, { createContext, useCallback, useEffect, useState, useRef } from 'react';
+import React, { createContext, useCallback, useEffect, useState, useRef, createRef } from 'react';
 import './styles/site.css';
 import { JobDetails } from './components/job';
 import Table from './components/table';
-import Filters from './components/filters';
 import CompanyChart from './components/charts/companies';
 import WeekChart from './components/charts/week';
 import AllTrendChart from './components/charts/allTrend';
+import FilterSystem from './components/filterSystem';
 
+type Filter = {
+  title_include: string;
+  title_exclude: string;
+  description_include: string;
+  description_exclude: string;
+  companies: string[];
+}
 interface IContext {
   allJobs: JobDetails[],
   jobs: JobDetails[],
   setJobs: React.Dispatch<React.SetStateAction<JobDetails[]>>,
-  toggleHideManager: () => void;
-  toggleOnlyFrontend: () => void;
-  hideManager: boolean;
-  onlyFrontend: boolean;
-  companyFilter: string;
-  setCompanyFilter: React.Dispatch<React.SetStateAction<string>>;
-  sortColumn: keyof JobDetails;
-  setSortColumn: React.Dispatch<React.SetStateAction<keyof JobDetails>>;
   companies: string[];
   setCompanies: React.Dispatch<React.SetStateAction<string[]>>;
   lastUpdated: Date;
+  filter: Filter;
+  setFilter: React.Dispatch<React.SetStateAction<Filter>>;
 }
 
 export const JobContext = createContext({} as IContext);
@@ -29,123 +30,127 @@ export const JobContext = createContext({} as IContext);
 function App() {
   const [allJobs, setAllJobs] = useState([] as JobDetails[]);
   const [jobs, setJobs] = useState([] as JobDetails[]);
-  const [hideManager, setHideManager] = useState(true);
-  const [onlyFrontend, setOnlyFrontend] = useState(true);
-  const [ companyFilter, setCompanyFilterMaster] = useState("All");
-  const [ sortColumn, setSortColumn ] = useState("created_at" as keyof JobDetails);
   const [ companies, setCompanies] = useState([] as string[]);
   const [ lastUpdated, setLastUpdated] = useState(new Date());
+  const [ filter, setFilter ] = useState<Filter>({
+    title_include: "",
+    title_exclude: "",
+    description_include: "",
+    description_exclude: "",
+    companies: companies
+  } as Filter);
+  const jobHandler = useRef<NodeJS.Timeout|null>();
+  const [jobsToday, setJobsToday] = useState<JobDetails[]>([]);
 
-  const setCompanyFilter = (value: any) => {
-    setCompanyFilterMaster(value);
-  }
 
   const value: IContext = { 
     allJobs,
     jobs,
     setJobs,
-    hideManager,
-    onlyFrontend,
-    toggleOnlyFrontend: () => setOnlyFrontend(!onlyFrontend),
-    toggleHideManager: () => setHideManager(!hideManager),
-    companyFilter,
-    setCompanyFilter,
-    sortColumn,
-    setSortColumn,
     companies,
     setCompanies,
-    lastUpdated
+    lastUpdated,
+    filter,
+    setFilter,
   };
 
   const getJobs = async () => {
     const response = await fetch('http://localhost:5000/api');
-    const data = await response.json();
-    const data_options = data.map((job: JobDetails) => {
-      if (job.description.match(/\W(react|typescript)\W/i)) {
-        job.is_frontend = true;
-      }
-      if (job.title.match(/manager/i)) {
-        job.is_manager = true;
-      }
-      return job;
-    });
-
-    setAllJobs(data_options);
-    const companies = data_options.reduce((c: string[], job: JobDetails) => {
+    let data = await response.json();
+    data = data.sort((a: any, b: any) => new Date(a.date_posted) > new Date(b.date_posted) ? -1 : 1);
+    const companies = data.reduce((c: string[], job: JobDetails) => {
         if (!c.includes(job.company)) {
             c.push(job.company);
         }
         return c;
     }, []).sort();
-    setCompanies(["All", ...companies]);
-    const processed_jobs = processJobs(data_options, sortColumn, companyFilter, hideManager, onlyFrontend);
-    setJobs(processed_jobs);
+    setCompanies(companies);
+    setAllJobs(data);
     setLastUpdated(new Date());
-  };
-
-  useEffect(() => {
-    const updateJobs = () => {
-      getJobs();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set to midnight of the current day
+    setJobsToday(data.filter((job: JobDetails) => new Date(job.created_at).getTime() >= today.getTime()));
+    if (jobHandler.current !== null) {
+      clearTimeout(jobHandler.current);
     }
-    updateJobs();
-    const jobHandle = setInterval(updateJobs, 5000);
-    return () => clearInterval(jobHandle);
-  }, [sortColumn, companyFilter, hideManager, onlyFrontend]);
-
-  const processJobs = (jobs: JobDetails[], sortColumn: keyof JobDetails, companyFilter: string, hideManager: boolean, onlyFrontend: boolean) => {
-    const sorted_jobs = jobs.sort((a: JobDetails, b: JobDetails) => {
-      if (sortColumn === "date_posted" || sortColumn === "created_at") {
-        const sort_a = new Date(a[sortColumn].replace(/ gmt/i, '')).getTime();
-        const sort_b = new Date(b[sortColumn].replace(/ gmt/i, '')).getTime();
-        return sort_a > sort_b ? -1 : 1;
-      }
-      if (sortColumn !== undefined && a !== undefined && b !== undefined && 
-        sortColumn in a && sortColumn in b) {
-        const sort_a = a[sortColumn];
-        const sort_b = b[sortColumn];
-        if (sort_a !== undefined && sort_b !== undefined) {
-          return (sort_a as string).localeCompare(sort_b as string)
-        }
-      }
-      return -1;
-    });
-    const filtered_jobs = sorted_jobs.filter((job: JobDetails) => {
-      if (hideManager && job.is_manager) {
-        return false;
-      }
-      if (onlyFrontend && !job.is_frontend) {
-        return false;
-      }
-      if (companyFilter !=="All" && job.company!==companyFilter) {
-        return false;
-      }
-      return true;
-    });
-
-    return filtered_jobs;
+    jobHandler.current = setTimeout(getJobs, 5000);
   };
 
+  const containsText = (text: string, search: string) => {
+    const searchTerms = search.split(' ');
+    if (searchTerms.length === 0) return true; // No filter, so include it!
+    let containsText = false;
+    searchTerms.forEach((term: string) => {
+      if(text.toLowerCase().indexOf(term.toLowerCase()) >= 0) {
+        containsText = true;
+      }
+    });
+    return containsText;
+  }
+
+  const doesntContainText = (text: string, search: string) => {
+    return !containsText(text, search);
+  }
+
+  const applyFilters = useCallback(() => {
+     let filteredJobs = allJobs;
+     if(filter.title_include) {
+        filteredJobs = filteredJobs.filter(job => containsText(job.title, filter.title_include)); 
+     }
+     if(filter.description_include) {
+       filteredJobs = filteredJobs.filter(job => containsText(job.description, filter.description_include));
+     }
+     if (filter.title_exclude) {
+      filteredJobs = filteredJobs.filter(job => doesntContainText(job.title, filter.title_exclude));
+     }
+     if (filter.description_exclude) {
+      filteredJobs = filteredJobs.filter(job => doesntContainText(job.description, filter.description_exclude));
+     }
+     setJobs(filteredJobs);
+  }, [allJobs, filter]);
+
+  const filterChanged = (e: React.ChangeEvent<HTMLFormElement>) => {
+    const {value, name} = e.target;
+    setFilter({...filter, [name]: value});
+  }
+
+  const toggleCompany = (company: string) => {
+
+  }
+
   useEffect(() => {
-    setJobs(processJobs(allJobs, sortColumn, companyFilter, hideManager, onlyFrontend));
-  }, [hideManager, onlyFrontend, companyFilter, sortColumn]);
+    getJobs();
+    return () => {
+      if (jobHandler.current) {
+        clearTimeout(jobHandler.current);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [filter, allJobs, applyFilters])
 
   return (
     <JobContext.Provider value={value}>
       <div className="App">
         <header className="App-header">
-          <h1>Job Stalker</h1>
-          <label>Last updated: </label><span className="update_time">{lastUpdated.toString()}</span>
+          <h1>
+            Job Stalker
+            <label>Last updated: </label><span className="update_time">{lastUpdated.toLocaleString()}</span>
+            <label>Total Jobs: </label><span className="total_jobs">{allJobs.length}</span>
+            <label>Jobs found today:</label><span className="jobs_today">{jobsToday.length}</span>
+          </h1>
         </header>
+        <AllTrendChart />
+        <FilterSystem filterChanged={filterChanged} />
         <CompanyChart />
         <WeekChart />
-        <AllTrendChart />
-        
         <div className="job-list-container">
           <div className="job-list-header">
             <div className="job-count">
               {jobs.length} / {allJobs.length} jobs
             </div>
-            <Filters />
           </div>
             <Table></Table>
           </div>

@@ -3,8 +3,14 @@ import { JobContext } from '../App';
 import { JobDetails } from './job';
 
 export default function Filters() {
-    const {hideManager, toggleHideManager, onlyFrontend, toggleOnlyFrontend, jobs, companyFilter, setCompanyFilter, companies} = useContext(JobContext);
+    // const {hideManager, toggleHideManager, onlyFrontend, toggleOnlyFrontend, jobs, companyFilter, setCompanyFilter, companies} = useContext(JobContext);
     const companySelectRef = useRef<HTMLSelectElement>(null);
+    const setCompanyFilter = (value: string) => {}
+    const companies: string[] = [];
+    const onlyFrontend = false;
+    const hideManager = false;
+    const toggleOnlyFrontend = () => {}
+    const toggleHideManager = () => {}
 
     const companyFilterChanged = () => {
         if (companySelectRef.current) {

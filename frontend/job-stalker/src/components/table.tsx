@@ -3,8 +3,11 @@ import { JobContext } from '../App';
 import Job, { JobDetails } from './job';
 
 export default function Table () {
-    const {jobs, sortColumn, setSortColumn} = useContext(JobContext);
+    const {jobs} = useContext(JobContext);
     const [showCount, setShowCount] = useState(20);
+    const sortColumn: string = "";
+    const setSortColumn = (column: string) => {}
+
 
     const handleShowMore = () => {
         setShowCount(showCount + 20);
