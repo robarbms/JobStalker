@@ -8,10 +8,8 @@ import AllTrendChart from './components/charts/allTrend';
 import FilterSystem from './components/filterSystem';
 
 type Filter = {
-  title_include: string;
-  title_exclude: string;
-  description_include: string;
-  description_exclude: string;
+  title: string;
+  description: string;
   companies: string[];
 }
 interface IContext {
@@ -33,10 +31,8 @@ function App() {
   const [ companies, setCompanies] = useState([] as string[]);
   const [ lastUpdated, setLastUpdated] = useState(new Date());
   const [ filter, setFilter ] = useState<Filter>({
-    title_include: "",
-    title_exclude: "",
-    description_include: "",
-    description_exclude: "",
+    title: "",
+    description: "",
     companies: companies
   } as Filter);
   const jobHandler = useRef<NodeJS.Timeout|null>();
@@ -76,6 +72,23 @@ function App() {
     jobHandler.current = setTimeout(getJobs, 5000);
   };
 
+  const textSearch = (text: string, search: string) => {
+    text = text.toLowerCase().trim();
+    search = search.toLowerCase().trim();
+    const joins = search.split(",").map((t: string) => t.trim());
+    return joins.reduce((contains: boolean, join_term: string) => {
+      if (contains) return true;
+      const unions = join_term.split(" ").map((t: string) => t.trim());
+      return unions.reduce((contains: boolean, union_term: string) => {
+        union_term = union_term.trim();
+        if (contains === false) return false;
+        let include = union_term.indexOf("!") !== 0;
+        union_term = union_term.replace(/^!/, "").trim()
+        return include ? text.match("\\b" + union_term + "\\b") !== null : text.match("\\b" + union_term + "\\b") === null;
+      }, true);
+    }, false);
+  }
+
   const containsText = (text: string, search: string) => {
     const searchTerms = search.split(' ');
     if (searchTerms.length === 0) return true; // No filter, so include it!
@@ -97,17 +110,11 @@ function App() {
      if (filter.companies.length > 0) {
       filteredJobs = filteredJobs.filter(job => filter.companies.includes(job.company));
      }
-     if(filter.title_include) {
-        filteredJobs = filteredJobs.filter(job => containsText(job.title, filter.title_include)); 
+     if(filter.title) {
+        filteredJobs = filteredJobs.filter(job => textSearch(job.title, filter.title)); 
      }
-     if(filter.description_include) {
-       filteredJobs = filteredJobs.filter(job => containsText(job.description, filter.description_include));
-     }
-     if (filter.title_exclude) {
-      filteredJobs = filteredJobs.filter(job => doesntContainText(job.title, filter.title_exclude));
-     }
-     if (filter.description_exclude) {
-      filteredJobs = filteredJobs.filter(job => doesntContainText(job.description, filter.description_exclude));
+     if(filter.description) {
+       filteredJobs = filteredJobs.filter(job => textSearch(job.description, filter.description));
      }
      setJobs(filteredJobs);
   }, [allJobs, filter]);

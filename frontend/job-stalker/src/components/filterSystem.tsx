@@ -31,19 +31,13 @@ const FilterSystem = (props: FilterSystemProps) => {
                     <fieldset>
                         <legend>Title</legend>
                         <div className="filter-item">
-                            <label>Include</label><input name="title_include" type="text" />
-                        </div>
-                        <div className="filter-item">
-                            <label>Exclude</label><input name="title_exclude" type="text" />
+                            <input name="title" type="text" />
                         </div>
                     </fieldset>
                     <fieldset>
                         <legend>Descrpition</legend>
                         <div className="filter-item">
-                            <label>Include</label><input name="description_include" type="text" />
-                        </div>
-                        <div className="filter-item">
-                            <label>Exclude</label><input name="description_exclude" type="text" />
+                            <input name="description" type="text" />
                         </div>
                     </fieldset>
                 </div>

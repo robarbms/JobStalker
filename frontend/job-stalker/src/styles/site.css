@@ -129,10 +129,8 @@ path.recharts-sector {
 }
 
 .filter-system .filter-item {
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 10px;
     margin: 0 0 10px;
+    padding: 17px;
 }
 
 .filter-item label {
@@ -143,6 +141,8 @@ path.recharts-sector {
     border: 0;
     border-radius: 5px;
     padding: 5px 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .company-select {
