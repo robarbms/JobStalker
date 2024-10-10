@@ -53,6 +53,7 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
     query_url = "https://www.metacareers.com/jobs?offices[0]=Bellevue%2C%20WA&offices[1]=Seattle%2C%20WA&offices[2]=Redmond%2C%20WA&q={query}&sort_by_new=true"
     url = query_url.format(query=query)
     jobs = []
+    jobs_found = 0
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
@@ -65,11 +66,14 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
             result_list = page.locator("div[role=link]").all()
             if len(result_list) == 0:
                 log("Unable to connect to Meta.", "error")
-                return []
 
-            for link in result_list:
-                jobDetails = getJobDetails(link, page)
-                jobs.append(jobDetails)
+            else:
+                jobs_found = len(result_list)
+
+                for link in result_list:
+                    jobDetails = getJobDetails(link, page)
+                    if 'job_id' in jobDetails and jobDetails['job_id'] not in job_ids:
+                        jobs.append(jobDetails)
 
         except Exception as e:
             log(f"Error fetching jobs from Meta: {e}")
@@ -77,15 +81,17 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
         finally:
             browser.close()
 
-    return jobs
+    return jobs, jobs_found
 
 def getMetaJobs(job_ids: list[int]):
     log("Fetching jobs for Meta...")
     jobs = []
+    total_jobs = 0
 
     for query in queries:
-        job_results = getJobs(query, job_ids)
-        log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
+        job_results, jobs_found = getJobs(query, job_ids)
+        total_jobs += jobs_found
+        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -99,5 +105,5 @@ def getMetaJobs(job_ids: list[int]):
                 if (not found):
                     jobs.append(job)
 
-    log("Total number of positions found for Meta: {count}".format(count=len(jobs)))
+    log("Total number of new positions found for Meta: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
     return jobs

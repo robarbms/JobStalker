@@ -8,6 +8,7 @@ def getJobDetails(job_id: str, page):
     try:
         url = "https://jobs.apple.com/en-us/details/{job_id}"
         page.goto(url.format(job_id=job_id))
+        time.sleep(3)
         extract = Extractor(page, "Apple", job_id)
 
         title = extract.getText("h1")
@@ -39,8 +40,9 @@ def getJobDetails(job_id: str, page):
             'summary': "",
             'company': 'Apple',
         }
-    except:
+    except Exception as e:
         log("Failed to parse job details for {id}".format(id=job_id), "error")
+        print(e)
 
 
     return details
@@ -50,6 +52,7 @@ def getJobs(query, job_ids):
     query_url = "https://jobs.apple.com/en-us/search?search={query}&sort=newest&location=seattle-SEA"
     url = query_url.format(query=query)
     jobs = []
+    jobs_found = 0
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -57,39 +60,41 @@ def getJobs(query, job_ids):
 
         try:
             page.goto(url)
+            time.sleep(3)
 
             results_table = page.locator('div.results__table')
             if results_table:
                 job_cells = results_table.locator('tbody').all()
 
                 if job_cells:
+                    jobs_found = len(job_cells)
                     for cell in job_cells:
                         cell_id = cell.get_attribute('id')
                         job_id = re.split(r'[\-_]', cell_id)
                         if job_id and len(job_id) > 2:
-                            if str(job_id[2]) in job_ids:
-                                continue
-                            else:
+                            if str(job_id[2]) not in job_ids:
                                 job_details = getJobDetails(job_id[2], page)
                                 jobs.append(job_details)
 
         except Exception as e:
-            log(f"Could not fetch results from Apple for query \"{query}\"".format(query=query), "error")
+            log(f"Problems parsing jobs for query \"{query}\"".format(query=query), "error")
             log(str(e), "error")
 
         finally:
             browser.close()
 
-    return jobs
+    return jobs, jobs_found
 
 
 def getAppleJobs(job_ids):
     log("Fetching jobs for Apple...")
     jobs = []
+    total_found = 0
 
     for query in queries:
-        job_results = getJobs(query, job_ids)
-        log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
+        job_results, jobs_found = getJobs(query, job_ids)
+        total_found += jobs_found
+        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -103,7 +108,5 @@ def getAppleJobs(job_ids):
                 if (not found):
                     jobs.append(job)
 
-        time.sleep(1)
-
-    log("Total number of positions found for Apple: {count}".format(count=len(jobs)))
+    log("Total number of new positions found for Apple: {count}/{total_found}".format(count=len(jobs), total_found=total_found))
     return job_results

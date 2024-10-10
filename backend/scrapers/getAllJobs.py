@@ -20,24 +20,28 @@ def getAllJobs(job_ids):
             return job_ids[company]
         return []
     
-    jobs += getAmazonJobs(getJobIds('Amazon'))
-    count += 1
-    jobs += getGoogleJobs(getJobIds('Google'))
-    count += 1
-    jobs += getNvidiaJobs(getJobIds('Nvidia'))
-    count += 1
-    jobs += getAppleJobs(getJobIds('Apple'))
-    count += 1
-    jobs += getNetflixJobs(getJobIds('Netflix'))
-    count += 1
-    jobs += getMicrosoftJobs(getJobIds('Microsoft'))
-    count += 1
-    jobs += getAdobeJobs(getJobIds('Adobe'))
-    count += 1
-    jobs += getMetaJobs(getJobIds('Meta'))
-    count += 1
+    jobScrapers = {
+        'Adobe': getAdobeJobs,
+        'Amazon': getAmazonJobs,
+        'Apple': getAppleJobs,
+        'Google': getGoogleJobs,
+        'Meta': getMetaJobs,
+        'Microsoft': getMicrosoftJobs,
+        'Netflix': getNetflixJobs,
+        'Nvidia': getNvidiaJobs,
+    }
 
-    log(f"Found a total of {len(jobs)} unique jobs in {count} companies")
+    num_scrapers = len(jobScrapers)
+
+    for company, scraper in jobScrapers.items():
+        count += 1
+        print(f">>>>>> {company} scraping {count}/{num_scrapers}")
+        ids = getJobIds(company)
+        new_jobs = scraper(ids)
+        print(f">>>>>> Found {len(new_jobs)} new jobs for {company}")
+        jobs += new_jobs
+
+    log(f">>>>>> Found a total of {len(jobs)} unique jobs in {count} companies")
     log("Finished job search")
 
     return jobs

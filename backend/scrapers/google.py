@@ -62,10 +62,11 @@ def getJobDetails(url: str, page: Page):
     return details
 
 
-def getJobs(query: str, job_ids: list[int]):
+def getJobs(query: str, job_ids: list[str]):
     query_url = "https://www.google.com/about/careers/applications/jobs/results?location=Washington%2C%20USA&q={query}&sort_by=date"
     url = query_url.format(query=query)
     jobs = []
+    jobs_found = 0
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -79,10 +80,13 @@ def getJobs(query: str, job_ids: list[int]):
 
             job_cards = main.locator("li.lLd3Je").all()
             job_links = [card.locator("a").get_attribute("href") for card in job_cards]
+            jobs_found = len(job_links)
 
             for link in job_links:
-                jobDetails = getJobDetails(link, page)
-                jobs.append(jobDetails)
+                jobId = re.search('jobs/results/(\d+)', link).group(1)
+                if jobId not in job_ids:
+                    jobDetails = getJobDetails(link, page)
+                    jobs.append(jobDetails)
 
         except Exception as e:
             log("Error fetching Google jobs: " + str(e), "error")
@@ -90,16 +94,18 @@ def getJobs(query: str, job_ids: list[int]):
         finally:
             browser.close()
 
-    return jobs
+    return jobs, jobs_found
 
 
 def getGoogleJobs(job_ids: list[str]):
     log("Fetching jobs for Google...")
     jobs = []
+    total_found = 0
 
     for query in queries:
-        job_results = getJobs(query, job_ids)
-        log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
+        job_results, jobs_found = getJobs(query, job_ids)
+        total_found += jobs_found
+        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if len(job_results) == 0:
             jobs = job_results
@@ -113,6 +119,6 @@ def getGoogleJobs(job_ids: list[str]):
                 if not found:
                     jobs.append(job)
 
-    log("Total number of positions found for Google: {count}".format(count=len(jobs)))
+    log("Total number of new positions found for Google: {count}/{total_found}".format(count=len(jobs), total_found=total_found))
 
     return jobs

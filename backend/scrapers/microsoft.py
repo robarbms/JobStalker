@@ -49,6 +49,7 @@ def getJobs(query, job_ids):
     query_url = "https://jobs.careers.microsoft.com/global/en/search?q={query}&lc=Bellevue%2C%20Washington%2C%20United%20States&lc=Redmond%2C%20Washington%2C%20United%20States&lc=Seattle%2C%20Washington%2C%20United%20States&p=Software%20Engineering&l=en_us&pg=1&pgSz=20&o=Recent&flt=true"
     url = query_url.format(query=query)
     jobs = []
+    jobs_found = 0
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
@@ -64,6 +65,8 @@ def getJobs(query, job_ids):
             for job_num_cont in job_num_conts:
                 job_nums.append(job_num_cont.get_attribute('aria-label').replace('Job item ', ''))
 
+            jobs_found = len(job_nums)
+
             for job_num in job_nums:
                 if job_num not in job_ids:
                     job_details = getJobDetails(job_num, page)
@@ -78,15 +81,17 @@ def getJobs(query, job_ids):
         finally:
             browser.close()
 
-    return jobs
+    return jobs, jobs_found
 
 def getMicrosoftJobs(job_ids):
     log("Fetching jobs for Microsoft...")
     jobs = []
+    total_jobs = 0
 
     for query in queries:
-        job_results = getJobs(query, job_ids)
-        log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
+        job_results, jobs_found = getJobs(query, job_ids)
+        total_jobs += jobs_found
+        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -102,5 +107,5 @@ def getMicrosoftJobs(job_ids):
 
         time.sleep(1)
 
-    log("Total number of positions found for Microsoft: {count}".format(count=len(jobs)))
+    log("Total number of new positions found for Microsoft: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
     return jobs

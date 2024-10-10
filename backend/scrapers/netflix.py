@@ -64,6 +64,7 @@ def getJobs(query, job_ids):
     query_url = "https://explore.jobs.netflix.net/careers?query={query}&location=Seattle%2C%20WA%2C%20United%20States&sort_by=new"
     url = query_url.format(query=query)
     jobs = []
+    jobs_found = 0
 
     with sync_playwright() as p:
         # Loading the browser and url to parse
@@ -74,6 +75,7 @@ def getJobs(query, job_ids):
             page.goto(url)
 
             cards = page.locator('div.card').all() # Get all job cards on the page
+            jobs_found = len(cards)
             position_container = page.locator('div.position-container') # Get the container for the selected job description
 
             # Parse JSON about the different job positions
@@ -96,7 +98,8 @@ def getJobs(query, job_ids):
                             details['link'] = pid['canonicalPositionUrl']
                             break
 
-                    jobs.append(details)
+                    if 'job_id' in details and details['job_id'] not in job_ids:
+                        jobs.append(details)
 
         except Exception as e:
             log(f"Could not fetch results from Microsoft for query \"{query}\"".format(query=query), "error")
@@ -105,7 +108,7 @@ def getJobs(query, job_ids):
         finally:
             browser.close()
 
-    return jobs
+    return jobs, jobs_found
 
 """
 Collects job postings from Netflix's careers page for a list of queries
@@ -114,10 +117,13 @@ def getNetflixJobs(job_ids):
     log("Fetching jobs for Netflix...")
     base_url = "https://jobs.netflix.com/"
     jobs = []
+    total_jobs = 0
 
     for query in queries:
-        job_results = getJobs(query, job_ids)
-        log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
+        job_results, jobs_found = getJobs(query, job_ids)
+        total_jobs += jobs_found
+
+        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -131,5 +137,5 @@ def getNetflixJobs(job_ids):
                 if (not found):
                     jobs.append(job)
 
-    log("Total number of positions found for Netflix: {count}".format(count=len(jobs)))
+    log("Total number of new positions found for Netflix: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
     return jobs

@@ -32,10 +32,11 @@ def getJobDetails(url: str, browser: Browser):
 
     return description, location, team
 
-def getJobs(query: str):
+def getJobs(query: str, job_ids: list[str]):
     jobs = []
     query_url = "https://www.amazon.jobs/en/search?offset=0&result_limit=10&sort=recent&distanceType=Mi&radius=24km&latitude=&longitude=&loc_group_id=&loc_query=Washington%2C%20United%20States&base_query={query}&city=&country=USA&region=Washington&county=&query_options=&"
     url = query_url.format(query=query)
+    jobs_found = 0
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
@@ -46,6 +47,7 @@ def getJobs(query: str):
             time.sleep(1)
 
             job_tiles = page.locator('div.job').all()
+            jobs_found = len(job_tiles)
 
             for tile in job_tiles:
                 title_h3 = tile.locator('h3')
@@ -53,24 +55,25 @@ def getJobs(query: str):
                 anchor = title_h3.locator('a')
                 link = 'https://www.amazon.jobs' + anchor.get_attribute('href')
                 job_id = re.search(r'/jobs/(\d+)/', link).group(1)
-                posted = tile.locator('h2.posting-date')
-                date_posted = posted.text_content().strip().replace('Posted ', '')
-                description, location, team = getJobDetails(link, browser)
-                details = {
-                    'job_id': job_id,
-                    'title': title,
-                    'link': link,
-                    'date_posted': date_posted,
-                    'company': 'Amazon',
-                    'salary_min': 0,
-                    'salary_max': 0,
-                    'notes': '',
-                    'summary': '',
-                    'description': description,
-                    'location': location,
-                    'team': team,
-                }
-                jobs.append(details)
+                if job_id not in job_ids:
+                    posted = tile.locator('h2.posting-date')
+                    date_posted = posted.text_content().strip().replace('Posted ', '')
+                    description, location, team = getJobDetails(link, browser)
+                    details = {
+                        'job_id': job_id,
+                        'title': title,
+                        'link': link,
+                        'date_posted': date_posted,
+                        'company': 'Amazon',
+                        'salary_min': 0,
+                        'salary_max': 0,
+                        'notes': '',
+                        'summary': '',
+                        'description': description,
+                        'location': location,
+                        'team': team,
+                    }
+                    jobs.append(details)
 
 
         except Exception as e:
@@ -79,15 +82,17 @@ def getJobs(query: str):
         finally:
             browser.close()
 
-    return jobs
+    return jobs, jobs_found
 
 def getAmazonJobs(job_ids: list[str]):
     log("Fetching jobs for Amazon...")
     jobs = []
+    total_found = 0
 
     for query in queries:
-        job_results = getJobs(query)
-        log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
+        job_results, jobs_found = getJobs(query, job_ids)
+        total_found += jobs_found
+        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -101,6 +106,6 @@ def getAmazonJobs(job_ids: list[str]):
                 if not found:
                     jobs.append(job)
 
-    log("Total number of positions found for Amazon: {count}".format(count=len(jobs)))
+    log("Total number of new positions found for Amazon: {count}/{total_found}".format(count=len(jobs), total_found=total_found))
 
     return jobs

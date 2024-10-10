@@ -73,6 +73,7 @@ def getJobs(query: str, job_ids: list[str]):
     query_url = "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/jobs?q={query}&locations=91336993fab910af6d716528e9d4c406&locations=d2088e737cbb01d5e2be9e52ce01926f&locations=16fc4607fc4310011e929f7115f90000&locations=91336993fab910af6d701e82d004c2c0"
     url = query_url.format(query=query)
     jobs = []
+    jobs_found = 0
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -87,12 +88,14 @@ def getJobs(query: str, job_ids: list[str]):
             if result_list:
                 job_elements = result_list.locator('li a').all()
 
+                jobs_found = len(job_elements)
                 if job_elements and len(job_elements) > 0:
                     links = [element.get_attribute('href') for element in job_elements]
 
                     for link in links:
                         details = getJobDetails("https://nvidia.wd5.myworkdayjobs.com" + link, page)
-                        jobs.append(details)
+                        if 'job_id' in details and details['job_id'] not in job_ids:
+                            jobs.append(details)
 
         except Exception as e:
             log(f"Could not fetch results from Nvidia for query \"{query}\"".format(query=query), "error")
@@ -101,7 +104,7 @@ def getJobs(query: str, job_ids: list[str]):
         finally:
             browser.close()
 
-    return jobs
+    return jobs, jobs_found
 
 """
     Gets jobs based on a list of queries
@@ -111,10 +114,13 @@ def getJobs(query: str, job_ids: list[str]):
 def getNvidiaJobs(job_ids: list[str]):
     log("Fetching jobs for Nvidia...")
     jobs = []
+    total_jobs = 0
 
     for query in queries:
-        job_results = getJobs(query, job_ids)
-        log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
+        job_results, jobs_found = getJobs(query, job_ids)
+        total_jobs += jobs_found
+
+        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if(len(job_results) == 0):
             jobs = job_results
@@ -131,5 +137,5 @@ def getNvidiaJobs(job_ids: list[str]):
                     if (not found):
                         jobs.append(job)
 
-    log("Total number of positions found for Nvidia: {count}".format(count=len(jobs)))
+    log("Total number of new positions found for Nvidia: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
     return jobs

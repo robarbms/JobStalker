@@ -36,6 +36,7 @@ def getJobs(query, job_ids):
     jobs = []
     query_url = "https://careers.adobe.com/us/en/search-results?keywords={query}"
     url = query_url.format(query=query)
+    jobs_found = 0
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
@@ -61,29 +62,31 @@ def getJobs(query, job_ids):
             time.sleep(2)
 
             job_list = page.locator("li.jobs-list-item").all()
+            jobs_found = len(job_list)
 
             for job in job_list:
-                details = {
-                    "company": "Adobe",
-                    "salary_min": 0,
-                    "salary_max": 0,
-                    "team": "",
-                    "notes": "",
-                    "summary": "",
-                    "location": "Seattle, WA"
-                }
-                title_link = job.locator("span[role=heading] a")
-                title = title_link.text_content().strip()
-                details["title"] = title
-                link = title_link.get_attribute("href")
-                details["link"] = link
                 job_id = job.locator("span.jobId span + i + span").text_content().strip()
-                details["job_id"] = job_id
-                posted_date = job.locator("span.job-postdate").text_content().strip()
-                posted_date = re.sub("Posted Date[ \n]+", "", posted_date)
-                details["date_posted"] = posted_date
+                if job_id not in job_ids:
+                    details = {
+                        "company": "Adobe",
+                        "salary_min": 0,
+                        "salary_max": 0,
+                        "team": "",
+                        "notes": "",
+                        "summary": "",
+                        "location": "Seattle, WA",
+                        "job_id": job_id,
+                    }
+                    title_link = job.locator("span[role=heading] a")
+                    title = title_link.text_content().strip()
+                    details["title"] = title
+                    link = title_link.get_attribute("href")
+                    details["link"] = link
+                    posted_date = job.locator("span.job-postdate").text_content().strip()
+                    posted_date = re.sub("Posted Date[ \n]+", "", posted_date)
+                    details["date_posted"] = posted_date
 
-                jobs.append(details)
+                    jobs.append(details)
 
         except Exception as e:
             log("Error fetching jobs: " + str(e), "error")
@@ -93,15 +96,17 @@ def getJobs(query, job_ids):
     for job in jobs:
         job['description'] = getJobDescription(job['link'])
 
-    return jobs
+    return jobs, jobs_found
 
 def getAdobeJobs(job_ids):
     log("Fetching jobs for Adobe...")
     jobs = []
+    total_found = 0
 
     for query in queries:
-        job_results = getJobs(query, job_ids)
-        log("Number of positions found for \"{query}\": {count}".format(query=query, count=len(job_results)))
+        job_results, jobs_found = getJobs(query, job_ids)
+        total_found += jobs_found
+        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found), "info")
 
         if(len(job_results) == 0):
             jobs = job_results
@@ -115,5 +120,5 @@ def getAdobeJobs(job_ids):
                 if (not found):
                     jobs.append(job)
 
-    log("Total number of positions found: {count}".format(count=len(jobs)))
+    log("Total number of new positions found: {count}/{total_found}".format(count=len(jobs), total_found=total_found), "info" )
     return jobs
