@@ -1,11 +1,11 @@
 import { JobDetails } from "../job";
 // Helper functions for rendering charts
 
-export const getJobsByDate = (jobs: JobDetails[], addEmpty=true) => {
+export let getJobsByDate = (jobs: JobDetails[], addEmpty=true) => {
     const one_day = 24 * 60 * 60 * 1000; // milliseconds in a day
     let job_groups = jobs.reduce((acc: any, job: JobDetails) => {
         const date = new Date(job.date_posted);
-        const date_str = `${date.getMonth() + 1}/${date.getDate() + 1}`;
+        const date_str = `${date.getMonth() + 1}/${date.getDate() + 1}/${date.getFullYear()}`;
         let dateIndex = acc.findIndex((d: any) => d.date === date_str);
         if (dateIndex === -1) {
             dateIndex = acc.push({date: date_str}) - 1;
@@ -27,7 +27,7 @@ export const getJobsByDate = (jobs: JobDetails[], addEmpty=true) => {
                 let date: any = new Date(group.date);
                 // If date is greater than the previous date, it means that it went to the next year
                 if (date > prevDate) {
-                    date = new Date(`${group.date}/${now.getFullYear() - 1}`);
+                    date = new Date(group.date);
                     prevDate = new Date(`${acc[acc.length - 1].date}/${now.getFullYear()}`);
                 }
                 let diff = prevDate - date;
@@ -35,7 +35,7 @@ export const getJobsByDate = (jobs: JobDetails[], addEmpty=true) => {
                 while (diff > one_day) {
                     nextDay.setDate(nextDay.getDate() - 1);
                     acc.push({
-                        date: `${nextDay.getMonth() + 1}/${nextDay.getDate()}`
+                        date: `${nextDay.getMonth() + 1}/${nextDay.getDate()}/${nextDay.getFullYear()}`,
                     });
  
                     diff -= one_day;
@@ -46,6 +46,12 @@ export const getJobsByDate = (jobs: JobDetails[], addEmpty=true) => {
             return acc;
         }, []);
     }
+
+    job_groups = job_groups.map((group: any) => {
+        let date: any = new Date(group.date);
+        group.date = `${Weekdays[date.getDay()]?.substring(0, 3)} ${date.getMonth() + 1}/${date.getDate()}`;
+        return group;
+    });
 
     return job_groups;
 }

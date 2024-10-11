@@ -20,6 +20,15 @@ h2 {
     margin: 10px 0;
 }
 
+.meta {
+    font-size: small;
+}
+
+.meta label {
+    color: #fff;
+    margin: 0 5px 0 20px;
+}
+
 a {
     color: inherit;
 }
