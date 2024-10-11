@@ -1,44 +1,39 @@
 import { JobDetails } from "../job";
 // Helper functions for rendering charts
 
-export let getJobsByDate = (jobs: JobDetails[], addEmpty=true) => {
+export let getJobsByDate = (jobs: JobDetails[], addEmpty=true, created_date=false) => {
     const one_day = 24 * 60 * 60 * 1000; // milliseconds in a day
+    const timeOffset = 1000 * 60 * 60 * 7 + 1; // Times are coming in 7 hours behind because the DB time is in UTC
     let job_groups = jobs.reduce((acc: any, job: JobDetails) => {
-        const date = new Date(job.date_posted);
-        const date_str = `${date.getMonth() + 1}/${date.getDate() + 1}/${date.getFullYear()}`;
-        let dateIndex = acc.findIndex((d: any) => d.date === date_str);
-        if (dateIndex === -1) {
-            dateIndex = acc.push({date: date_str}) - 1;
-        }
-        if (job.company in acc[dateIndex]) {
-            acc[dateIndex][job.company]++;
-        } else {
-            acc[dateIndex][job.company] = 1
+        const date = new Date(new Date(created_date ? job.created_at : job.date_posted).getTime() + timeOffset);
+        if (!isNaN(date.getTime())){
+            const date_str = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+            let dateIndex = acc.findIndex((d: any) => d.date === date_str);
+            if (date.getMonth() && dateIndex === -1) {
+                dateIndex = acc.push({date: date_str}) - 1;
+            }
+            if (job.company in acc[dateIndex]) {
+                acc[dateIndex][job.company]++;
+            } else {
+                acc[dateIndex][job.company] = 1
+            }
         }
 
         return acc;
     }, [])
-    .sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime() * -1);
+    .sort((a: any, b: any) => new Date(a.date).getTime() <= new Date(b.date).getTime() ? 1 : -1);
     if (addEmpty) {
         job_groups = job_groups.reduce((acc: any, group: any) => {
             if (acc.length > 1) {
-                let now = new Date();
                 let prevDate: any = new Date(acc[acc.length - 1].date);
                 let date: any = new Date(group.date);
-                // If date is greater than the previous date, it means that it went to the next year
-                if (date > prevDate) {
-                    date = new Date(group.date);
-                    prevDate = new Date(`${acc[acc.length - 1].date}/${now.getFullYear()}`);
-                }
-                let diff = prevDate - date;
-                let nextDay = new Date(prevDate);
-                while (diff > one_day) {
-                    nextDay.setDate(nextDay.getDate() - 1);
+                let nextDay = new Date(prevDate.getTime() - one_day);
+                while (nextDay > date) {
                     acc.push({
                         date: `${nextDay.getMonth() + 1}/${nextDay.getDate()}/${nextDay.getFullYear()}`,
                     });
  
-                    diff -= one_day;
+                    nextDay = new Date(nextDay.getTime() - one_day);
                 }
             }
             acc.push(group);
@@ -50,6 +45,13 @@ export let getJobsByDate = (jobs: JobDetails[], addEmpty=true) => {
     job_groups = job_groups.map((group: any) => {
         let date: any = new Date(group.date);
         group.date = `${Weekdays[date.getDay()]?.substring(0, 3)} ${date.getMonth() + 1}/${date.getDate()}`;
+        let Total = 0;
+        for (let key in group) {
+            if (key !=='date') {
+                Total += group[key];
+            }
+        }
+        group.Total = Total;
         return group;
     });
 

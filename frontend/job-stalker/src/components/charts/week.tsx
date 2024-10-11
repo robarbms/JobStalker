@@ -1,23 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, Line, ComposedChart, Area } from 'recharts';
+import React, { useContext, useEffect, useState } from "react";
+import { CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, Line, ComposedChart, Area } from 'recharts';
 import {companyData} from "../../utils/companies";
 import { JobContext } from '../../App';
 import { JobDetails } from "../job";
 import { getJobsByDate } from "./utils";
-
-const CustomTooltip = (props: any) => {
-    if (!props) return null;
-    const {active, payload, label} = props;
-    if (active && payload) {
-        const dataPoint = payload[0].payload;
-        return (
-            <div className="custom-tooltip">
-                <p className="label">{`${payload[0].name} : ${dataPoint.value}`}</p>
-            </div>
-        );
-    }
-    return null;
-}
 
 const WeekChart = () => {
     const [ jobsTotal, setJobsTotal ] = useState({
@@ -56,7 +42,7 @@ const WeekChart = () => {
          * Creates a data array of jobs for each day over the past week
          */
         const thisWeek = filterJobs(7);
-        const lastWeek = filterJobs(7, 7);
+        const lastWeek = filterJobs(7, 8);
 
         const companiesParsed = thisWeek.reduce((acc: any, job: JobDetails) => {
             if (!acc.find((company: any) => company === job.company)) {
@@ -76,8 +62,6 @@ const WeekChart = () => {
          *      Google: 5,
          *  }]
          */
-        let jobsCount = 0;
-        let lastWeekCount = 0;
         const parsedLastWeekData = getJobsByDate(lastWeek);
         const dataParsed = getJobsByDate(thisWeek)
         .map((day: any, idx: number) => {
@@ -91,13 +75,9 @@ const WeekChart = () => {
                 for (const key in parsedLastWeekData[idx] as any) {
                     if (key !== "date") {
                         lastTotal += parsedLastWeekData[idx][key];
-                        lastWeekCount += lastTotal;
                     }
                 }
-                day.date += `(${total})`;
-                day['Total'] = total;
                 day['Last week'] = lastTotal;
-                jobsCount += total;
                 return day;
         });
         setData(dataParsed);
@@ -115,9 +95,9 @@ const WeekChart = () => {
                 <XAxis dataKey="date" />
                 <YAxis dataKey="" />
                 <Tooltip />
+                <Area dataKey="Last week" fill="#222" stroke="#444" />
                 {companies.map((company: string, idx: number) => <Bar key={idx} dataKey={company} fill={companyData[company].color} />)}
-                <Line dataKey="Total" stroke="green" />
-                <Line dataKey="Last week" stroke="purple" strokeDasharray="4" />
+                <Line dataKey="Total" stroke="green" strokeDasharray={4} />
                 <Legend />
             </ComposedChart>
 

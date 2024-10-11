@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { LineChart, Line, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
+import { Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, ComposedChart } from 'recharts';
 import {companyData} from "../../utils/companies";
 import { JobContext } from '../../App';
 import { JobDetails } from "../job";
@@ -22,22 +22,34 @@ const AllTrendChart = () => {
      *      date: "1/1",
      *      Amazon: 10,
      *      Google: 5,
+     *      Total: 15,
+     *      Created: 6,
      *  }]
      */
 
-    const data = getJobsByDate(allJobs, false);
+    const data = getJobsByDate(allJobs);
+    const created_data = getJobsByDate(allJobs, true, true);
+    created_data.forEach((item: any) => {
+        const {date} = item;
+        const index = data.findIndex((d: any) => d.date === date);
+        if (index !== -1) {
+            data[index].Scraped = item.Total;
+        }
+    });
  
     return (
         <div className="trend-chart">
             <h2>All Jobs</h2>
-            <BarChart width={1350} height={200} data={data}>
+            <ComposedChart width={1350} height={200} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
                 {companies.map((company: string, idx: number) => <Bar key={idx} dataKey={company} fill={companyData[company].color} />)}
+                <Line dataKey="Total" stroke="#0f0" dot={false} strokeDasharray={4} />
+                <Line dataKey="Scraped" stroke="#f00" dot={false} strokeDasharray={4} />
                 <Legend />
-            </BarChart>
+            </ComposedChart>
 
         </div>
     )
