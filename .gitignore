@@ -134,3 +134,6 @@ __pycache__/
 *.pyc
 *.pyo
 venv/
+
+# LLM files
+/backend/ai/models/*

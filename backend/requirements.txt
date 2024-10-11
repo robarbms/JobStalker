@@ -8,3 +8,9 @@ flask
 flask_sqlalchemy
 flask_cors
 apscheduler
+transformers
+safetensors
+torch --extra-index-url https://download.pytorch.org/whl/cu117
+faiss-cpu
+sentence-transformers
+numpy

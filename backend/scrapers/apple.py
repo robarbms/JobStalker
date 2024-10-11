@@ -102,11 +102,11 @@ def getAppleJobs(job_ids):
             for job in job_results:
                 found = False
                 for existing_job in jobs:
-                    if (job and 'job_id' in job and existing_job and 'job_id' in existing_job and existing_job['job_id'] == job['job_id']):
+                    if 'job_id' in job and 'job_id' in existing_job and existing_job['job_id'] == job['job_id']:
                         found = True
                         break
-                if (not found):
+                if found == False:
                     jobs.append(job)
 
     log("Total number of new positions found for Apple: {count}/{total_found}".format(count=len(jobs), total_found=total_found))
-    return job_results
+    return jobs

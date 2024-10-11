@@ -1,5 +1,5 @@
 # JobStalker
-Project for monitoring job listings
+Project for monitoring and searching through job listings.
 
 ## Backend Services
 
