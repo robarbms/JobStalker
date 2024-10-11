@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { LineChart, Line, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
 import {companyData} from "../../utils/companies";
 import { JobContext } from '../../App';
@@ -7,7 +7,7 @@ import { getJobsByDate } from "./utils";
 
 const AllTrendChart = () => {
     const { allJobs } = useContext(JobContext);
-
+ 
     const companies = allJobs.reduce((acc: any, job: JobDetails) => {
         if (!acc.find((company: any) => company === job.company)) {
             acc.push(job.company);

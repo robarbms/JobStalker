@@ -105,7 +105,6 @@ const WeekChart = () => {
             total: getTotalJobs(dataParsed),
             lastWeek: getTotalJobs(parsedLastWeekData)
         });
-        console.log(dataParsed);
     }, [jobs]);
  
     return (
@@ -117,8 +116,8 @@ const WeekChart = () => {
                 <YAxis dataKey="" />
                 <Tooltip />
                 {companies.map((company: string, idx: number) => <Bar key={idx} dataKey={company} fill={companyData[company].color} />)}
-                <Line dataKey="Last week" stroke="purple" strokeDasharray="4" />
                 <Line dataKey="Total" stroke="green" />
+                <Line dataKey="Last week" stroke="purple" strokeDasharray="4" />
                 <Legend />
             </ComposedChart>
 

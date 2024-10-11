@@ -37,6 +37,7 @@ function App() {
   } as Filter);
   const jobHandler = useRef<NodeJS.Timeout|null>();
   const [jobsToday, setJobsToday] = useState<JobDetails[]>([]);
+  const [ lastScraped, setLastScraped ] = useState<Date|null>(null);
 
 
   const value: IContext = { 
@@ -66,6 +67,9 @@ function App() {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Set to midnight of the current day
     setJobsToday(data.filter((job: JobDetails) => new Date(job.created_at).getTime() >= today.getTime()));
+    const mostRecentScraped = new Date(data.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0]['created_at']);
+    mostRecentScraped.setTime(mostRecentScraped.getTime() + 1000 * 60 * 60 * 7); // Add 7 hours to the timestamp
+    setLastScraped(mostRecentScraped);
     if (jobHandler.current !== null) {
       clearTimeout(jobHandler.current);
     }
@@ -87,22 +91,6 @@ function App() {
         return include ? text.match("\\b" + union_term + "\\b") !== null : text.match("\\b" + union_term + "\\b") === null;
       }, true);
     }, false);
-  }
-
-  const containsText = (text: string, search: string) => {
-    const searchTerms = search.split(' ');
-    if (searchTerms.length === 0) return true; // No filter, so include it!
-    let containsText = false;
-    searchTerms.forEach((term: string) => {
-      if(text.toLowerCase().indexOf(term.toLowerCase()) >= 0) {
-        containsText = true;
-      }
-    });
-    return containsText;
-  }
-
-  const doesntContainText = (text: string, search: string) => {
-    return !containsText(text, search);
   }
 
   const applyFilters = useCallback(() => {
@@ -155,6 +143,7 @@ function App() {
             <label>Last updated: </label><span className="update_time">{lastUpdated.toLocaleString()}</span>
             <label>Total Jobs: </label><span className="total_jobs">{allJobs.length}</span>
             <label>Jobs found today:</label><span className="jobs_today">{jobsToday.length}</span>
+            <label>Last scraped: </label><span className="last_scraped">{lastScraped && lastScraped.toLocaleString()}</span>
           </h1>
         </header>
         <AllTrendChart />
