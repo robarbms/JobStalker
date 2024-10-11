@@ -132,7 +132,25 @@ function App() {
 
   useEffect(() => {
     applyFilters();
-  }, [filter, allJobs, applyFilters])
+  }, [filter, allJobs, applyFilters]);
+
+  const getStatus = (time: Date | null, scale: number = 1000 * 60 * 60 * 2.2, map: any = {
+    success: 1,
+    warn: 3,
+    error: 5
+  }) => {
+      if (time) {
+        const now = new Date().getTime();
+        const compare = time?.getTime();
+        const diff = now - compare * scale;
+        for (let key in map) {
+          if (diff < map[key]) {
+            return key;
+          }
+      }
+      return "";
+    }
+  }
 
   return (
     <JobContext.Provider value={value}>
@@ -140,10 +158,10 @@ function App() {
         <header className="App-header">
           <h1>
             Job Stalker
-            <label>Last updated: </label><span className="update_time">{lastUpdated.toLocaleString()}</span>
+            <label>Last updated: </label><span className={`update_time ${getStatus(lastUpdated, 1000 * 5)}`}>{lastUpdated.toLocaleString()}</span>
             <label>Total Jobs: </label><span className="total_jobs">{allJobs.length}</span>
             <label>Jobs found today:</label><span className="jobs_today">{jobsToday.length}</span>
-            <label>Last scraped: </label><span className="last_scraped">{lastScraped && lastScraped.toLocaleString()}</span>
+            <label>Last scraped: </label><span className={`last_scraped ${getStatus(lastScraped)}`}>{lastScraped && lastScraped.toLocaleString()}</span>
           </h1>
         </header>
         <AllTrendChart />

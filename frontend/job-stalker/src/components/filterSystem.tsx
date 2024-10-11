@@ -25,7 +25,7 @@ const FilterSystem = (props: FilterSystemProps) => {
 
     return (
         <div className="filter-system">
-            <h2>Job search</h2>
+            <h2>Job Filtering</h2>
             <form onBlur={props.filterChanged} id="job-search-form">
                 <div className="text-search">
                     <fieldset>
