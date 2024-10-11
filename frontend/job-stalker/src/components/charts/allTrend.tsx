@@ -3,7 +3,7 @@ import { Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, ComposedChart 
 import {companyData} from "../../utils/companies";
 import { JobContext } from '../../App';
 import { JobDetails } from "../job";
-import { getJobsByDate } from "./utils";
+import { getJobsByDate, filterJobs } from "./utils";
 
 const AllTrendChart = () => {
     const { allJobs } = useContext(JobContext);
@@ -27,7 +27,12 @@ const AllTrendChart = () => {
      *  }]
      */
 
-    const data = getJobsByDate(allJobs);
+    const timeSinceStart = new Date().getTime() - new Date("2024-09-17").getTime();
+    const daysSinceStart = Math.floor(timeSinceStart / (1000 * 60 * 60 * 24)) + 1;
+
+    const lastTwoMonths = filterJobs(allJobs, daysSinceStart);
+
+    const data = getJobsByDate(lastTwoMonths);
     const created_data = getJobsByDate(allJobs, true, true);
     created_data.forEach((item: any) => {
         const {date} = item;
@@ -45,9 +50,9 @@ const AllTrendChart = () => {
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
-                {companies.map((company: string, idx: number) => <Bar key={idx} dataKey={company} fill={companyData[company].color} />)}
+                {companies.map((company: string, idx: number) => <Bar key={idx} stackId="a" dataKey={company} fill={companyData[company].color} />)}
                 <Line dataKey="Total" stroke="#0f0" dot={false} strokeDasharray={4} />
-                <Line dataKey="Scraped" stroke="#f00" dot={false} strokeDasharray={4} />
+                <Line dataKey="Scraped" stroke="magenta" dot={false} strokeDasharray={4} />
                 <Legend />
             </ComposedChart>
 
