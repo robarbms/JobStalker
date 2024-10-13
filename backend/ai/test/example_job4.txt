@@ -1,0 +1,64 @@
+Overview
+Microsoft Health and Life Sciences division is looking for an iOS engineer who is passionate about our mission to empower medical professionals to deliver patient care without the long hours of patient documentation. There has never been a more exciting time to be working in healthcare at Microsoft. Our Health & Life Sciences Solutions (HLS) organization is an interdisciplinary team of product managers, designers, engineers, and clinicians who are designing, developing and deploying next-generation healthcare solutions powered by the Microsoft Cloud for healthcare organizations around the world.
+
+ 
+
+We are looking to hire a Senior Software Engineer to join our team. As a Senior Software Engineer, you will be an integral member of a mobile development team within HLS Solutions that is working to build mobile apps and cloud software to empower clinicians to achieve more with groundbreaking healthcare-oriented copilots. The candidate will be excited about building apps that capture clinician-patient conversations and make complex AI analysis and generation operations simple and intuitive for the provider. Through collaboration with UX designers and teams of cloud and web developers, you will bring the power of generative AI to mobile devices and develop and deploy new technologies and experiences centered around driving positive healthcare outcomes.
+
+ 
+
+Microsoft’s mission is to empower every person and every organization on the planet to achieve more. As employees we come together with a growth mindset, innovate to empower others, and collaborate to realize our shared goals. Each day we build on our values of respect, integrity, and accountability to create a culture of inclusion where everyone can thrive at work and beyond.
+
+ 
+
+ 
+
+Qualifications
+Minimum Qualifications
+
+Bachelor’s degree in computer science, or related technical discipline AND 4+ years technical engineering experience developing mobile applications for iOS platforms with coding in languages including, but not limited to, Swift, Swift UI, Objective-C, Kotlin, or Java 
+OR equivalent experience. 
+Proficient knowledge of mobile application architecture, design patterns, hybrid app development and UI/UX principles.  
+Proficient knowledge of end-to-end software development life cycle for Android/iOS.
+Other Requirements
+
+ 
+
+Ability to meet Microsoft, customer and/or government security screening requirements are required for this role. These requirements include, but are not limited to the following specialized security screenings: Microsoft Cloud Background Check:
+
+This position will be required to pass the Microsoft Cloud background check upon hire/transfer and every two years thereafter.
+ 
+
+Preferred/Additional Qualifications
+
+Experience building applications in environments including, but not limited to, React, TypeScript or Node.js.
+Understanding of and interest in developing for both iOS and Android platforms.
+Working knowledge of web browsers, web protocols, mainstream frameworks, HTML5, CSS, JavaScript, and app performance profiling.
+Passion for learning new technologies and staying up to date with industry trends, practices, and emerging technologies in mobile development and AI.  
+ 
+
+Software Engineering IC4 - The typical base pay range for this role across the U.S. is USD $117,200 - $229,200 per year. There is a different range applicable to specific work locations, within the San Francisco Bay area and New York City metropolitan area, and the base pay range for this role in those locations is USD $153,600 - $250,200 per year.
+
+Certain roles may be eligible for benefits and other compensation. Find additional benefits and pay information here: US corporate pay information | Microsoft Careers
+
+Microsoft will accept applications for the role until October 9th, 2024. 
+
+ 
+
+
+ 
+
+#Health&LifeScience
+
+Responsibilities
+We are looking for passionate people with experiences working with all service aspects of high throughput and multi-tenant services, ability to design components carefully, properly handle errors, write clean and well-factored code with good tests and good maintainability
+
+ 
+
+Participate in extensive design and requirements activities with Product, UX, and technical leads from multiple teams to distill complex user workflows into easy to understand app functions.
+Provide technical leadership on a small team developing mobile app features quickly and iteratively for outcomes
+Ship high-quality, well-tested, secure, and maintainable code.  
+Work collaboratively with our Designers, Product Managers, and AI Researchers to take ambiguous projects and mold them into amazing experiences. 
+Find a path to get things done despite roadblocks to get your work into the hands of users quickly and iteratively.  
+Enjoy working in a fast-paced, design-driven, product development cycle.  
+Embody our culture and values.

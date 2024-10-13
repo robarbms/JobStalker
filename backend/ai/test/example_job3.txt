@@ -1,0 +1,37 @@
+DESCRIPTION
+Are you interested in shaping the future of entertainment? Do you want to define the next generation of how and what Amazon customers are watching? Prime Video is changing the way people watch movies and TV. From one service, we’re delivering versatile ways to watch hundreds of thousands of movies, TV series, and live events on the web, mobile, and TV. Our service is available in more than 200 territories globally, and we’re just getting started.
+
+Working closely with business and technology partners, we use research, design, and prototyping to guide early product development, bring clarity to engineering goals, and develop a customer-centric point of view. This is where you come in.
+
+As a Senior Design Technologist, you'll be a key part of our UX design organization. Your role will be all about proving, advancing, and evolving cutting-edge UX concepts through prototyping and hands-on product work. You'll work alongside other design technologists to bring design ideas (interactions, visuals, motion) to life.
+
+Key job responsibilities
+- Build high-quality, functional prototypes that convey and advance the vision of future products
+- Collaborate with design leadership and key stakeholders throughout the product lifecycle
+- Work alongside designers, researchers, PMs, and engineers to drive concepts from idea to implementation
+- Advance design thinking by leveraging your platform expertise (e.g. web, mobile, TV)
+
+About the team
+As a Senior Design Technologist, you’ll have the opportunity wear many hats. Our team built solutions for Prime Video such as a React.js TV prototype using a Bluetooth remote control, a mobile app prototype built in React Native, Figma plugins in JavaScript, Gen AI prototypes using AWS Bedrock, and interactive fan experiences on the web for TV shows like The Boys and The Rings of Power. Our team is open to experimenting with new technologies and evaluating them to see if they are the right tool for the job. We elevate designers’ visions and support our engineering partners to help them ship faster.
+
+BASIC QUALIFICATIONS
+- 4+ years of front-end technologist, engineer, or UX prototyper experience
+- Have an available online portfolio
+- Have coding samples in front end programming languages
+- Experience developing visually polished, engaging, and highly fluid UX prototypes
+- Experience collaborating with UX, Product, and technical partners
+
+PREFERRED QUALIFICATIONS
+- Understanding of WCAG AA standards and accessibility fluency
+- Expertise in working creatively around constraints and navigating ambiguous projects
+- Experience leading the development of complex prototypes
+- Experience with a broad range of technologies, including mobile devices, gaming consoles, smart TVs, hardware prototyping, and IoT
+- Knowledge of professional software engineering best practices, including coding standards, code reviews, source control, CI/CD, testing, and operational excellence
+- Experience with machine learning (ML) tools and methods, including familiarity with common frameworks, understanding of core ML concepts, and the ability to prototype and integrate ML-powered features into interactive applications
+- Excellent communication skills, including collecting requirements, describing features, and designing technical solutions
+
+Amazon is committed to a diverse and inclusive workplace. Amazon is an equal opportunity employer and does not discriminate on the basis of race, national origin, gender, gender identity, sexual orientation, protected veteran status, disability, age, or other legally protected status. For individuals with disabilities who would like to request an accommodation, please visit https://www.amazon.jobs/en/disability/us.
+
+Los Angeles County applicants: Job duties for this position include: work safely and cooperatively with other employees, supervisors, and staff; adhere to standards of excellence despite stressful conditions; communicate effectively and respectfully with employees, supervisors, and staff to ensure exceptional customer service; and follow all federal, state, and local laws and Company policies. Criminal history may have a direct, adverse, and negative relationship with some of the material job duties of this position. These include the duties and responsibilities listed above, as well as the abilities to adhere to company policies, exercise sound judgment, effectively manage stress and work safely and respectfully with others, exhibit trustworthiness and professionalism, and safeguard business operations and the Company’s reputation. Pursuant to the Los Angeles County Fair Chance Ordinance, we will consider for employment qualified applicants with arrest and conviction records.
+
+Our compensation reflects the cost of labor across several US geographic markets. The base pay for this position ranges from $138,800/year in our lowest geographic market up to $239,900/year in our highest geographic market. Pay is based on a number of factors including market location and may vary depending on job-related knowledge, skills, and experience. Amazon is a total compensation company. Dependent on the position offered, equity, sign-on payments, and other forms of compensation may be provided as part of a total compensation package, in addition to a full range of medical, financial, and/or other benefits. For more information, please visit https://www.aboutamazon.com/workplace/employee-benefits. This position will remain posted until filled. Applicants should apply via our internal or external career site.

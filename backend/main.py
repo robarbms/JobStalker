@@ -5,10 +5,7 @@ from scrapers import job
 import time
 
 def main():
-    cur, conn = connect_to_db()
-
     job_ids = get_job_ids()
-
     jobs = getAllJobs(job_ids)
     log("Adding jobs to database")
     new_job_count = insert_jobs(jobs)

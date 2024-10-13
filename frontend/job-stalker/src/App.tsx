@@ -135,14 +135,15 @@ function App() {
   }, [filter, allJobs, applyFilters]);
 
   const getStatus = (time: Date | null, scale: number = 1000 * 60 * 60 * 2.2, map: any = {
-    success: 1,
-    warn: 3,
-    error: 5
+    success: 12,
+    warn: 36,
+    error: 999
   }) => {
       if (time) {
         const now = new Date().getTime();
         const compare = time?.getTime();
-        const diff = now - compare * scale;
+        const diff = (now - compare)  / scale;
+
         for (let key in map) {
           if (diff < map[key]) {
             return key;
@@ -165,17 +166,19 @@ function App() {
           </h1>
         </header>
         <AllTrendChart />
-        <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
-        <CompanyChart />
-        <WeekChart />
+        <div className="job-search">
+          <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
+          <CompanyChart />
+          <WeekChart />
+        </div>
         <div className="job-list-container">
           <div className="job-list-header">
             <div className="job-count">
               {jobs.length} / {allJobs.length} jobs
             </div>
           </div>
-            <Table></Table>
-          </div>
+          <Table></Table>
+        </div>
       </div>
     </JobContext.Provider>
   );

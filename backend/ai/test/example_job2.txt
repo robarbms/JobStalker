@@ -1,0 +1,22 @@
+Meta's Product Security team is seeking a passionate hacker who derives purpose in life by revealing potential weaknesses and then crafting creative solutions to eliminate those weaknesses. Your skills will be the foundation of security initiatives that protect the security and privacy of over two billion people. You will be relied upon to provide engineering and product teams with the web, mobile, or native-code security expertise necessary to make confident product decisions. Come help us make life hard for the bad guys.
+
+
+
+Product Security Engineer ResponsibilitiesSecurity Reviews: perform manual design and implementation reviews of products and services that make up the Meta ecosystem, like Instagram, WhatsApp, Oculus, Portal, and more.Developer Guidance: provide guidance and education to developers that help prevent the authoring of vulnerabilities.Automated Analysis and Secure Frameworks: build automation (static and dynamic analysis) and frameworks with software engineers that enable Meta to scale consistently across all of our products.
+
+Minimum QualificationsB.S. or M.S. in Computer Science or related field, or equivalent experience2+ years of experience finding vulnerabilities in interpreted languages (php, ruby, python). Knowledge of best practice secure code developmentExperience with exploiting common security vulnerabilities
+
+Preferred QualificationsExperience writing software that enables security processesContributions to the security community (public research, blogging, presentations, bug bounty, etc.)
+
+ For those who live in or expect to work from California if hired for this position, please click here for additional information. 
+
+Start preparingLearn about how to prepare for your interview with our interview guide, tips, and interactive experiences.Visit interview prep
+
+LocationsData Center
+
+About Meta Meta builds technologies that help people connect, find communities, and grow businesses. When Facebook launched in 2004, it changed the way people connect. Apps like Messenger, Instagram and WhatsApp further empowered billions around the world. Now, Meta is moving beyond 2D screens toward immersive experiences like augmented and virtual reality to help build the next evolution in social technology. People who choose to build their careers by building with us at Meta help shape a future that will take us beyond what digital connection makes possible today—beyond the constraints of screens, the limits of distance, and even the rules of physics.  Meta is committed to providing reasonable support (called accommodations) in our recruiting processes for candidates with disabilities, long term conditions, mental health conditions or sincerely held religious beliefs, or who are neurodivergent or require pregnancy-related support. If you need support, please reach out to accommodations-ext@fb.com. 
+
+$105,000/year to $173,000/year + bonus + equity + benefitsIndividual compensation is determined by skills, qualifications, experience, and location. Compensation details listed in this posting reflect the base hourly rate, monthly rate, or annual salary only, and do not include bonus, equity or sales incentives, if applicable. In addition to base compensation, Meta offers benefits. Learn more about benefits at Meta. 
+
+
+

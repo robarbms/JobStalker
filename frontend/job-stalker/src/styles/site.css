@@ -58,8 +58,9 @@ h1 label {
 }
 
 .job-list-container {
-    width: 1000px;
+    max-width: 1000px;
     margin: 20px 0 0;
+    float: left;
 }
 
 .job-list table {
@@ -117,14 +118,17 @@ path.recharts-sector {
 }
 
 .company-chart,
-.week-chart,
-.trend-chart {
+.week-chart {
     display: inline-block;
     margin: 0 20px 0 0;
 }
 
 .trend-chart {
     margin: 0 20px 20px 0;
+}
+
+.job-search {
+    float: left;
 }
 
 .filter-system {
