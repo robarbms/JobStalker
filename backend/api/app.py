@@ -26,12 +26,12 @@ def api():
         companies = cur.fetchall()
 
         # Get all the jobs from the database table
-        jobs_query = "SELECT id, job_id, title, company_id, created_at, date_posted, link, description, location FROM jobs"
+        jobs_query = "SELECT id, job_id, title, company_id, created_at, date_posted, link, description, location, tags, salary_min, salary_max FROM jobs"
         cur.execute(jobs_query)
         jobs = cur.fetchall()
 
         job_results = [
-            {'id': row[0], 'job_id': row[1], 'title': row[2], 'company': getCompanyName(companies=companies, companyId=row[3]), 'created_at': row[4], 'date_posted': row[5], 'link': row[6], 'description': row[7], 'location': row[8]}
+            {'id': row[0], 'job_id': row[1], 'title': row[2], 'company': getCompanyName(companies=companies, companyId=row[3]), 'created_at': row[4], 'date_posted': row[5], 'link': row[6], 'description': row[7], 'location': row[8], 'tags': row[9], 'salary_min': row[10], 'salary_max': row[11]}
             for row in jobs
         ]
     

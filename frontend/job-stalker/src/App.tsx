@@ -73,7 +73,7 @@ function App() {
     if (jobHandler.current !== null) {
       clearTimeout(jobHandler.current);
     }
-    jobHandler.current = setTimeout(getJobs, 5000);
+    jobHandler.current = setTimeout(getJobs, 1000 * 60 * 60 * 2);
   };
 
   const textSearch = (text: string, search: string) => {

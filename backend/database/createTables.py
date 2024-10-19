@@ -36,7 +36,24 @@ def createTables():
             link TEXT,
             notes TEXT,
             summary TEXT,
-            team TEXT
+            team TEXT,
+            tags TEXT,
+            education TEXT,
+            experience TEXT,
+            leadership BOOLEAN NOT NULL DEFAULT FALSE,
+            level TEXT
+        )
+        """,
+        """
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            username VARCHAR(255) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL UNIQUE,
+            firstName VARCHAR(255),
+            lastName VARCHAR(255),
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            phone VARCHAR(20)
         )
         """
     )

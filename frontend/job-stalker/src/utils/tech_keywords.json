@@ -1,0 +1,278 @@
+[
+    {
+      "name": "Python",
+      "libraries": [
+        { "name": "Django", "type": "framework" },
+        { "name": "Flask", "type": "framework" },
+        { "name": "FastAPI", "type": "framework" },
+        { "name": "Pyramid", "type": "framework" },
+        { "name": "Tornado", "type": "framework" },
+        { "name": "Pandas", "type": "library" },
+        { "name": "NumPy", "type": "library" },
+        { "name": "Requests", "type": "library" },
+        { "name": "BeautifulSoup", "type": "library" },
+        { "name": "TensorFlow", "type": "library" },
+        { "name": "Pytest", "type": "testing" },
+        { "name": "Unittest", "type": "testing" },
+        { "name": "Selenium", "type": "testing" },
+        { "name": "Scrapy", "type": "library" },
+        { "name": "SQLAlchemy", "type": "library" },
+        { "name": "Matplotlib", "type": "visualization" },
+        { "name": "Seaborn", "type": "visualization" },
+        { "name": "Plotly", "type": "visualization" },
+        { "name": "Bokeh", "type": "visualization" },
+        { "name": "Altair", "type": "visualization" },
+        { "name": "Dash", "type": "visualization" },
+        { "name": "Pygal", "type": "visualization" },
+        { "name": "Geopandas", "type": "library" },
+        { "name": "Scikit-learn", "type": "library" },
+        { "name": "Pip", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "JavaScript",
+      "libraries": [
+        { "name": "React", "type": "framework" },
+        { "name": "Vue.js", "type": "framework" },
+        { "name": "Angular", "type": "framework" },
+        { "name": "Node.js", "type": "runtime" },
+        { "name": "Express", "type": "framework" },
+        { "name": "Next.js", "type": "framework" },
+        { "name": "Nuxt.js", "type": "framework" },
+        { "name": "Redux", "type": "library" },
+        { "name": "React Router", "type": "library" },
+        { "name": "React Query", "type": "library" },
+        { "name": "Formik", "type": "library" },
+        { "name": "Recoil", "type": "library" },
+        { "name": "MobX", "type": "library" },
+        { "name": "React Hook Form", "type": "library" },
+        { "name": "React Bootstrap", "type": "UI library" },
+        { "name": "Material-UI", "type": "UI library" },
+        { "name": "Chakra UI", "type": "UI library" },
+        { "name": "jQuery", "type": "library" },
+        { "name": "Lodash", "type": "library" },
+        { "name": "D3.js", "type": "visualization" },
+        { "name": "Chart.js", "type": "visualization" },
+        { "name": "Highcharts", "type": "visualization" },
+        { "name": "Recharts", "type": "visualization" },
+        { "name": "Visx", "type": "visualization" },
+        { "name": "Victory", "type": "visualization" },
+        { "name": "Plotly.js", "type": "visualization" },
+        { "name": "ECharts", "type": "visualization" },
+        { "name": "C3.js", "type": "visualization" },
+        { "name": "Moment.js", "type": "library" },
+        { "name": "Axios", "type": "library" },
+        { "name": "Jest", "type": "testing" },
+        { "name": "Mocha", "type": "testing" },
+        { "name": "Chai", "type": "testing" },
+        { "name": "Enzyme", "type": "testing" },
+        { "name": "Cypress", "type": "testing" },
+        { "name": "ESLint", "type": "linter" },
+        { "name": "Prettier", "type": "formatter" },
+        { "name": "Webpack", "type": "bundler" },
+        { "name": "Rollup", "type": "bundler" },
+        { "name": "Parcel", "type": "bundler" },
+        { "name": "Vite", "type": "bundler" },
+        { "name": "Browserify", "type": "bundler" },
+        { "name": "esbuild", "type": "bundler" },
+        { "name": "Grunt", "type": "task runner" },
+        { "name": "Gulp", "type": "task runner" },
+        { "name": "NPM", "type": "package manager" },
+        { "name": "Yarn", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "TypeScript",
+      "libraries": [
+        { "name": "NestJS", "type": "framework" },
+        { "name": "TypeORM", "type": "library" },
+        { "name": "TSLint", "type": "linter" },
+        { "name": "Jest", "type": "testing" },
+        { "name": "Mocha", "type": "testing" },
+        { "name": "InversifyJS", "type": "library" },
+        { "name": "Webpack", "type": "bundler" },
+        { "name": "Parcel", "type": "bundler" },
+        { "name": "Rollup", "type": "bundler" },
+        { "name": "NPM", "type": "package manager" },
+        { "name": "Yarn", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "Java",
+      "libraries": [
+        { "name": "Spring", "type": "framework" },
+        { "name": "Hibernate", "type": "framework" },
+        { "name": "JSF", "type": "framework" },
+        { "name": "Struts", "type": "framework" },
+        { "name": "Apache Commons", "type": "library" },
+        { "name": "Guava", "type": "library" },
+        { "name": "Log4j", "type": "library" },
+        { "name": "JUnit", "type": "testing" },
+        { "name": "Mockito", "type": "testing" },
+        { "name": "Maven", "type": "package manager" },
+        { "name": "Gradle", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "Ruby",
+      "libraries": [
+        { "name": "Ruby on Rails", "type": "framework" },
+        { "name": "Sinatra", "type": "framework" },
+        { "name": "Hanami", "type": "framework" },
+        { "name": "Devise", "type": "library" },
+        { "name": "Pundit", "type": "library" },
+        { "name": "CarrierWave", "type": "library" },
+        { "name": "RSpec", "type": "testing" },
+        { "name": "Capybara", "type": "testing" },
+        { "name": "Bundler", "type": "package manager" },
+        { "name": "RubyGems", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "PHP",
+      "libraries": [
+        { "name": "Laravel", "type": "framework" },
+        { "name": "Symfony", "type": "framework" },
+        { "name": "CodeIgniter", "type": "framework" },
+        { "name": "Zend", "type": "framework" },
+        { "name": "Guzzle", "type": "library" },
+        { "name": "Carbon", "type": "library" },
+        { "name": "PHPUnit", "type": "testing" },
+        { "name": "PHPSpec", "type": "testing" },
+        { "name": "Composer", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "C#",
+      "libraries": [
+        { "name": "ASP.NET", "type": "framework" },
+        { "name": "Blazor", "type": "framework" },
+        { "name": "Entity Framework", "type": "framework" },
+        { "name": "Xamarin", "type": "framework" },
+        { "name": "SignalR", "type": "library" },
+        { "name": "Nancy", "type": "framework" },
+        { "name": "Orchard", "type": "framework" },
+        { "name": "MediatR", "type": "library" },
+        { "name": "Newtonsoft.Json", "type": "library" },
+        { "name": "Dapper", "type": "library" },
+        { "name": "xUnit", "type": "testing" },
+        { "name": "NUnit", "type": "testing" },
+        { "name": "FluentValidation", "type": "library" },
+        { "name": "AutoMapper", "type": "library" },
+        { "name": "Serilog", "type": "library" },
+        { "name": "Quartz.NET", "type": "library" },
+        { "name": "MSBuild", "type": "bundler" },
+        { "name": "NuGet", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "Go",
+      "libraries": [
+        { "name": "Gin", "type": "framework" },
+        { "name": "Beego", "type": "framework" },
+        { "name": "Fiber", "type": "framework" },
+        { "name": "Gorilla Mux", "type": "library" },
+        { "name": "GORM", "type": "library" },
+        { "name": "Testify", "type": "testing" },
+        { "name": "Go Modules", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "SQL",
+      "libraries": [
+        { "name": "MyBatis", "type": "library" },
+        { "name": "Sequelize", "type": "library" },
+        { "name": "Entity Framework", "type": "framework" },
+        { "name": "Hibernate", "type": "framework" },
+        { "name": "SQLAlchemy", "type": "library" },
+        { "name": "pg-promise", "type": "library" },
+        { "name": "Knex.js", "type": "library" },
+        { "name": "SQLite3", "type": "library" },
+        { "name": "Django ORM", "type": "library" },
+        { "name": "ActiveRecord", "type": "library" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "R",
+      "libraries": [
+        { "name": "ggplot2", "type": "visualization" },
+        { "name": "plotly", "type": "visualization" },
+        { "name": "lattice", "type": "visualization" },
+        { "name": "highcharter", "type": "visualization" },
+        { "name": "dygraphs", "type": "visualization" },
+        { "name": "dplyr", "type": "library" },
+        { "name": "shiny", "type": "framework" },
+        { "name": "tidyr", "type": "library" },
+        { "name": "caret", "type": "library" },
+        { "name": "data.table", "type": "library" },
+        { "name": "stringr", "type": "library" },
+        { "name": "lubridate", "type": "library" },
+        { "name": "readr", "type": "library" },
+        { "name": "RMarkdown", "type": "library" },
+        { "name": "CRAN", "type": "package manager" },
+        { "name": "devtools", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "Objective-C",
+      "libraries": [
+        { "name": "Cocoa Touch", "type": "framework" },
+        { "name": "AFNetworking", "type": "library" },
+        { "name": "Alamofire", "type": "library" },
+        { "name": "Mantle", "type": "library" },
+        { "name": "SDWebImage", "type": "library" },
+        { "name": "RestKit", "type": "library" },
+        { "name": "JSONModel", "type": "library" },
+        { "name": "CocoaPods", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "Rust",
+      "libraries": [
+        { "name": "Cargo", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "Swift",
+      "libraries": [
+        { "name": "Swift Package Manager", "type": "package manager" },
+        { "name": "CocoaPods", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    },
+    {
+      "name": "C++",
+      "libraries": [
+        { "name": "Conan", "type": "package manager" },
+        { "name": "Vcpkg", "type": "package manager" },
+        { "name": "Git", "type": "version control" },
+        { "name": "Subversion (SVN)", "type": "version control" }
+      ]
+    }
+  ]
+  
