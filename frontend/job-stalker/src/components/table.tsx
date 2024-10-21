@@ -3,18 +3,20 @@ import { JobContext } from '../App';
 import Job, { JobDetails } from './job';
 
 export default function Table () {
-    const {jobs} = useContext(JobContext);
-    const [showCount, setShowCount] = useState(20);
+    let {jobs} = useContext(JobContext);
+    const [showCount, setShowCount] = useState(100);
     const sortColumn: string = "";
     const setSortColumn = (column: string) => {}
 
+    // jobs = jobs.filter((job, idx) => idx >= 12);
+
 
     const handleShowMore = () => {
-        setShowCount(showCount + 20);
+        setShowCount(showCount + 100);
     }
 
     const handleShowLess = () => {
-        setShowCount(20);
+        setShowCount(100);
     }
 
     const handleSort = (column: string) => () => setSortColumn(column as keyof JobDetails);

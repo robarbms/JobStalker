@@ -6,6 +6,10 @@ import CompanyChart from './components/charts/companies';
 import WeekChart from './components/charts/week';
 import AllTrendChart from './components/charts/allTrend';
 import FilterSystem from './components/filterSystem';
+import { getTagColors, test_colors } from "./components/tags/tagColors";
+import techKeywordsJson from './utils/tech_keywords.json';
+import dsKeywordsJson from './utils/ds_keywords.json';
+import Card from './components/job_card/Card';
 
 type Filter = {
   title: string;
@@ -54,10 +58,15 @@ function App() {
   const getJobs = async () => {
     const response = await fetch('http://localhost:5000/api');
     let data = await response.json();
-    data = data.sort((a: any, b: any) => new Date(a.date_posted) > new Date(b.date_posted) ? -1 : 1);
+    data = data.sort((a: any, b: any) => new Date(a.date_posted) > new Date(b.date_posted) ? -1 : 1)
+      .map((job: JobDetails) => {
+        job.tags = JSON.parse(job.tags as string) as any[];
+        return job;
+      });
+    
     const companies = data.reduce((c: string[], job: JobDetails) => {
         if (!c.includes(job.company)) {
-            c.push(job.company);
+          c.push(job.company);
         }
         return c;
     }, []).sort();
@@ -152,6 +161,7 @@ function App() {
       return "";
     }
   }
+  const tag_colors = getTagColors();
 
   return (
     <JobContext.Provider value={value}>
@@ -173,10 +183,20 @@ function App() {
         </div>
         <div className="job-list-container">
           <div className="job-list-header">
+              <div className="job-count">
+              {Math.min(jobs.length, 20)} / {allJobs.length} jobs
+            </div>
+          </div>
+          <h2>Top results</h2>
+          {jobs.slice(0, 20).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} />)}
+        </div>
+        <div className="job-list-container">
+          <div className="job-list-header">
             <div className="job-count">
               {jobs.length} / {allJobs.length} jobs
             </div>
           </div>
+          <h2>All results</h2>
           <Table></Table>
         </div>
       </div>

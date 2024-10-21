@@ -14,6 +14,7 @@ export type JobDetails = {
     location: string,
     is_frontend?: boolean,
     is_manager?: boolean,
+    tags: string | any[]
 }
 
 const getDateString = (date: string) => {
@@ -48,3 +49,5 @@ export default function Job(props: JobDetails) {
         </tr>
     )
 }
+
+export { getDateString, getDateTime }

@@ -20,6 +20,7 @@ const CompanyChart = (props: any) => {
         }
         return totals;
     }, [])
+    
     .sort((a: DataType, b: DataType) => a.name > b.name ? 1 : -1);
     const total = data.reduce((total, {value}) => total + value, 0);
 
@@ -33,7 +34,7 @@ const CompanyChart = (props: any) => {
                 margin={{top: 5, right: 30, left: 20, bottom: 5}}>
                 <Legend layout="vertical" verticalAlign="middle" align="left" />
                 <Tooltip />
-                <Pie data={data} dataKey="value" label innerRadius={60} paddingAngle={1}>
+                <Pie data={data} dataKey="value" label innerRadius={80} paddingAngle={1}>
                     {data.map((entry, index) => <Cell key={index} fill={companyData[entry.name]?.color || "#8884d8"} />)}
                     <Label position="center" value={`Total Jobs: ${total}`} />
                 </Pie>

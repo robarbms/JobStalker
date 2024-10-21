@@ -59,7 +59,7 @@ h1 label {
 
 .job-list-container {
     max-width: 1000px;
-    margin: 20px 0 0;
+    margin: 20px 10px 0;
     float: left;
 }
 
@@ -132,7 +132,7 @@ path.recharts-sector {
 }
 
 .filter-system {
-    background: #000;
+    background: #222;
     border-radius: 10px;
     padding: 10px 20px 30px;
     max-width: 1350px;
@@ -198,4 +198,50 @@ path.recharts-sector {
 
 .company-selected {
     border-color: green;
+}
+
+.job-card {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 0 0 10px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+.job-card h3 {
+    margin: 0 0 10px;
+}
+
+.job-card h3 .job-card-date {
+    float: right;
+    font-size: small;
+}
+
+.job-card-layout {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 10px;
+}
+
+.job-card-company {
+    margin: 0 10px 0 0;
+    font-weight: 700;
+}
+
+.job-card .icon {
+    width: 60px;
+    height: 60px;
+}
+
+.tag {
+    display: inline-block;
+    background: #888;
+    color: #fff;
+    font-size: x-small;
+    min-width: 60px;
+    padding: 5px;
+    margin: 10px 10px 0 0;
+    text-align: center;
+    border-radius: 4px;
+    text-shadow: 0 0 4px rgb(0, 0, 0);
 }
