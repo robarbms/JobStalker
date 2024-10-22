@@ -41,7 +41,7 @@ def processJobs(jobs):
         job = jobs[index]
 
         tags, salary_min, salary_max = process(job['description'], job['title'])
-        job['tags'] = tags
+        job['tags'] = f"{tags}"
         job['salary_min'] = salary_min
         job['salary_max'] = salary_max
         jobs[index] = job

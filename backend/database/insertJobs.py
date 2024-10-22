@@ -60,7 +60,7 @@ def insert_job(job, cur=None, conn=None, company_id=None):
         company_id = get_company_ids(cur, conn)
     
     try:
-        insert_query = "INSERT INTO jobs (job_id, title, description, location, company_id, salary_min, salary_max, date_posted, link, notes, summary, tags) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        insert_query = "INSERT INTO jobs (job_id, title, description, location, company_id, salary_min, salary_max, date_posted, link, notes, summary, tags) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         cur.execute(insert_query,(job['job_id'], job['title'], job['description'], job['location'], company_id[job['company']], job['salary_min'], job['salary_max'], job['date_posted'], job['link'], job['notes'], job['summary'], job['tags']))
 
     except Exception as e:

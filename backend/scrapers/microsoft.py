@@ -8,7 +8,8 @@ def getJobDetails(job_number: str, page: Page):
         url = f"https://jobs.careers.microsoft.com/global/en/job/{job_number}".format(job_number=job_number)
         page.goto(url)
         time.sleep(2)
-        title = page.locator("h1").text_content().strip()
+        h1 = page.locator("h1").all()
+        title = h1[0].text_content().strip()
         p_tags = page.locator("p").all()
         date_posted = ""
         team = ""

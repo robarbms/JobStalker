@@ -1,6 +1,4 @@
-import json
 import re
-import os
 
 # Helper function that checks if a word is in a string
 def word_in_text(word: str, text: str):

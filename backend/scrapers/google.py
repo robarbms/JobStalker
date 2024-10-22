@@ -6,7 +6,7 @@ import re
 
 def getJobDetails(url: str, page: Page):
     # Get job id from URL
-    jobId = re.search('jobs/results/(\d+)', url).group(1)
+    jobId = re.match(r'jobs/results/(\d+)', url).group(1)
     url = "https://www.google.com/about/careers/applications/" + url
     details = {
         'job_id': jobId,
@@ -79,14 +79,17 @@ def getJobs(query: str, job_ids: list[str]):
             main = page.locator("main")
 
             job_cards = main.locator("li.lLd3Je").all()
-            job_links = [card.locator("a").get_attribute("href") for card in job_cards]
+            job_links = [card.locator("a").all()[0].get_attribute("href") for card in job_cards]
             jobs_found = len(job_links)
 
             for link in job_links:
-                jobId = re.search('jobs/results/(\d+)', link).group(1)
-                if jobId not in job_ids:
-                    jobDetails = getJobDetails(link, page)
-                    jobs.append(jobDetails)
+                jobId = re.match(r'jobs/results/(\d+)', link)
+
+                if jobId:
+                    jobId = jobId.group(1)
+                    if jobId not in job_ids:
+                        jobDetails = getJobDetails(link, page)
+                        jobs.append(jobDetails)
 
         except Exception as e:
             log("Error fetching Google jobs: " + str(e), "error")

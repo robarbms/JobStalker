@@ -22,7 +22,7 @@ def updateTagsAndSalary():
         tags = job['tags']
         salary_min = job['salary_min']
         salary_max = job['salary_max']
-        query = f"UPDATE jobs SET tags='{tags}'"
+        query = f"UPDATE jobs SET tags={tags}"
 
         if salary_min != None and salary_max != None:
             query += f", salary_min={salary_min}, salary_max={salary_max}"
