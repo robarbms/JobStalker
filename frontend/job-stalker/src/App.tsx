@@ -5,7 +5,7 @@ import Table from './components/table';
 import CompanyChart from './components/charts/companies';
 import WeekChart from './components/charts/week';
 import AllTrendChart from './components/charts/allTrend';
-import FilterSystem from './components/filterSystem';
+import FilterSystem from './components/search/filterSystem';
 import { getTagColors, test_colors } from "./components/tags/tagColors";
 import techKeywordsJson from './utils/tech_keywords.json';
 import dsKeywordsJson from './utils/ds_keywords.json';

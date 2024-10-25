@@ -76,19 +76,6 @@ h1 label {
 .job-count {
 }
 
-.filters {
-    text-align: right;
-}
-
-.filter-item {
-    margin: 0 0 0 40px;
-}
-
-.filter-item input,
-.filter-item select {
-    margin: 0 5px;
-}
-
 th {
     background: #666;
     color: #000;
@@ -129,108 +116,6 @@ path.recharts-sector {
 
 .job-search {
     float: left;
-}
-
-.filter-system {
-    background: #222;
-    border-radius: 10px;
-    padding: 10px 20px 30px;
-    max-width: 1350px;
-    box-sizing: border-box;
-}
-
-.filter-system fieldset {
-    max-width: 640px;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.filter-system fieldset + fieldset {
-    margin-top: 20px;
-}
-
-.text-search {
-    float: left;
-    width: 640px;
-    margin: 0 20px 0 0;
-}
-
-.filter-system .filter-item {
-    margin: 0 0 10px;
-    padding: 17px;
-}
-
-.filter-item label {
-    text-align: right;
-}
-
-.filter-item input {
-    border: 0;
-    border-radius: 5px;
-    padding: 5px 10px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.company-select {
-    display: inline-block;
-    width: 105px;
-    text-align: center;
-    border: 1px solid;
-    height: 80px;
-    vertical-align: top;
-    padding: 10px;
-    border-radius: 4px;
-}
-
-.company-select {
-    margin: 10px 0 10px 10px;
-}
-
-.company-select + .company-select {
-    margin-left: 10px;
-}
-
-.filter-system .icon {
-    width: 30px;
-    height: 30px;
-}
-
-.company-selected {
-    border-color: green;
-}
-
-.job-card {
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    margin: 0 0 10px;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
-}
-
-.job-card h3 {
-    margin: 0 0 10px;
-}
-
-.job-card h3 .job-card-date {
-    float: right;
-    font-size: small;
-}
-
-.job-card-layout {
-    display: grid;
-    grid-template-columns: 60px 1fr;
-    gap: 10px;
-}
-
-.job-card-company {
-    margin: 0 10px 0 0;
-    font-weight: 700;
-}
-
-.job-card .icon {
-    width: 60px;
-    height: 60px;
 }
 
 .tag {

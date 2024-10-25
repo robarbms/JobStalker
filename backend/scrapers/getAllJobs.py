@@ -25,7 +25,7 @@ def getAllJobs(job_ids):
         'Amazon': getAmazonJobs,
         'Apple': getAppleJobs,
         'Google': getGoogleJobs,
-        # 'Meta': getMetaJobs,
+        'Meta': getMetaJobs, 
         'Microsoft': getMicrosoftJobs,
         'Netflix': getNetflixJobs,
         'Nvidia': getNvidiaJobs,

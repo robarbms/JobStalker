@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { JobContext } from '../App';
-import { JobDetails } from './job';
+import { JobContext } from '../../App';
+import { JobDetails } from '../job';
 
 export default function Filters() {
     // const {hideManager, toggleHideManager, onlyFrontend, toggleOnlyFrontend, jobs, companyFilter, setCompanyFilter, companies} = useContext(JobContext);

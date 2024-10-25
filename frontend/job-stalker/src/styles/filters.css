@@ -1,0 +1,107 @@
+.filter-system {
+    background: #222;
+    border-radius: 10px;
+    padding: 10px 20px;
+    max-width: 1350px;
+    box-sizing: border-box;
+}
+
+/* Filter groups */
+.filter-system fieldset {
+    max-width: 640px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.filter-system fieldset + fieldset {
+    margin-top: 20px;
+}
+
+.text-search {
+    float: left;
+    width: 640px;
+    margin: 0 20px 0 0;
+}
+
+.filter-system .filter-item {
+    margin: 0 0 10px;
+    padding: 17px;
+}
+
+.filter-item label {
+    text-align: right;
+}
+
+.filter-item input {
+    border: 0;
+    border-radius: 5px;
+    padding: 5px 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.company-select {
+    display: inline-block;
+    width: 105px;
+    text-align: center;
+    border: 1px solid;
+    height: 80px;
+    vertical-align: top;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.company-select {
+    margin: 10px 0 10px 10px;
+}
+
+.company-select + .company-select {
+    margin-left: 10px;
+}
+
+.filter-system .icon {
+    width: 30px;
+    height: 30px;
+}
+
+.company-selected {
+    border-color: green;
+}
+
+.filters {
+    text-align: right;
+}
+
+.filter-item {
+    margin: 0 0 0 40px;
+}
+
+.filter-item input,
+.filter-item select {
+    margin: 0 5px;
+}
+
+.filter-system h2 {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+.filters-expand {
+    float: right;
+}
+
+.filter-system h2:hover {
+    color: #fff;
+}
+
+.filters-cont {
+    max-height: 800px;
+    transition: max-height .3s ease-out;
+    overflow: hidden;
+    margin: 0 0 10px;
+}
+
+.hide-filters {
+    max-height: 0;
+}
+

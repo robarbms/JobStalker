@@ -1,13 +1,17 @@
 import React from 'react';
-import { months, weekDays } from '../../utils/date';
 import { companyData } from '../../utils/companies';
-import { getDateString, getDateTime } from '../job';
+import { getDateString } from '../job';
+import '../../styles/card.css';
 
 const Tag = (props: any) => {
     const { name, color } = props;
-    const { hue, saturation, lightness } = color;
+    let hsl = "155, 0%, 50%";
+    if (color) {
+        const { hue, saturation, lightness } = color;
+        hsl = `${hue}, ${saturation}%, ${lightness}%`
+    }
     return (
-        <div className="tag" style={{background: `hsl(${hue}, ${saturation}%, ${lightness}%)`}}>{name}</div>
+        <div className="tag" style={{background: `hsl(${hsl})`}}>{name}</div>
     )
 }
 
@@ -33,7 +37,7 @@ const Card = (props: any) => {
                 </div>
                 <div className="col-2">
                     <h3>
-                        <a href={link} target="_blank">{title}</a>
+                        <a href={link} target="_blank" rel="noreferrer">{title}</a>
                         <span className="job-card-date">{getDateString(date_posted)}</span>
                     </h3>
                     <span className="job-card-company">
