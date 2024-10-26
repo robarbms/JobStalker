@@ -101,9 +101,6 @@ def getJobs(query: str, job_ids: list[str]):
                         links += more_links
                         jobs_found += more_jobs
 
-            else:
-                log("Could not find a result list", "error")
-
             return links, jobs_found
 
         browser = p.chromium.launch()
