@@ -70,32 +70,56 @@ def getJobDetails(url: str, page: Page):
         return details
 
 def getJobs(query: str, job_ids: list[str]):
-    query_url = "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/jobs?q={query}&locations=91336993fab910af6d716528e9d4c406&locations=d2088e737cbb01d5e2be9e52ce01926f&locations=16fc4607fc4310011e929f7115f90000&locations=91336993fab910af6d701e82d004c2c0"
+    query_url = "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/jobs?q={query}&locations=91336993fab910af6d7169a81124c410&locations=91336993fab910af6d701e82d004c2c0&locations=16fc4607fc4310011e929f7115f90000&locations=d2088e737cbb01d5e2be9e52ce01926f&workerSubType=0c40f6bd1d8f10adf6dae161b1844a15&timeType=5509c0b5959810ac0029943377d47364"
     url = query_url.format(query=query)
     jobs = []
-    jobs_found = 0
 
     with sync_playwright() as p:
+        def get_links(page: Page, job_ids: list[str]):
+            jobs_found = 0
+            links = []
+            result_list = page.locator('section[data-automation-id=jobResults] > ul > li').all()
+
+            if result_list:
+                jobs_found += len(result_list)
+                for job_element in result_list:
+                    job_id = job_element.locator('ul').text_content()
+                    if job_id == None or job_id not in job_ids:
+                        anchor = job_element.locator('a').all()
+                        if anchor and len(anchor) > 0:
+                            link = anchor[0].get_attribute('href')
+                            links.append(link)
+                
+                # If there is a full page of results (20)
+                # Check for a next button and click it.
+                if jobs_found >= 20:
+                    nav = page.locator('nav[aria-label=pagination] > div > ol + button')
+                    if nav:
+                        nav.click()
+                        time.sleep(1)
+                        more_links, more_jobs = get_links(page, job_ids)
+                        links += more_links
+                        jobs_found += more_jobs
+
+            else:
+                log("Could not find a result list", "error")
+
+            return links, jobs_found
+
         browser = p.chromium.launch()
         page = browser.new_page()
+        jobs_found = 0
 
         try:
             page.goto(url)
             time.sleep(1)
 
-            result_list = page.locator('section[data-automation-id=jobResults] ul')
+            links, jobs_found = get_links(page, job_ids)
 
-            if result_list:
-                job_elements = result_list.locator('li a').all()
-
-                jobs_found = len(job_elements)
-                if job_elements and len(job_elements) > 0:
-                    links = [element.get_attribute('href') for element in job_elements]
-
-                    for link in links:
-                        details = getJobDetails("https://nvidia.wd5.myworkdayjobs.com" + link, page)
-                        if 'job_id' in details and details['job_id'] not in job_ids:
-                            jobs.append(details)
+            for link in links:
+                details = getJobDetails("https://nvidia.wd5.myworkdayjobs.com" + link, page)
+                if 'job_id' in details and details['job_id'] not in job_ids:
+                    jobs.append(details)
 
         except Exception as e:
             log(f"Could not fetch results from Nvidia for query \"{query}\"".format(query=query), "error")
@@ -121,21 +145,10 @@ def getNvidiaJobs(job_ids: list[str]):
         total_jobs += jobs_found
 
         log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
+        job_ids += [job['job_id'] for job in job_results]
+        jobs += job_results
 
-        if(len(job_results) == 0):
-            jobs = job_results
-        else:
-            for job in job_results:
-                if 'job_id' not in job:
-                    log("Missing jobid for job: {job}".format(job=job), "error")
-                else:
-                    found = False
-                    for existing_job in jobs:
-                        if(job['job_id'] == existing_job['job_id']):
-                            found = True
-                            break
-                    if (not found):
-                        jobs.append(job)
+        time.sleep(3)
 
     log("Total number of new positions found for Nvidia: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
     return jobs

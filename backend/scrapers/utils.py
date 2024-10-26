@@ -70,5 +70,6 @@ queries = [
     "full stack",
     "prototype",
     "engineer",
-    "design technologist"
+    "design technologist",
+    "developer"
 ]
