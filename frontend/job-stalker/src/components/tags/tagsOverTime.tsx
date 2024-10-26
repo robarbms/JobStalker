@@ -37,6 +37,7 @@ export default function TagsOverTime (props: any) {
         for(let key in cat) {
             if (key !== "name" && Array.isArray(cat[key])) {
                 cat[key].forEach((sub: any) => {
+                    if (sub.type === "version control") return;
                     subcats[sub.name] = category;
                     if (sub.creator) {
                         subcats[sub.creator] = category;
@@ -66,7 +67,12 @@ export default function TagsOverTime (props: any) {
             let tag_point = tag;
             // If the tag is not a category, map it to the category
             if (!(tag_point in categories)) {
-                tag_point = sub_cat_map[tag];
+                if (tag in sub_cat_map){
+                    tag_point = sub_cat_map[tag];
+                }
+                else {
+                    return;
+                }
             }
             if(tag_point in categories) {
                 // Add the tag to the date and to the total

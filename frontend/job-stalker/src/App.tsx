@@ -186,21 +186,23 @@ function App() {
           <WeekChart />
         </div>
         <div className="job-list-container">
-          <div className="job-list-header">
-              <div className="job-count">
+          <h2>
+            Top results
+            <span className="meta">
+              <label>Top 20 jobs: </label>
               {Math.min(jobs.length, 20)} / {allJobs.length} jobs
-            </div>
-          </div>
-          <h2>Top results</h2>
+            </span>
+          </h2>
           {jobs.slice(0, 20).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} />)}
         </div>
         <div className="job-list-container">
-          <div className="job-list-header">
-            <div className="job-count">
+          <h2>
+            All results
+            <span className="meta">
+              <label>Search results: </label>
               {jobs.length} / {allJobs.length} jobs
-            </div>
-          </div>
-          <h2>All results</h2>
+            </span>            
+          </h2>
           <Table></Table>
         </div>
       </div>
