@@ -44,14 +44,14 @@ const AllTrendChart = () => {
  
     return (
         <div className="trend-chart">
-            <h2>All Jobs</h2>
-            <ComposedChart width={1350} height={200} data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
+            <h2>Job Trends</h2>
+            <ComposedChart width={1350} height={400} data={data}>
+                <CartesianGrid />
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
                 {companies.map((company: string, idx: number) => <Bar key={idx} stackId="a" dataKey={company} fill={companyData[company].color} />)}
-                <Line dataKey="Total" stroke="#0f0" dot={false} strokeDasharray={4} />
+                <Line dataKey="Total" stroke="yellow" dot={false} strokeDasharray={4} />
                 <Line dataKey="Scraped" stroke="magenta" dot={false} strokeDasharray={4} />
                 <Legend />
             </ComposedChart>

@@ -5,6 +5,7 @@ import Table from './components/table';
 import CompanyChart from './components/charts/companies';
 import WeekChart from './components/charts/week';
 import AllTrendChart from './components/charts/allTrend';
+import TagsOverTime from './components/tags/tagsOverTime';
 import FilterSystem from './components/search/filterSystem';
 import { getTagColors, test_colors } from "./components/tags/tagColors";
 import techKeywordsJson from './utils/tech_keywords.json';
@@ -175,7 +176,10 @@ function App() {
             <label>Last scraped: </label><span className={`last_scraped ${getStatus(lastScraped)}`}>{lastScraped && lastScraped.toLocaleString()}</span>
           </h1>
         </header>
-        <AllTrendChart />
+        <div className="trends">
+          <AllTrendChart />
+          <TagsOverTime />
+        </div>
         <div className="job-search">
           <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
           <CompanyChart />

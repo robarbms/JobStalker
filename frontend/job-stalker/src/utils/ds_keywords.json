@@ -1,299 +1,298 @@
 [
-    {
-      "name": "Data Science",
-      "libraries": [
-        { "name": "pandas", "type": "library" },
-        { "name": "numpy", "type": "library" },
-        { "name": "matplotlib", "type": "library" },
-        { "name": "seaborn", "type": "library" },
-        { "name": "scipy", "type": "library" },
-        { "name": "statsmodels", "type": "library" },
-        { "name": "plotly", "type": "library" },
-        { "name": "geopandas", "type": "library" },
-        { "name": "dask", "type": "library" },
-        { "name": "bokeh", "type": "library" },
-        { "name": "altair", "type": "library" },
-        { "name": "dash", "type": "library" },
-        { "name": "polars", "type": "library" },
-        { "name": "torch", "type": "library" }
-      ],
-      "methods": [
-        { "name": "data wrangling", "type": "method" },
-        { "name": "data cleaning", "type": "method" },
-        { "name": "data visualization", "type": "method" },
-        { "name": "exploratory data analysis (EDA)", "type": "method" },
-        { "name": "feature engineering", "type": "method" }
-      ]
-    },
-    {
-      "name": "AI",
-      "libraries": [
-        { "name": "tensorflow", "type": "library" },
-        { "name": "pytorch", "type": "library" },
-        { "name": "keras", "type": "library" },
-        { "name": "openai", "type": "library" },
-        { "name": "transformers", "type": "library" },
-        { "name": "deeplearning4j", "type": "library" },
-        { "name": "fastai", "type": "library" },
-        { "name": "spacy", "type": "library" },
-        { "name": "allennlp", "type": "library" },
-        { "name": "gpt-3", "type": "library" },
-        { "name": "stable-diffusion", "type": "library" },
-        { "name": "neural-style-transfer", "type": "library" },
-        { "name": "neuro-symbolic-ai", "type": "library" },
-        { "name": "reinforcement-learning", "type": "library" }
-      ],
-      "methods": [
-        { "name": "fine-tuning", "type": "method" },
-        { "name": "LoRA (Low-Rank Adaptation)", "type": "method" },
-        { "name": "self-supervised learning", "type": "method" },
-        { "name": "meta-learning", "type": "method" },
-        { "name": "few-shot learning", "type": "method" },
-        { "name": "zero-shot learning", "type": "method" },
-        { "name": "retrieval-augmented generation (RAG)", "type": "method" }
-      ]
-    },
-    {
-      "name": "Machine Learning",
-      "libraries": [
-        { "name": "scikit-learn", "type": "library" },
-        { "name": "xgboost", "type": "library" },
-        { "name": "lightgbm", "type": "library" },
-        { "name": "catboost", "type": "library" },
-        { "name": "mlflow", "type": "library" },
-        { "name": "h2o", "type": "library" },
-        { "name": "pycaret", "type": "library" },
-        { "name": "optuna", "type": "library" },
-        { "name": "imbalanced-learn", "type": "library" },
-        { "name": "shap", "type": "library" },
-        { "name": "lime", "type": "library" },
-        { "name": "tpot", "type": "library" },
-        { "name": "auto-sklearn", "type": "library" },
-        { "name": "bayesian-optimization", "type": "library" }
-      ],
-      "methods": [
-        { "name": "supervised learning", "type": "method" },
-        { "name": "unsupervised learning", "type": "method" },
-        { "name": "semi-supervised learning", "type": "method" },
-        { "name": "ensemble methods", "type": "method" },
-        { "name": "gradient boosting", "type": "method" },
-        { "name": "hyperparameter tuning", "type": "method" },
-        { "name": "cross-validation", "type": "method" }
-      ]
-    },
-    {
-      "name": "Big Data",
-      "libraries": [
-        { "name": "apache-spark", "type": "library" },
-        { "name": "hadoop", "type": "library" },
-        { "name": "fink", "type": "library" },
-        { "name": "hive", "type": "library" },
-        { "name": "presto", "type": "library" },
-        { "name": "kafka", "type": "library" },
-        { "name": "hbase", "type": "library" },
-        { "name": "cassandra", "type": "library" }
-      ],
-      "methods": [
-        { "name": "distributed computing", "type": "method" },
-        { "name": "batch processing", "type": "method" },
-        { "name": "stream processing", "type": "method" },
-        { "name": "data partitioning", "type": "method" },
-        { "name": "map-reduce", "type": "method" }
-      ]
-    },
-    {
-      "name": "Data Visualization",
-      "libraries": [
-        { "name": "matplotlib", "type": "library" },
-        { "name": "seaborn", "type": "library" },
-        { "name": "plotly", "type": "library" },
-        { "name": "bokeh", "type": "library" },
-        { "name": "ggplot2", "type": "library" },
-        { "name": "tableau", "type": "library" },
-        { "name": "power-bi", "type": "library" },
-        { "name": "dash", "type": "library" }
-      ],
-      "methods": [
-        { "name": "interactive visualizations", "type": "method" },
-        { "name": "dashboards", "type": "method" },
-        { "name": "geospatial visualizations", "type": "method" },
-        { "name": "time series visualizations", "type": "method" },
-        { "name": "heatmaps", "type": "method" }
-      ]
-    },
-    {
-      "name": "Natural Language Processing",
-      "libraries": [
-        { "name": "spacy", "type": "library" },
-        { "name": "nltk", "type": "library" },
-        { "name": "transformers", "type": "library" },
-        { "name": "gensim", "type": "library" },
-        { "name": "stanza", "type": "library" },
-        { "name": "flair", "type": "library" },
-        { "name": "rasa", "type": "library" },
-        { "name": "polyglot", "type": "library" }
-      ],
-      "methods": [
-        { "name": "tokenization", "type": "method" },
-        { "name": "named entity recognition (NER)", "type": "method" },
-        { "name": "part-of-speech tagging", "type": "method" },
-        { "name": "sentiment analysis", "type": "method" },
-        { "name": "topic modeling", "type": "method" },
-        { "name": "machine translation", "type": "method" },
-        { "name": "retrieval-augmented generation (RAG)", "type": "method" },
-        { "name": "text summarization", "type": "method" }
-      ]
-    },
-    {
-      "name": "Deep Learning",
-      "libraries": [
-        { "name": "tensorflow", "type": "library" },
-        { "name": "pytorch", "type": "library" },
-        { "name": "keras", "type": "library" },
-        { "name": "mxnet", "type": "library" },
-        { "name": "cntk", "type": "library" },
-        { "name": "theano", "type": "library" },
-        { "name": "caffe", "type": "library" },
-        { "name": "deeplearning4j", "type": "library" }
-      ],
-      "methods": [
-        { "name": "fine-tuning", "type": "method" },
-        { "name": "transfer learning", "type": "method" },
-        { "name": "LoRA (Low-Rank Adaptation)", "type": "method" },
-        { "name": "attention mechanisms", "type": "method" },
-        { "name": "transformers", "type": "method" },
-        { "name": "convolutional neural networks (CNN)", "type": "method" },
-        { "name": "recurrent neural networks (RNN)", "type": "method" },
-        { "name": "generative adversarial networks (GAN)", "type": "method" },
-        { "name": "autoencoders", "type": "method" }
-      ]
-    },
-    {
-      "name": "Computer Vision",
-      "libraries": [
-        { "name": "opencv", "type": "library" },
-        { "name": "dlib", "type": "library" },
-        { "name": "mediapipe", "type": "library" },
-        { "name": "detectron2", "type": "library" },
-        { "name": "yolov5", "type": "library" },
-        { "name": "mask-rcnn", "type": "library" },
-        { "name": "efficientdet", "type": "library" },
-        { "name": "albumentations", "type": "library" }
-      ],
-      "methods": [
-        { "name": "image classification", "type": "method" },
-        { "name": "object detection", "type": "method" },
-        { "name": "image segmentation", "type": "method" },
-        { "name": "image generation", "type": "method" },
-        { "name": "style transfer", "type": "method" },
-        { "name": "optical character recognition (OCR)", "type": "method" },
-        { "name": "pose estimation", "type": "method" }
-      ]
-    },
-    {
-      "name": "Large Language Models (LLM)",
-      "models": [
-        { 
-          "name": "GPT-4", 
-          "creator": "OpenAI", 
-          "versions": ["GPT-4.0", "GPT-4.5", "GPT-4o", "GPT-4o-mini"] 
-        },
-        { 
-          "name": "GPT-3", 
-          "creator": "OpenAI", 
-          "versions": ["GPT-3.0", "GPT-3.5"] 
-        },
-        {
-          "name": "Copilot",
-          "creator": "Microsoft",
-          "versions": ["Copilot 1.0", "Copilot 2.0"]
-        },
-        { 
-          "name": "Claude", 
-          "creator": "Anthropic", 
-          "versions": ["Claude 1", "Claude 2"] 
-        },
-        { 
-          "name": "LLaMA", 
-          "creator": "Meta", 
-          "versions": ["LLaMA 1", "LLaMA 2", "LLaMA 3", "LLaMA 3.1", "LLaMA 3.2"] 
-        },
-        { 
-          "name": "PaLM", 
-          "creator": "Google", 
-          "versions": ["PaLM 1", "PaLM 2"] 
-        },
-        { 
-          "name": "Gemini", 
-          "creator": "Google DeepMind", 
-          "versions": ["Gemini 1"] 
-        },
-        { 
-          "name": "BERT", 
-          "creator": "Google", 
-          "versions": ["BERT Base", "BERT Large"] 
-        },
-        { 
-          "name": "T5", 
-          "creator": "Google", 
-          "versions": ["T5 Small", "T5 Base", "T5 Large", "T5-11B"] 
-        },
-        { 
-          "name": "GPT-NeoX", 
-          "creator": "EleutherAI", 
-          "versions": ["GPT-NeoX-20B"] 
-        },
-        { 
-          "name": "OPT", 
-          "creator": "Meta", 
-          "versions": ["OPT-125M", "OPT-350M", "OPT-1.3B", "OPT-66B"] 
-        },
-        { 
-          "name": "Grok", 
-          "creator": "xAI", 
-          "versions": ["Grok"] 
-        },
-        { 
-          "name": "Bloom", 
-          "creator": "BigScience", 
-          "versions": ["Bloom 176B", "Bloom 7B1", "Bloom 1B7"] 
-        },
-        { 
-          "name": "FLAN-T5", 
-          "creator": "Google", 
-          "versions": ["FLAN-T5 Small", "FLAN-T5 Base", "FLAN-T5 Large", "FLAN-T5-XXL"] 
-        },
-        { 
-          "name": "Chinchilla", 
-          "creator": "DeepMind", 
-          "versions": ["Chinchilla"] 
-        },
-        { 
-          "name": "Megatron-Turing NLG", 
-          "creator": "NVIDIA & Microsoft", 
-          "versions": ["Megatron-Turing NLG 530B"] 
-        },
-        { 
-          "name": "Jurassic", 
-          "creator": "AI21 Labs", 
-          "versions": ["Jurassic-1", "Jurassic-2"] 
-        },
-        { 
-          "name": "Mistral", 
-          "creator": "Mistral AI", 
-          "versions": ["Mistral 7B", "Mixtral"] 
-        },
-        { 
-          "name": "Cohere Command R", 
-          "creator": "Cohere", 
-          "versions": ["Command R", "Command R+"] 
-        },
-        { 
-          "name": "Ernie", 
-          "creator": "Baidu", 
-          "versions": ["Ernie 3.0", "Ernie 4.0"] 
-        }
-      ]
-    }
-  ]
-  
+  {
+    "name": "Data Science",
+    "libraries": [
+      { "name": "pandas", "type": "library" },
+      { "name": "numpy", "type": "library" },
+      { "name": "matplotlib", "type": "library" },
+      { "name": "seaborn", "type": "library" },
+      { "name": "scipy", "type": "library" },
+      { "name": "statsmodels", "type": "library" },
+      { "name": "plotly", "type": "library" },
+      { "name": "geopandas", "type": "library" },
+      { "name": "dask", "type": "library" },
+      { "name": "bokeh", "type": "library" },
+      { "name": "altair", "type": "library" },
+      { "name": "dash", "type": "library" },
+      { "name": "polars", "type": "library" },
+      { "name": "torch", "type": "library" }
+    ],
+    "methods": [
+      { "name": "data wrangling", "type": "method" },
+      { "name": "data cleaning", "type": "method" },
+      { "name": "data visualization", "type": "method" },
+      { "name": "exploratory data analysis (EDA)", "type": "method" },
+      { "name": "feature engineering", "type": "method" }
+    ]
+  },
+  {
+    "name": "AI",
+    "libraries": [
+      { "name": "tensorflow", "type": "library" },
+      { "name": "pytorch", "type": "library" },
+      { "name": "keras", "type": "library" },
+      { "name": "openai", "type": "library" },
+      { "name": "transformers", "type": "library" },
+      { "name": "deeplearning4j", "type": "library" },
+      { "name": "fastai", "type": "library" },
+      { "name": "spacy", "type": "library" },
+      { "name": "allennlp", "type": "library" },
+      { "name": "gpt-3", "type": "library" },
+      { "name": "stable-diffusion", "type": "library" },
+      { "name": "neural-style-transfer", "type": "library" },
+      { "name": "neuro-symbolic-ai", "type": "library" },
+      { "name": "reinforcement-learning", "type": "library" }
+    ],
+    "methods": [
+      { "name": "fine-tuning", "type": "method" },
+      { "name": "LoRA (Low-Rank Adaptation)", "type": "method" },
+      { "name": "self-supervised learning", "type": "method" },
+      { "name": "meta-learning", "type": "method" },
+      { "name": "few-shot learning", "type": "method" },
+      { "name": "zero-shot learning", "type": "method" },
+      { "name": "retrieval-augmented generation (RAG)", "type": "method" }
+    ]
+  },
+  {
+    "name": "Machine Learning",
+    "libraries": [
+      { "name": "scikit-learn", "type": "library" },
+      { "name": "xgboost", "type": "library" },
+      { "name": "lightgbm", "type": "library" },
+      { "name": "catboost", "type": "library" },
+      { "name": "mlflow", "type": "library" },
+      { "name": "h2o", "type": "library" },
+      { "name": "pycaret", "type": "library" },
+      { "name": "optuna", "type": "library" },
+      { "name": "imbalanced-learn", "type": "library" },
+      { "name": "shap", "type": "library" },
+      { "name": "lime", "type": "library" },
+      { "name": "tpot", "type": "library" },
+      { "name": "auto-sklearn", "type": "library" },
+      { "name": "bayesian-optimization", "type": "library" }
+    ],
+    "methods": [
+      { "name": "supervised learning", "type": "method" },
+      { "name": "unsupervised learning", "type": "method" },
+      { "name": "semi-supervised learning", "type": "method" },
+      { "name": "ensemble methods", "type": "method" },
+      { "name": "gradient boosting", "type": "method" },
+      { "name": "hyperparameter tuning", "type": "method" },
+      { "name": "cross-validation", "type": "method" }
+    ]
+  },
+  {
+    "name": "Big Data",
+    "libraries": [
+      { "name": "apache-spark", "type": "library" },
+      { "name": "hadoop", "type": "library" },
+      { "name": "fink", "type": "library" },
+      { "name": "hive", "type": "library" },
+      { "name": "presto", "type": "library" },
+      { "name": "kafka", "type": "library" },
+      { "name": "hbase", "type": "library" },
+      { "name": "cassandra", "type": "library" }
+    ],
+    "methods": [
+      { "name": "distributed computing", "type": "method" },
+      { "name": "batch processing", "type": "method" },
+      { "name": "stream processing", "type": "method" },
+      { "name": "data partitioning", "type": "method" },
+      { "name": "map-reduce", "type": "method" }
+    ]
+  },
+  {
+    "name": "Data Visualization",
+    "libraries": [
+      { "name": "matplotlib", "type": "library" },
+      { "name": "seaborn", "type": "library" },
+      { "name": "plotly", "type": "library" },
+      { "name": "bokeh", "type": "library" },
+      { "name": "ggplot2", "type": "library" },
+      { "name": "tableau", "type": "library" },
+      { "name": "power-bi", "type": "library" },
+      { "name": "dash", "type": "library" }
+    ],
+    "methods": [
+      { "name": "interactive visualizations", "type": "method" },
+      { "name": "dashboards", "type": "method" },
+      { "name": "geospatial visualizations", "type": "method" },
+      { "name": "time series visualizations", "type": "method" },
+      { "name": "heatmaps", "type": "method" }
+    ]
+  },
+  {
+    "name": "Natural Language Processing",
+    "libraries": [
+      { "name": "spacy", "type": "library" },
+      { "name": "nltk", "type": "library" },
+      { "name": "transformers", "type": "library" },
+      { "name": "gensim", "type": "library" },
+      { "name": "stanza", "type": "library" },
+      { "name": "flair", "type": "library" },
+      { "name": "rasa", "type": "library" },
+      { "name": "polyglot", "type": "library" }
+    ],
+    "methods": [
+      { "name": "tokenization", "type": "method" },
+      { "name": "named entity recognition (NER)", "type": "method" },
+      { "name": "part-of-speech tagging", "type": "method" },
+      { "name": "sentiment analysis", "type": "method" },
+      { "name": "topic modeling", "type": "method" },
+      { "name": "machine translation", "type": "method" },
+      { "name": "retrieval-augmented generation (RAG)", "type": "method" },
+      { "name": "text summarization", "type": "method" }
+    ]
+  },
+  {
+    "name": "Deep Learning",
+    "libraries": [
+      { "name": "tensorflow", "type": "library" },
+      { "name": "pytorch", "type": "library" },
+      { "name": "keras", "type": "library" },
+      { "name": "mxnet", "type": "library" },
+      { "name": "cntk", "type": "library" },
+      { "name": "theano", "type": "library" },
+      { "name": "caffe", "type": "library" },
+      { "name": "deeplearning4j", "type": "library" }
+    ],
+    "methods": [
+      { "name": "fine-tuning", "type": "method" },
+      { "name": "transfer learning", "type": "method" },
+      { "name": "LoRA (Low-Rank Adaptation)", "type": "method" },
+      { "name": "attention mechanisms", "type": "method" },
+      { "name": "transformers", "type": "method" },
+      { "name": "convolutional neural networks (CNN)", "type": "method" },
+      { "name": "recurrent neural networks (RNN)", "type": "method" },
+      { "name": "generative adversarial networks (GAN)", "type": "method" },
+      { "name": "autoencoders", "type": "method" }
+    ]
+  },
+  {
+    "name": "Computer Vision",
+    "libraries": [
+      { "name": "opencv", "type": "library" },
+      { "name": "dlib", "type": "library" },
+      { "name": "mediapipe", "type": "library" },
+      { "name": "detectron2", "type": "library" },
+      { "name": "yolov5", "type": "library" },
+      { "name": "mask-rcnn", "type": "library" },
+      { "name": "efficientdet", "type": "library" },
+      { "name": "albumentations", "type": "library" }
+    ],
+    "methods": [
+      { "name": "image classification", "type": "method" },
+      { "name": "object detection", "type": "method" },
+      { "name": "image segmentation", "type": "method" },
+      { "name": "image generation", "type": "method" },
+      { "name": "style transfer", "type": "method" },
+      { "name": "optical character recognition (OCR)", "type": "method" },
+      { "name": "pose estimation", "type": "method" }
+    ]
+  },
+  {
+    "name": "Large Language Models (LLM)",
+    "models": [
+      { 
+        "name": "GPT-4", 
+        "creator": "OpenAI", 
+        "versions": ["GPT-4.0", "GPT-4.5", "GPT-4o", "GPT-4o-mini"] 
+      },
+      { 
+        "name": "GPT-3", 
+        "creator": "OpenAI", 
+        "versions": ["GPT-3.0", "GPT-3.5"] 
+      },
+      {
+        "name": "Copilot",
+        "creator": "Microsoft",
+        "versions": ["Copilot 1.0", "Copilot 2.0"]
+      },
+      { 
+        "name": "Claude", 
+        "creator": "Anthropic", 
+        "versions": ["Claude 1", "Claude 2"] 
+      },
+      { 
+        "name": "LLaMA", 
+        "creator": "Meta", 
+        "versions": ["LLaMA 1", "LLaMA 2", "LLaMA 3", "LLaMA 3.1", "LLaMA 3.2"] 
+      },
+      { 
+        "name": "PaLM", 
+        "creator": "Google", 
+        "versions": ["PaLM 1", "PaLM 2"] 
+      },
+      { 
+        "name": "Gemini", 
+        "creator": "Google DeepMind", 
+        "versions": ["Gemini 1"] 
+      },
+      { 
+        "name": "BERT", 
+        "creator": "Google", 
+        "versions": ["BERT Base", "BERT Large"] 
+      },
+      { 
+        "name": "T5", 
+        "creator": "Google", 
+        "versions": ["T5 Small", "T5 Base", "T5 Large", "T5-11B"] 
+      },
+      { 
+        "name": "GPT-NeoX", 
+        "creator": "EleutherAI", 
+        "versions": ["GPT-NeoX-20B"] 
+      },
+      { 
+        "name": "OPT", 
+        "creator": "Meta", 
+        "versions": ["OPT-125M", "OPT-350M", "OPT-1.3B", "OPT-66B"] 
+      },
+      { 
+        "name": "Grok", 
+        "creator": "xAI", 
+        "versions": ["Grok"] 
+      },
+      { 
+        "name": "Bloom", 
+        "creator": "BigScience", 
+        "versions": ["Bloom 176B", "Bloom 7B1", "Bloom 1B7"] 
+      },
+      { 
+        "name": "FLAN-T5", 
+        "creator": "Google", 
+        "versions": ["FLAN-T5 Small", "FLAN-T5 Base", "FLAN-T5 Large", "FLAN-T5-XXL"] 
+      },
+      { 
+        "name": "Chinchilla", 
+        "creator": "DeepMind", 
+        "versions": ["Chinchilla"] 
+      },
+      { 
+        "name": "Megatron-Turing NLG", 
+        "creator": "NVIDIA & Microsoft", 
+        "versions": ["Megatron-Turing NLG 530B"] 
+      },
+      { 
+        "name": "Jurassic", 
+        "creator": "AI21 Labs", 
+        "versions": ["Jurassic-1", "Jurassic-2"] 
+      },
+      { 
+        "name": "Mistral", 
+        "creator": "Mistral AI", 
+        "versions": ["Mistral 7B", "Mixtral"] 
+      },
+      { 
+        "name": "Cohere Command R", 
+        "creator": "Cohere", 
+        "versions": ["Command R", "Command R+"] 
+      },
+      { 
+        "name": "Ernie", 
+        "creator": "Baidu", 
+        "versions": ["Ernie 3.0", "Ernie 4.0"] 
+      }
+    ]
+  }
+]

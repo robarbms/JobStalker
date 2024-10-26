@@ -21,15 +21,22 @@ def getAllJobs(job_ids):
         return []
     
     jobScrapers = {
-        'Adobe': getAdobeJobs,
         'Amazon': getAmazonJobs,
         'Apple': getAppleJobs,
         'Google': getGoogleJobs,
-        'Meta': getMetaJobs, 
         'Microsoft': getMicrosoftJobs,
         'Netflix': getNetflixJobs,
         'Nvidia': getNvidiaJobs,
     }
+
+    now = datetime.now()
+
+    # Cloudflare is blocking Adobe and Meta when scraping too often
+    # Scraping 3 times daily ~5am, ~11am, ~5pm
+    print(now.hour)
+    if (now.hour > 4 and now.hour <= 6) or (now.hour > 10 and now.hour <= 12) or (now.hour > 16 and now.hour <= 18):
+        jobScrapers['Adobe'] = getAdobeJobs
+        jobScrapers['Meta'] = getMetaJobs
 
     num_scrapers = len(jobScrapers)
 

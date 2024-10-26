@@ -30,8 +30,8 @@ const FilterSystem = (props: FilterSystemProps) => {
             <h2 onClick={() => setShowFilters(!showFilters)}>
                 Job Filtering
                 <span className="filters-expand">
-                {showFilters && <>&#9650;</>}
-                {!showFilters && <>&#9660;</>}
+                {showFilters && <>&and;</>}
+                {!showFilters && <>&or;</>}
                 </span>
             </h2>
             <div className={`filters-cont ${showFilters ? 'show-filters' : 'hide-filters'}`}>

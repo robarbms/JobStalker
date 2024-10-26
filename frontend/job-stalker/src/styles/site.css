@@ -130,3 +130,8 @@ path.recharts-sector {
     border-radius: 4px;
     text-shadow: 0 0 4px rgb(0, 0, 0);
 }
+
+.trends > div {
+    max-width: 1350px;
+    display: inline-block;
+}

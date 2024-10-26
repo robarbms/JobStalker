@@ -49,10 +49,15 @@
     vertical-align: top;
     padding: 10px;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .company-select {
     margin: 10px 0 10px 10px;
+}
+
+.company-select:hover {
+    background: rgba(0, 0, 0, .2);
 }
 
 .company-select + .company-select {
@@ -88,6 +93,9 @@
 
 .filters-expand {
     float: right;
+    padding: 0 10px 3px;
+    border-radius: 6px;
+    /* background: rgba(155, 155, 155, .1); */
 }
 
 .filter-system h2:hover {
