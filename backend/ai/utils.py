@@ -1,6 +1,5 @@
 from datetime import datetime
 
-
 def log(message: str, level="info"):
     ct = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     fd = datetime.now().strftime("%Y-%m-%d")

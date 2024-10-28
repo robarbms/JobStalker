@@ -185,25 +185,27 @@ function App() {
           <CompanyChart />
           <WeekChart />
         </div>
-        <div className="job-list-container">
-          <h2>
-            Top results
-            <span className="meta">
-              <label>Top 20 jobs: </label>
-              {Math.min(jobs.length, 20)} / {allJobs.length} jobs
-            </span>
-          </h2>
-          {jobs.slice(0, 20).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} />)}
-        </div>
-        <div className="job-list-container">
-          <h2>
-            All results
-            <span className="meta">
-              <label>Search results: </label>
-              {jobs.length} / {allJobs.length} jobs
-            </span>            
-          </h2>
-          <Table></Table>
+        <div className="job-lists">
+          <div className="job-list-container">
+            <h2>
+              Top results
+              <span className="meta">
+                <label>Top 20 jobs: </label>
+                {Math.min(jobs.length, 20)} / {allJobs.length} jobs
+              </span>
+            </h2>
+            {jobs.slice(0, 20).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} />)}
+          </div>
+          <div className="job-list-container">
+            <h2>
+              All results
+              <span className="meta">
+                <label>Search results: </label>
+                {jobs.length} / {allJobs.length} jobs
+              </span>            
+            </h2>
+            <Table></Table>
+          </div>
         </div>
       </div>
     </JobContext.Provider>

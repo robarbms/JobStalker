@@ -31,3 +31,27 @@
     width: 60px;
     height: 60px;
 }
+
+.job-card p {
+    display: -webkit-box;
+    line-clamp: 4; /* Limit the number of lines to display */
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Show an ellipsis (...) when content overflows */
+    
+}
+
+.job-card p.job-card-summary-all {
+    -webkit-line-clamp: unset;
+}
+
+.job-card-summary-more {
+    text-align: right;
+    color: #fff;
+}
+
+.job-card-summary-more span {
+    cursor: pointer;
+    padding: 5px 10px;
+}

@@ -14,7 +14,8 @@ export type JobDetails = {
     location: string,
     is_frontend?: boolean,
     is_manager?: boolean,
-    tags: string | any[]
+    tags: string | any[],
+    summary: string,
 }
 
 const getDateString = (date: string) => {
@@ -34,7 +35,7 @@ const getDateTime = (date: string) => {
 }
 
 export default function Job(props: JobDetails) {
-    const { company, date_posted, title, link, created_at } = props;
+    const { company, date_posted, title, link, created_at, summary } = props;
 
     return(
         <tr>
@@ -45,7 +46,7 @@ export default function Job(props: JobDetails) {
                 {props.company}</td>
             <td>{getDateString(date_posted)}</td>
             <td>{getDateTime(created_at)}</td>
-            <td><a href={link} target="_blank">{title}</a></td>
+            <td title={summary}><a href={link} target="_blank">{title}</a></td>
         </tr>
     )
 }

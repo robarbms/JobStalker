@@ -57,10 +57,17 @@ h1 label {
     color: red;
 }
 
+.job-lists {
+    max-width: 1700px;
+    display: inline-block;
+    vertical-align: top;
+}
+
 .job-list-container {
     max-width: 1000px;
     margin: 20px 10px 0;
-    float: left;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .job-list table {
@@ -115,7 +122,8 @@ path.recharts-sector {
 }
 
 .job-search {
-    float: left;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .tag {
