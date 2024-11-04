@@ -1,9 +1,8 @@
 from playwright.sync_api import sync_playwright, Page, Locator
-from .utils import Extractor, log, queries
+from .utils import log, queries
 import time
 from datetime import datetime
 import re
-from bs4 import BeautifulSoup
 
 def getJobDetails(link: Locator, page: Page):
     """Get job details from a given URL"""
@@ -13,7 +12,7 @@ def getJobDetails(link: Locator, page: Page):
         'salary_max': 0,
         'notes': '',
         'summary': '',
-        'location': 'Seattle, WWA',
+        'location': 'Seattle, WA',
         'date_posted': datetime.now().strftime("%Y-%m-%d")
     }
 

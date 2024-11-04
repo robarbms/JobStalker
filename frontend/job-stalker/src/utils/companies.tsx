@@ -9,6 +9,7 @@ import { ReactComponent as HuggingfaceIcon } from '../static/huggingface.svg';
 import { ReactComponent as OpenaiIcon } from '../static/openai.svg';
 import { ReactComponent as NvidiaIcon } from '../static/nvidia.svg';
 import { ReactComponent as MetaIcon } from '../static/meta.svg';
+import { ReactComponent as SalesforceIcon } from '../static/salesforce.svg'
 
 export type Company = {
     icon: JSX.Element;
@@ -47,5 +48,9 @@ export const companyData: {[key: string]: Company} = {
     Nvidia: {
         icon: <NvidiaIcon className="icon" />,
         color: "#72b300",
+    },
+    Salesforce: {
+        icon: <SalesforceIcon className="icon" />,
+        color: "#00a6ed",
     }
 }

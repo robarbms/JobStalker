@@ -22,13 +22,13 @@ def get_summary(description: str):
             summaries = []
             for chunk in chunks:
                 if len(chunk) > 200:
-                    chunk_summary = summarizer(' '.join(chunk), max_length=150, min_length=100, do_sample=False)
+                    chunk_summary = summarizer(' '.join(chunk), max_length=100, min_length=50, do_sample=False)
                     summaries.append(chunk_summary[0]['summary_text'])
                 else:
                     summaries.append(' '.join(chunk))
             description = ' '.join(summaries)
 
-        summary_obj = summarizer(description, max_length=150, min_length=100, do_sample=False)
+        summary_obj = summarizer(description, max_length=100, min_length=50, do_sample=False)
         summary = summary_obj[0]['summary_text']
         summary = summary.replace("'", "''") # Escape single quotes for SQL query
 

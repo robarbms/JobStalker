@@ -8,6 +8,7 @@ from .meta import getMetaJobs
 from .adobe import getAdobeJobs
 from .utils import log
 from datetime import datetime
+from .salesforce import getSalesforceJobs
 
 def getAllJobs(job_ids):
     log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", None)
@@ -27,6 +28,7 @@ def getAllJobs(job_ids):
         'Microsoft': getMicrosoftJobs,
         'Netflix': getNetflixJobs,
         'Nvidia': getNvidiaJobs,
+        'Salesforce': getSalesforceJobs,
     }
 
     # Cloudflare is blocking Adobe and Meta when scraping too often
