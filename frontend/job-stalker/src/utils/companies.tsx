@@ -10,6 +10,7 @@ import { ReactComponent as OpenaiIcon } from '../static/openai.svg';
 import { ReactComponent as NvidiaIcon } from '../static/nvidia.svg';
 import { ReactComponent as MetaIcon } from '../static/meta.svg';
 import { ReactComponent as SalesforceIcon } from '../static/salesforce.svg'
+import { ReactComponent as Zillow } from '../static/zillow.svg'
 
 export type Company = {
     icon: JSX.Element;
@@ -52,5 +53,9 @@ export const companyData: {[key: string]: Company} = {
     Salesforce: {
         icon: <SalesforceIcon className="icon" />,
         color: "#00a6ed",
+    },
+    Zillow: {
+        icon: <Zillow className="icon" />,
+        color: "#006aff"
     }
 }

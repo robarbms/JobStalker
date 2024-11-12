@@ -9,6 +9,7 @@ from .adobe import getAdobeJobs
 from .utils import log
 from datetime import datetime
 from .salesforce import getSalesforceJobs
+from .zillow import getZillowJobs
 
 def getAllJobs(job_ids):
     log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", None)
@@ -29,6 +30,7 @@ def getAllJobs(job_ids):
         'Netflix': getNetflixJobs,
         'Nvidia': getNvidiaJobs,
         'Salesforce': getSalesforceJobs,
+        'Zillow': getZillowJobs,
     }
 
     # Cloudflare is blocking Adobe and Meta when scraping too often

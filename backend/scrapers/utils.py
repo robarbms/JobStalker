@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
 from playwright.sync_api import sync_playwright, Page
-from datetime import datetime
+from datetime import datetime, timedelta
+import re
 
 """
     Gets the contents of a page and returns it as a soup object
@@ -73,3 +74,27 @@ queries = [
     "design technologist",
     "developer"
 ]
+
+def stringToDateStamp(date_str: str) -> str:
+    date_str = date_str.strip().lower()
+    now = datetime.now()
+    if re.search(r"today", date_str):
+        return now.strftime("%Y-%m-%d")
+    if re.search(r"yesterday", date_str):
+        return (now - timedelta(days=1)).strftime("%Y-%m-%d")
+    if re.search(r"ago", date_str):
+        try:
+            date_parts = re.match(r'posted (\d+)\+? (day|week|month|year)s? ago', date_str)
+            date_parts= date_parts.groups()
+            num = int(date_parts[0])
+            unit = date_parts[1]
+        except Exception as e:
+            log("Error parsing date string: {0}".format(e), "error")
+        if unit == "day":
+            return (now - timedelta(days=num)).strftime("%Y-%m-%d")
+        elif unit == "week":
+            return (now - timedelta(weeks=num)).strftime("%Y-%m-%d")
+        elif unit == "month":
+            return (now - timedelta(months=num)).strftime("%Y-%m-%d")
+        elif unit == "year":
+            return (now - timedelta(years=num)).strftime("%Y-%m-%d")
