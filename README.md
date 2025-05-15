@@ -50,16 +50,6 @@ Current companies being scrapped are:
 - Salesforce
 - Zillow
 
-The scraper will parse information about each job including:
-
-- Title
-- Date posted
-- Location
-- Pay range (if available)
-- Technical requirements for the position as tags
-- Job description (summarized with Machine Learning)
-
-
 ## Prereq
 You will need a few things installed before you start.
 
