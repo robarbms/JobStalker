@@ -1,6 +1,8 @@
 # Job Stalker
 Project for monitoring and searching through job listings, parsing job listings, agregating job information such as technology requirements.
 
+![JobStalker screenshot]("./assets/Screenshot 2024-10-28 145630.png")
+
 ## Features
 
 ### Job listing scrapers
