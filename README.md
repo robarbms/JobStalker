@@ -5,6 +5,34 @@ Project for monitoring and searching through job listings, parsing job listings,
 
 ## Features
 
+### Job Trends
+A graph showing a daily breakdown of jobs posted.
+![alt text](./assets/job_trends.png "Job Stalker job trends")
+
+### Tech Trends
+A graph showing top level technologies posted for each day and an overall bar chart showing how often a paticular technology is referenced in job postings.
+![alt text](./assets/tech_trends.png "Job Stalker tech trends")
+
+### Search and Filtering
+Tools to search through job postings. Fields for searching title, description or filter by any number of companies. Search fields include exclusion of keywords when prefixed with the exclamation mark(`!`).
+```
+manager !program
+```
+![alt text](./assets/search.png "Job Stalker search")
+
+### Company Share and Weekly Overview
+A pie chart shows the percentages of jobs for the filtered search or all jobs if none. The weekly job postings will reflect the search results as well.
+![alt text](./assets/week_overview.png)
+
+### Job Results List
+A list of the filtered job listings or all if no search. Each listing includes:
+- Job title
+- Date posted
+- Pay range
+- Summarization of the job description
+- Tags of technical requirements
+![alt text](./assets/job_overview.png "Job Stalker job listing")
+
 ### Job listing scrapers
 The app will scrape job sites every 2 hours.
 
