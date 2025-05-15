@@ -100,6 +100,8 @@ These are the steps to get the project started. You only need to run this once, 
 ## Application start
 You will need to do these steps to get the application up and running. If you close any of the terminals or your computer is restarted, you will need to go through this process again.
 
+You can run the startup.bat file in the root directory. Alternatively, you can start each manually.
+
 1. **Start the job scrapers.**
     Open a new terminal and navigate to the root directory.
     Change directory into the backend directory with:
