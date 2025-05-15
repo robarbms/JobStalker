@@ -19,7 +19,7 @@ const WeekChart = () => {
             const now = new Date();
             now.setHours(0, 0, 0, 0);
             const day = 1000 * 60 * 60 * 24; // milliseconds in a day
-            start = start === 0 ? new Date().getTime() : now.getTime() - start * day;
+            start = now.getTime() - (start === 0 ? start * day : 0);
             end = start - end * day;
 
             return jobs.filter((job: JobDetails) => {
@@ -43,6 +43,7 @@ const WeekChart = () => {
          */
         const thisWeek = filterJobs(7);
         const lastWeek = filterJobs(7, 8);
+        console.dir(thisWeek);
 
         const companiesParsed = thisWeek.reduce((acc: any, job: JobDetails) => {
             if (!acc.find((company: any) => company === job.company)) {
@@ -63,6 +64,7 @@ const WeekChart = () => {
          *  }]
          */
         const parsedLastWeekData = getJobsByDate(lastWeek);
+        console.dir(getJobsByDate(thisWeek));
         const dataParsed = getJobsByDate(thisWeek)
         .map((day: any, idx: number) => {
                 let total = 0;
@@ -80,6 +82,7 @@ const WeekChart = () => {
                 day['Last week'] = lastTotal;
                 return day;
         });
+        console.dir(dataParsed)
         setData(dataParsed);
         setJobsTotal({
             total: getTotalJobs(dataParsed),

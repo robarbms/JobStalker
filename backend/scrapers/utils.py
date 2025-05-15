@@ -72,7 +72,10 @@ queries = [
     "prototype",
     "engineer",
     "design technologist",
-    "developer"
+    "developer",
+    # "chief of staff",
+    # "business administrator",
+    # "executive assistant",
 ]
 
 def stringToDateStamp(date_str: str) -> str:
