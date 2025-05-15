@@ -1,4 +1,4 @@
-# NightStocker
+# Job Stalker
 Project for monitoring and searching through job listings, parsing job listings, agregating job information such as technology requirements.
 
 ## Features
@@ -41,7 +41,7 @@ These are the steps to get the project started. You only to run this once, the f
 
 1. **Set up the database.**
     Open pgAdmin.
-    Create a new database and name it NightStocker.
+    Create a new database and name it JobStalker.
     You can use the default user `postgres`.
     Create a password.
     Use the default port `5432`
@@ -52,7 +52,7 @@ These are the steps to get the project started. You only to run this once, the f
 
     ```
     DB_HOST=localhost
-    DB_NAME=NightStocker
+    DB_NAME=JobStalker
     DB_USER=postgres
     DB_PASSWORD=[your password here]
     DB_PORT=5432
