@@ -31,6 +31,7 @@ A list of the filtered job listings or all if no search. Each listing includes:
 - Pay range
 - Summarization of the job description
 - Tags of technical requirements
+
 ![alt text](./assets/job_overview.png "Job Stalker job listing")
 
 ### Job listing scrapers
