@@ -11,6 +11,7 @@ import { getTagColors, test_colors } from "./components/tags/tagColors";
 import techKeywordsJson from './utils/tech_keywords.json';
 import dsKeywordsJson from './utils/ds_keywords.json';
 import Card from './components/job_card/Card';
+import ApiService from './components/api_service';
 
 type Filter = {
   title: string;
@@ -93,7 +94,7 @@ function App() {
         clearTimeout(jobHandler.current);
       }
       // Wait 10 minutes and try again
-      jobHandler.current = setTimeout(getJobs, 1000 * 60 * 10);
+      jobHandler.current = setTimeout(getJobs, 1000 * 60);
     }
   };
 
@@ -149,7 +150,7 @@ function App() {
         clearTimeout(jobHandler.current);
       }
     }
-  }, []);
+  }, [getJobs]);
 
   useEffect(() => {
     applyFilters();
@@ -187,37 +188,44 @@ function App() {
             <label>Last scraped: </label><span className={`last_scraped ${getStatus(lastScraped)}`}>{lastScraped && lastScraped.toLocaleString()}</span>
           </h1>
         </header>
-        <div className="trends">
-          <AllTrendChart />
-          <TagsOverTime />
-        </div>
-        <div className="job-search">
-          <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
-          <CompanyChart />
-          <WeekChart />
-        </div>
-        <div className="job-lists">
-          <div className="job-list-container">
-            <h2>
-              Top results
-              <span className="meta">
-                <label>Top 20 jobs: </label>
-                {Math.min(jobs.length, 20)} / {allJobs.length} jobs
-              </span>
-            </h2>
-            {jobs.slice(0, 20).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} />)}
-          </div>
-          <div className="job-list-container">
-            <h2>
-              All results
-              <span className="meta">
-                <label>Search results: </label>
-                {jobs.length} / {allJobs.length} jobs
-              </span>            
-            </h2>
-            <Table></Table>
-          </div>
-        </div>
+        {jobs && jobs.length > 0 &&
+          <>
+            <div className="trends">
+              <AllTrendChart />
+              <TagsOverTime />
+            </div>
+            <div className="job-search">
+              <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
+              <CompanyChart />
+              <WeekChart />
+            </div>
+            <div className="job-lists">
+              <div className="job-list-container">
+                <h2>
+                  Top results
+                  <span className="meta">
+                    <label>Top 20 jobs: </label>
+                    {Math.min(jobs.length, 20)} / {allJobs.length} jobs
+                  </span>
+                </h2>
+                {jobs.slice(0, 20).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} />)}
+              </div>
+              <div className="job-list-container">
+                <h2>
+                  All results
+                  <span className="meta">
+                    <label>Search results: </label>
+                    {jobs.length} / {allJobs.length} jobs
+                  </span>            
+                </h2>
+                <Table></Table>
+              </div>
+            </div>
+          </>
+        }
+        {( !jobs || jobs.length < 1 ) &&
+          <ApiService />
+        }
       </div>
     </JobContext.Provider>
   );
