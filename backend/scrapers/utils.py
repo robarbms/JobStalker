@@ -64,15 +64,15 @@ def log(message: str, level="info"):
     print(log_msg)
 
 queries = [
-    # "frontend",
-    # "ui",
-    # "ux",
-    # "web",
-    # "full stack",
-    # "prototype",
+    "frontend",
+    "ui",
+    "ux",
+    "web",
+    "full stack",
+    "prototype",
     "engineer",
-    # "design technologist",
-    # "developer",
+    "design technologist",
+    "developer",
 ]
 
 def get_queries():

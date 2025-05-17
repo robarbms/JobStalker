@@ -1,6 +1,6 @@
 echo Starting backend API...
 
-start cmd /k "title JobStalker backend api & cd .\backend & .\venv\Scripts\activate & python .\api\app.py"
+start cmd /k "title JobStalker backend api & cd .\backend & .\venv\Scripts\activate & cd .\api & python .\app.py"
 
 echo Starting frontend...
 

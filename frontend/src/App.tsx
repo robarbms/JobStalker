@@ -57,33 +57,44 @@ function App() {
   };
 
   const getJobs = async () => {
-    const response = await fetch('http://localhost:5000/api');
-    let data = await response.json();
-    data = data.sort((a: any, b: any) => new Date(a.date_posted) > new Date(b.date_posted) ? -1 : 1)
-      .map((job: JobDetails) => {
-        job.tags = JSON.parse(job.tags as string) as any[];
-        return job;
-      });
-    
-    const companies = data.reduce((c: string[], job: JobDetails) => {
-        if (!c.includes(job.company)) {
-          c.push(job.company);
-        }
-        return c;
-    }, []).sort();
-    setCompanies(companies);
-    setAllJobs(data);
-    setLastUpdated(new Date());
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set to midnight of the current day
-    setJobsToday(data.filter((job: JobDetails) => new Date(job.created_at).getTime() >= today.getTime()));
-    const mostRecentScraped = new Date(data.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0]['created_at']);
-    mostRecentScraped.setTime(mostRecentScraped.getTime() + 1000 * 60 * 60 * 7); // Add 7 hours to the timestamp
-    setLastScraped(mostRecentScraped);
-    if (jobHandler.current !== null) {
-      clearTimeout(jobHandler.current);
+    try {
+      const response = await fetch('http://localhost:5000/api');
+      let data = await response.json();
+      data = data.sort((a: any, b: any) => new Date(a.date_posted) > new Date(b.date_posted) ? -1 : 1)
+        .map((job: JobDetails) => {
+          job.tags = JSON.parse(job.tags as string) as any[];
+          return job;
+        });
+      
+      const companies = data.reduce((c: string[], job: JobDetails) => {
+          if (!c.includes(job.company)) {
+            c.push(job.company);
+          }
+          return c;
+      }, []).sort();
+      setCompanies(companies);
+      setAllJobs(data);
+      setLastUpdated(new Date());
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set to midnight of the current day
+      setJobsToday(data.filter((job: JobDetails) => new Date(job.created_at).getTime() >= today.getTime()));
+      const mostRecentScraped = new Date(data.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0]['created_at']);
+      mostRecentScraped.setTime(mostRecentScraped.getTime() + 1000 * 60 * 60 * 7); // Add 7 hours to the timestamp
+      setLastScraped(mostRecentScraped);
+      if (jobHandler.current !== null) {
+        clearTimeout(jobHandler.current);
+      }
+      jobHandler.current = setTimeout(getJobs, 1000 * 60 * 60 * 2);
     }
-    jobHandler.current = setTimeout(getJobs, 1000 * 60 * 60 * 2);
+    catch (err) {
+      // No response from the API
+      // Either the API is down or there is no content in jobs.db yet
+      if (jobHandler.current !== null) {
+        clearTimeout(jobHandler.current);
+      }
+      // Wait 10 minutes and try again
+      jobHandler.current = setTimeout(getJobs, 1000 * 60 * 10);
+    }
   };
 
   const textSearch = (text: string, search: string) => {

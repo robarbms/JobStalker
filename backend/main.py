@@ -29,7 +29,6 @@ def updateTagsAndSalary(curr, conn):
 
         query += f" WHERE id={id}"
 
-        print(query)
         curr.execute(query)
 
     conn.commit()
