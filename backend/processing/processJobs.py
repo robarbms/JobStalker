@@ -6,7 +6,7 @@ import re
 # Process job postings by extracting keywords and payment information
 # Additional information will be added here to be added to the job
 def process(description, title):
-    desc_keyword_path = '../frontend/job-stalker/src/utils/'
+    desc_keyword_path = '../frontend/src/utils/'
     keyword_files = ['tech_keywords.json', 'ds_keywords.json']
     keywords = set()
 

@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright, Page, Locator
-from .utils import Extractor, log, queries, getPage
+from ..utils import Extractor, log, queries, getPage
 import time
 import datetime
 import re

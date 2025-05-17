@@ -1,13 +1,11 @@
-import psycopg2
-from dotenv import load_dotenv
-import os
+from connection import connect_to_db
 
-""" create tables in the PostgreSQL database"""
-def createTables():
+""" create tables in the database"""
+def createTables(cur, conn):
     commands = (
         """
        CREATE TABLE IF NOT EXISTS companies (
-            id SERIAL PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name VARCHAR(255) NOT NULL UNIQUE,
             address TEXT,
             site_url TEXT,
@@ -22,7 +20,7 @@ def createTables():
         """,
         """
         CREATE TABLE IF NOT EXISTS jobs (
-            id SERIAL PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             job_id VARCHAR(255) NOT NULL,
             title VARCHAR(255) NOT NULL,
             description TEXT,
@@ -46,7 +44,7 @@ def createTables():
         """,
         """
         CREATE TABLE IF NOT EXISTS users (
-            id SERIAL PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             username VARCHAR(255) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL UNIQUE,
@@ -58,45 +56,124 @@ def createTables():
         """
     )
 
-    # load environment variables from .env file
-    load_dotenv()
-
-    db_host = os.getenv('DB_HOST')
-    db_name = os.getenv('DB_NAME')
-    db_user = os.getenv('DB_USER')
-    db_password = os.getenv('DB_PASSWORD')
-    db_port = os.getenv('DB_PORT')
-
-    conn = None
     try:
-        # connect to the PostgreSQL server
-        conn = psycopg2.connect(
-            database=db_name,
-            user=db_user,
-            password=db_password,
-            host=db_host,
-            port=db_port,
-        )
-
-        print("Connected to database")
-
-       # create a new cursor object using the cursor() method of the connection object
-        cur = conn.cursor()
-
-       # execute the commands using the execute() method of the cursor object
+        print("Creating tables")
+        # execute the commands using the execute() method of the cursor object
         for command in commands:
             cur.execute(command)
 
-        cur.close() # close the cursor object
         conn.commit() # commit the changes to the database
         
-    except (Exception, psycopg2.DatabaseError) as error:
+    except (Exception) as error:
         print("Error: %s" % error)
 
-    # close the database connection using the close() method of the connection object
-    finally:
-        if conn is not None:
-            # close the communication with the PostgreSQL
-            conn.close()
+companies = [
+    {
+        "name": "Apple",
+        "address": "Cupertino, CA",
+        "site_url": "https://www.apple.com",
+        "stock": "AAPL",
+    },
+    {
+        "name": "Netflix",
+        "address": "Los Gatos, CA",
+        "site_url": "https://www.netflix.com",
+        "stock": "NFLX",
+    },
+    {
+        "name": "Microsoft",
+        "address": "Redmond, WA",
+        "site_url": "https://www.microsoft.com",
+        "stock": "MSFT",
+    },
+    {
+        "name": "Adobe",
+        "address": "San Jose, CA",
+        "site_url": "https://www.adobe.com",
+        "stock": "ADBE",
+    },
+    {
+        "name": "NVidia",
+        "address": "Santa Clara, CA",
+        "site_url": "https://www.nvidia.com",
+        "stock": "NVDA",
+    },
+    {
+        "name": "OpenAI",
+        "address": "San Francisco, CA",
+        "site_url": "https://www.openai.com",
+        "stock": "",
+    },
+    {
+        "name": "Amazon",
+        "address": "Seattle, WA",
+        "site_url": "https://www.amazon.com",
+        "stock": "AMZN",
+    },
+    {
+        "name": "Anthropic",
+        "address": "San Francisco, CA",
+        "site_url": "https://www.anthropic.com",
+        "stock": "",
+    },
+    {
+        "name": "Meta",
+        "address": "Menlo Park, CA",
+        "site_url": "https:///www.meta.com",
+        "stock": "META",
+    },
+    {
+        "name": "Google",
+        "address": "Mountain View, CA",
+        "site_url": "https://www.google.com",
+        "stock": "GOOG",
+    },
+    {
+        "name": "Salesforce",
+        "address": "San Francisco, CA",
+        "site_url": "https://www.salesforce.com",
+        "stock": "CRM",
+    },
+    {
+        "name": "Zillow",
+        "address": "Seattle, WA",
+        "site_url": "https://www.zillow.com",
+        "stock": "Z",
+    },
+]
 
-createTables()
+# Function to add companies to the DB
+# TODO: This should be replace with a method that lets scrapers add companies
+def addCompanies(cur, conn, companies):
+    print("Adding companies")
+    for company in companies:
+        addCompany(cur, conn, company)
+
+
+def addCompany(cur, conn, company_info):
+    # Check if the company already exists
+    check_query = f"SELECT id, name FROM companies WHERE name='{company_info['name']}'"
+    cur.execute(check_query)
+    company_found = cur.fetchall()
+    # If the company already exists, skip it
+    if company_found and len(company_found) > 0:
+        return
+
+    insert_query = f"INSERT INTO companies (name, address, site_url, stock) VALUES ('{company_info['name']}', '{company_info['address']}', '{company_info['site_url']}', '{company_info['stock']}')"
+    cur.execute(insert_query)
+    conn.commit()
+
+# Creates the db tables and adds the companies
+def setupDB():
+    cur, conn = connect_to_db()
+    createTables(cur, conn)
+    addCompanies(cur, conn, companies)
+    # Checking companies
+    company_query = "SELECT * FROM companies"
+    cur.execute(company_query)
+    found_companies = cur.fetchall()
+    print(f"Found company count: {len(found_companies)}")
+    
+# Method for setting up the database if the file is evoked directly
+if __name__ == "__main__":
+    setupDB()

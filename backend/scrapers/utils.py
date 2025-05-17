@@ -64,19 +64,19 @@ def log(message: str, level="info"):
     print(log_msg)
 
 queries = [
-    "frontend",
-    "ui",
-    "ux",
-    "web",
-    "full stack",
-    "prototype",
+    # "frontend",
+    # "ui",
+    # "ux",
+    # "web",
+    # "full stack",
+    # "prototype",
     "engineer",
-    "design technologist",
-    "developer",
-    # "chief of staff",
-    # "business administrator",
-    # "executive assistant",
+    # "design technologist",
+    # "developer",
 ]
+
+def get_queries():
+    return queries
 
 def stringToDateStamp(date_str: str) -> str:
     date_str = date_str.strip().lower()

@@ -1,7 +1,3 @@
-import sys
-import os
-import psycopg2
-from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_cors import CORS
 from connection import connect_to_db
@@ -29,6 +25,7 @@ def api():
         jobs_query = "SELECT id, job_id, title, company_id, created_at, date_posted, link, description, location, tags, salary_min, salary_max, summary FROM jobs"
         cur.execute(jobs_query)
         jobs = cur.fetchall()
+        print(jobs)
 
         job_results = [
             {'id': row[0], 'job_id': row[1], 'title': row[2], 'company': getCompanyName(companies=companies, companyId=row[3]), 'created_at': row[4], 'date_posted': row[5], 'link': row[6], 'description': row[7], 'location': row[8], 'tags': row[9], 'salary_min': row[10], 'salary_max': row[11], 'summary': row[12]}

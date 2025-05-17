@@ -5,8 +5,7 @@ import time
 from processing import processJobs
 from ai import get_summary
 
-def updateTagsAndSalary():
-    curr, conn = connect_to_db()
+def updateTagsAndSalary(curr, conn):
     allJobs = get_jobs(curr, conn)
     updated_jobs = []
 
@@ -33,11 +32,9 @@ def updateTagsAndSalary():
         print(query)
         curr.execute(query)
 
-    curr.close()
     conn.commit()
 
-def updateSummary():
-    curr, conn = connect_to_db()
+def updateSummary(curr, conn):
     allJobs = get_jobs(curr, conn)
     count = 0
 
@@ -60,18 +57,15 @@ def updateSummary():
                 except Exception as e:
                     print(f"ERROR: on job #{count} ")
                     print(e)
-                    curr.close()
-                    conn.commit()
 
-
-    curr.close()
     conn.commit()
 
-
 def main():
-
-    job_ids = get_job_ids()
+    cur, conn = connect_to_db()
+    job_ids = get_job_ids(cur, conn)
+    log(f"Fetched job_ids: {len(job_ids)}")
     jobs = getAllJobs(job_ids)
+
 
     updated_jobs = processJobs(jobs)
     for x in range(len(updated_jobs)):
@@ -80,11 +74,14 @@ def main():
         updated_jobs[x]['summary'] = summary
 
     log("Adding jobs to database")
-    new_job_count = insert_jobs(updated_jobs)
+    new_job_count = insert_jobs(updated_jobs, cur, conn)
     log(f"Successfully added {new_job_count} new job(s) to the database")
+    job_total_query = "SELECT COUNT(*) FROM jobs"
+    job_total = cur.execute(job_total_query)
+    log(f"Total jobs in db: {job_total}")
+    conn.close()
     time.sleep(60 * 60 * 2.1) # sleep for 2 hours and a bit to avoid getting banned from websites
     main()
 
 if __name__ == "__main__": 
-    # updateSummary()
     main()

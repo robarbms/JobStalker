@@ -24,21 +24,21 @@ def getAllJobs(job_ids):
     
     jobScrapers = {
         'Amazon': getAmazonJobs,
-        'Apple': getAppleJobs,
-        'Google': getGoogleJobs,
-        'Microsoft': getMicrosoftJobs,
-        'Netflix': getNetflixJobs,
-        'Nvidia': getNvidiaJobs,
-        'Salesforce': getSalesforceJobs,
-        'Zillow': getZillowJobs,
+        # 'Apple': getAppleJobs,
+        # 'Google': getGoogleJobs,
+        # 'Microsoft': getMicrosoftJobs,
+        # 'Netflix': getNetflixJobs,
+        # 'Nvidia': getNvidiaJobs,
+        # 'Salesforce': getSalesforceJobs,
+        # 'Zillow': getZillowJobs,
     }
 
     # Cloudflare is blocking Adobe and Meta when scraping too often
     # Scraping 3 times daily ~5am, ~11am, ~5pm
     now = datetime.now()
-    if (now.hour > 4 and now.hour <= 6) or (now.hour > 10 and now.hour <= 12) or (now.hour > 16 and now.hour <= 18):
-        jobScrapers['Adobe'] = getAdobeJobs
-        jobScrapers['Meta'] = getMetaJobs
+    # if (now.hour > 4 and now.hour <= 6) or (now.hour > 10 and now.hour <= 12) or (now.hour > 16 and now.hour <= 18):
+    #     jobScrapers['Adobe'] = getAdobeJobs
+    #     jobScrapers['Meta'] = getMetaJobs
 
     num_scrapers = len(jobScrapers)
 

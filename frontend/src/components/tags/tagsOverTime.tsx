@@ -79,9 +79,6 @@ export default function TagsOverTime (props: any) {
                 tag_counts[key][tag_point] += 1;
                 category_totals[tag_point] += 1;
             }
-            else {
-                console.log(tag_point, tag);
-            }
         });
     });
 

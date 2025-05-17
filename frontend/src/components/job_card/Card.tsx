@@ -16,6 +16,8 @@ const Tag = (props: any) => {
 }
 
 const payToString = (val: any) => {
+    if (!val) return val;
+    val = `${val}`;
     val = val.replace(".00", "");
     val = val.split("")
     val.reverse();

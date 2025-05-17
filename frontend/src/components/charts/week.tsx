@@ -43,7 +43,6 @@ const WeekChart = () => {
          */
         const thisWeek = filterJobs(7);
         const lastWeek = filterJobs(7, 8);
-        console.dir(thisWeek);
 
         const companiesParsed = thisWeek.reduce((acc: any, job: JobDetails) => {
             if (!acc.find((company: any) => company === job.company)) {
@@ -64,7 +63,7 @@ const WeekChart = () => {
          *  }]
          */
         const parsedLastWeekData = getJobsByDate(lastWeek);
-        console.dir(getJobsByDate(thisWeek));
+
         const dataParsed = getJobsByDate(thisWeek)
         .map((day: any, idx: number) => {
                 let total = 0;
@@ -82,7 +81,7 @@ const WeekChart = () => {
                 day['Last week'] = lastTotal;
                 return day;
         });
-        console.dir(dataParsed)
+
         setData(dataParsed);
         setJobsTotal({
             total: getTotalJobs(dataParsed),
