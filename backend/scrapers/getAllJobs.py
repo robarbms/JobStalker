@@ -6,7 +6,7 @@ from .google import getGoogleJobs
 from .amazon import getAmazonJobs
 from .meta import getMetaJobs
 from .adobe import getAdobeJobs
-from .utils import log
+from .scraper_utils import log
 from datetime import datetime
 from .salesforce import getSalesforceJobs
 from .zillow import getZillowJobs

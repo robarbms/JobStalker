@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright, Page, Locator
-from .utils import log, queries
+from .scraper_utils import log, get_queries
 import time
 from datetime import datetime
 import re
@@ -86,6 +86,7 @@ def getMetaJobs(job_ids: list[int]):
     log("Fetching jobs for Meta...")
     jobs = []
     total_jobs = 0
+    queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)

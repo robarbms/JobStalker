@@ -1,1 +1,1 @@
-from .scrapers.utils import log
+from .scrapers.scraper_utils import log

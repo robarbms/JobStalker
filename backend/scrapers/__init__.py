@@ -1,3 +1,3 @@
 from .getAllJobs import getAllJobs
-from .utils import log
+from .scraper_utils import log
 from .scheduler import job

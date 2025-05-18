@@ -1,12 +1,13 @@
 from playwright.sync_api import sync_playwright, Page, Locator
-from .utils import log, stringToDateStamp
+from .scraper_utils import log, stringToDateStamp, get_queries
 import time
 from datetime import datetime
 import re
 
 
 def getJobs(job_ids: list[int]) -> list[dict]:
-    url = f"https://zillow.wd5.myworkdayjobs.com/Zillow_Group_External?locations=76d84517207210c0ae0423975342e5e5&locations=76d84517207210c0ae04392fff1ae612&locations=bf3166a9227a01f8b514f0b00b147bc9&timeType=156fb9a2f01c10be203b6e91581a01d1&workerSubType=156fb9a2f01c10bed80e140d011a9559"
+    # url = f"https://zillow.wd5.myworkdayjobs.com/Zillow_Group_External?locations=76d84517207210c0ae0423975342e5e5&locations=76d84517207210c0ae04392fff1ae612&locations=bf3166a9227a01f8b514f0b00b147bc9&timeType=156fb9a2f01c10be203b6e91581a01d1&workerSubType=156fb9a2f01c10bed80e140d011a9559"
+    url = f"https://zillow.wd5.myworkdayjobs.com/Zillow_Group_External?locations=76d84517207210c0ae0423975342e5e5&locations=76d84517207210c0ae04392fff1ae612&locations=bf3166a9227a01f8b514f0b00b147bc9&timeType=156fb9a2f01c10be203b6e91581a01d1"
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()

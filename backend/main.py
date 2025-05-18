@@ -1,5 +1,4 @@
-from scrapers import getAllJobs
-from scrapers.utils import log
+from scrapers import getAllJobs, log
 from database import insert_jobs, connect_to_db, get_job_ids, get_jobs
 import time
 from processing import processJobs
@@ -75,10 +74,6 @@ def main():
     log("Adding jobs to database")
     new_job_count = insert_jobs(updated_jobs, cur, conn)
     log(f"Successfully added {new_job_count} new job(s) to the database")
-    job_total_query = "SELECT COUNT(*) FROM jobs"
-    job_total = cur.execute(job_total_query)
-    log(f"Total jobs in db: {job_total}")
-    conn.close()
     time.sleep(60 * 60 * 2.1) # sleep for 2 hours and a bit to avoid getting banned from websites
     main()
 

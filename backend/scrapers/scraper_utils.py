@@ -3,6 +3,8 @@ import requests
 from playwright.sync_api import sync_playwright, Page
 from datetime import datetime, timedelta
 import re
+import configparser
+import os
 
 """
     Gets the contents of a page and returns it as a soup object
@@ -63,19 +65,19 @@ def log(message: str, level="info"):
         
     print(log_msg)
 
-queries = [
-    "frontend",
-    "ui",
-    "ux",
-    "web",
-    "full stack",
-    "prototype",
-    "engineer",
-    "design technologist",
-    "developer",
-]
-
 def get_queries():
+    config = configparser.ConfigParser()
+    cur_path = os.path.realpath(__file__)
+    root_path = re.sub(r'JobStalker.*', 'JobStalker', cur_path)
+    config_path = root_path + '\\config.ini'
+    config.read(config_path)
+    scenario = config.get('app', 'scenario')
+    queries = config.get('scrapers', 'webdev_queries')
+    if scenario:
+        scenario_queries = config.get('scrapers', f"{scenario}_queries")
+        if scenario_queries:
+            queries = scenario_queries
+    queries = queries.split(',')
     return queries
 
 def stringToDateStamp(date_str: str) -> str:

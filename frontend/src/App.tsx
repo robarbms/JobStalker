@@ -94,7 +94,7 @@ function App() {
         clearTimeout(jobHandler.current);
       }
       // Wait 10 minutes and try again
-      jobHandler.current = setTimeout(getJobs, 1000 * 60);
+      jobHandler.current = setTimeout(getJobs, 1000 * 60 * 10);
     }
   };
 
@@ -150,7 +150,7 @@ function App() {
         clearTimeout(jobHandler.current);
       }
     }
-  }, [getJobs]);
+  }, []);
 
   useEffect(() => {
     applyFilters();

@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright, Page, Locator
-from .utils import Extractor, log, queries
+from .scraper_utils import Extractor, log, get_queries
 import time
 from datetime import datetime
 import re
@@ -104,6 +104,7 @@ def getGoogleJobs(job_ids: list[str]):
     log("Fetching jobs for Google...")
     jobs = []
     total_found = 0
+    queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)

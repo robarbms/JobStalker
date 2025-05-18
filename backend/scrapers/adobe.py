@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright, Page, Locator, Browser
-from .utils import Extractor, log, queries
+from .scraper_utils import Extractor, log, get_queries
 import time
 import re
 
@@ -102,6 +102,7 @@ def getAdobeJobs(job_ids):
     log("Fetching jobs for Adobe...")
     jobs = []
     total_found = 0
+    queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)

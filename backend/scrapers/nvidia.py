@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright, Page, Locator
-from .utils import log, queries
+from .scraper_utils import log, get_queries
 import time
 import datetime
 
@@ -70,7 +70,8 @@ def getJobDetails(url: str, page: Page):
         return details
 
 def getJobs(query: str, job_ids: list[str]):
-    query_url = "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/jobs?q={query}&locations=91336993fab910af6d7169a81124c410&locations=91336993fab910af6d701e82d004c2c0&locations=16fc4607fc4310011e929f7115f90000&locations=d2088e737cbb01d5e2be9e52ce01926f&workerSubType=0c40f6bd1d8f10adf6dae161b1844a15&timeType=5509c0b5959810ac0029943377d47364"
+    # query_url = "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/jobs?q={query}&locations=91336993fab910af6d7169a81124c410&locations=91336993fab910af6d701e82d004c2c0&locations=16fc4607fc4310011e929f7115f90000&locations=d2088e737cbb01d5e2be9e52ce01926f&workerSubType=0c40f6bd1d8f10adf6dae161b1844a15&timeType=5509c0b5959810ac0029943377d47364"
+    query_url = "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/jobs?q={query}&locations=91336993fab910af6d7169a81124c410&locations=91336993fab910af6d701e82d004c2c0&locations=16fc4607fc4310011e929f7115f90000&locations=d2088e737cbb01d5e2be9e52ce01926f&timeType=5509c0b5959810ac0029943377d47364"
     url = query_url.format(query=query)
     jobs = []
 
@@ -136,6 +137,7 @@ def getNvidiaJobs(job_ids: list[str]):
     log("Fetching jobs for Nvidia...")
     jobs = []
     total_jobs = 0
+    queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)

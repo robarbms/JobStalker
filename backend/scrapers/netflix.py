@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
-from .utils import Extractor, log, queries
+from .scraper_utils import Extractor, log, get_queries
 import time
 import re
 import json
@@ -118,6 +118,7 @@ def getNetflixJobs(job_ids):
     base_url = "https://jobs.netflix.com/"
     jobs = []
     total_jobs = 0
+    queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)

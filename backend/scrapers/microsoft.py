@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright, Page, Locator
-from .utils import log, queries
+from .scraper_utils import log, get_queries
 import time
 import re
 
@@ -47,7 +47,8 @@ def getJobDetails(job_number: str, page: Page):
 
 
 def getJobs(query, job_ids):
-    query_url = "https://jobs.careers.microsoft.com/global/en/search?q={query}&lc=Bellevue%2C%20Washington%2C%20United%20States&lc=Redmond%2C%20Washington%2C%20United%20States&lc=Seattle%2C%20Washington%2C%20United%20States&p=Software%20Engineering&l=en_us&pg=1&pgSz=20&o=Recent&flt=true"
+    # query_url = "https://jobs.careers.microsoft.com/global/en/search?q={query}&lc=Bellevue%2C%20Washington%2C%20United%20States&lc=Redmond%2C%20Washington%2C%20United%20States&lc=Seattle%2C%20Washington%2C%20United%20States&p=Software%20Engineering&l=en_us&pg=1&pgSz=20&o=Recent&flt=true"
+    query_url = "https://jobs.careers.microsoft.com/global/en/search?q={query}&lc=Bellevue%2C%20Washington%2C%20United%20States&lc=Redmond%2C%20Washington%2C%20United%20States&lc=Seattle%2C%20Washington%2C%20United%20States&l=en_us&pg=1&pgSz=20&o=Recent&flt=true"
     url = query_url.format(query=query)
     jobs = []
     jobs_found = 0
@@ -88,6 +89,7 @@ def getMicrosoftJobs(job_ids):
     log("Fetching jobs for Microsoft...")
     jobs = []
     total_jobs = 0
+    queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
