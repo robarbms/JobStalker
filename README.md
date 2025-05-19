@@ -25,8 +25,12 @@ A pie chart shows the percentages of jobs for the filtered search or all jobs if
 ![alt text](./assets/week_overview.png)
 
 ### Job Results List
-A list of the filtered job listings or all if no search. Each listing includes:
+A list of the filtered job listings or all if no search filters.
+![alt text](./assets/job_list.png "Job Stalkder Job List)
+
+Each job card gives info:
 - Job title
+- Link to job post
 - Date posted
 - Pay range
 - Summarization of the job description
