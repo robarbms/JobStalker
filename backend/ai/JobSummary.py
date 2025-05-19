@@ -35,4 +35,5 @@ def get_summary(description: str):
         return summary
     except Exception as e:
         print(f"Error occurred while summarizing the job description: {e}")
-        return ""
+    
+    return description[0:200]

@@ -48,6 +48,15 @@ You will need a couple things installed before you start.
 ### Download
 You will need to either download files or git clone the repository to your computer.
 
+Download the Bart Large CNN model from Huggingface: https://huggingface.co/facebook/bart-large-cnn/tree/main
+You will need the following files:
+- config.json
+- merges.txt
+- model.safetensors
+- vocab.json
+
+In the /backend/ai/models directory, create a folder named `bart-large-cnn` and place the downloaded files.
+
 ### Initialize Application
 To automatically setup the project, run the `setup.bat` file. This will install packages, initialize a database and kick off services. Content will not show up untill the scrapers have finished getting content. You will not need to use start.bat on setup, it will be ran automatically as a part of the setup process.
 

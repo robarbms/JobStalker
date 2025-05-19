@@ -1,7 +1,9 @@
-@echo off
 setlocal
 
 set VENV_DIR= .\backend\venv
+set BASE_URL=https://huggingface.co/facebook/bart-large-cnn/resolve/main/
+set DOWNLOAD_DIR=.\backend\ai\models\bart-large-cnn
+set SUMMARY_FILES=config.json merges.txt model.safetensors tokenizer.json vocab.json
 
 where python >nul 2>nul
 if %errorlevel%==0 (
@@ -30,6 +32,23 @@ if %errorlevel%==0 (
 
             echo Initializing database...
             python .\backend\database\createTables.py
+
+            echo Downloading summarization models
+
+            :: Create download directory if it doesn't exist
+            if not exist "%DOWNLOAD_DIR%" (
+                mkdir "%DOWNLOAD_DIR%"
+            )
+
+            for %%F in (%SUMMARY_FILES%) do (
+                echo Downloading %BASE_URL%%%F and saving to %DOWNLOAD_DIR%\%%F...
+                curl -L -O "%DOWNLOAD_DIR%\%%F" "%BASE_URL%%%F"
+                if %errorlevel% neq 0 (
+                    echo Failed to download %%F
+                ) else {
+                    echo Succesfully downloaded %%F
+                }
+            )
 
             echo Installing Node packages...
             pushd /frontend

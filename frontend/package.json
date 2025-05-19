@@ -20,6 +20,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "prod-start": "set PORT=80 && react-scripts start",
+    "unix-start": "PORT=80 npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

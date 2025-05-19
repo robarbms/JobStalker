@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {KeyboardEventHandler, useState} from 'react';
 import { useContext } from 'react';
 import { JobContext } from '../../App';
 import { companyData } from '../../utils/companies';
@@ -23,7 +23,11 @@ type FilterSystemProps = {
 
 const FilterSystem = (props: FilterSystemProps) => {
     const { companies, filter } = useContext(JobContext);
-    const [ showFilters, setShowFilters ] = useState(false);
+    const [ showFilters, setShowFilters ] = useState(true);
+    const keyup: any = (e: any) => {
+        console.log(e);
+        if (e.code.toLowerCase() === "enter") props.filterChanged(e);
+    }
 
     return (
         <div className="filter-system">
@@ -35,12 +39,12 @@ const FilterSystem = (props: FilterSystemProps) => {
                 </span>
             </h2>
             <div className={`filters-cont ${showFilters ? 'show-filters' : 'hide-filters'}`}>
-                <form onBlur={props.filterChanged} id="job-search-form">
+                <form onBlur={props.filterChanged} onSubmit={props.filterChanged} id="job-search-form">
                     <div className="text-search">
                         <fieldset>
                             <legend>Title</legend>
                             <div className="filter-item">
-                                <input name="title" type="text" />
+                                <input name="title" type="text" onKeyUp={keyup} />
                             </div>
                         </fieldset>
                         <fieldset>
