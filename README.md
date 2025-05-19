@@ -27,7 +27,7 @@ A pie chart shows the percentages of jobs for the filtered search or all jobs if
 ### Job Results List
 A list of the filtered job listings or all if no search filters.
 
-![alt text](./assets/job_list.png "Job Stalker jobs list")
+![alt text](./assets/result_list.png "Job Stalker jobs list")
 
 Each job card gives info:
 - Job title
