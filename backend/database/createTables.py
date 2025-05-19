@@ -93,7 +93,7 @@ companies = [
         "stock": "ADBE",
     },
     {
-        "name": "NVidia",
+        "name": "Nvidia",
         "address": "Santa Clara, CA",
         "site_url": "https://www.nvidia.com",
         "stock": "NVDA",
