@@ -30,7 +30,7 @@ const AllTrendChart = () => {
     const timeSinceStart = new Date().getTime() - new Date("2024-09-17").getTime();
     const daysSinceStart = Math.floor(timeSinceStart / (1000 * 60 * 60 * 24)) + 1;
 
-    const lastTwoMonths = filterJobs(allJobs, daysSinceStart);
+    const lastTwoMonths = filterJobs(allJobs, 30);
 
     const data = getJobsByDate(lastTwoMonths);
     const created_data = getJobsByDate(allJobs, true, true);

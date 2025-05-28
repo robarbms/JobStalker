@@ -140,6 +140,18 @@ companies = [
         "site_url": "https://www.zillow.com",
         "stock": "Z",
     },
+    {
+        "name": "Atlassian",
+        "address": "Sydney, Australia",
+        "site_url": "https://atlassian.com",
+        "stock": "TEAM",
+    },
+    {
+        "name": "Tableau",
+        "address": "Seattle, WA",
+        "site_url": "https://www.tableau.com",
+        "stock": ""
+    }
 ]
 
 # Function to add companies to the DB
