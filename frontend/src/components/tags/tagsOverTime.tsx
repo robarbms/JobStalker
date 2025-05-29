@@ -119,7 +119,7 @@ export default function TagsOverTime (props: any) {
     return (
         <div className="tags-over-time">
             <h2>Technology Trends</h2>
-            <ComposedChart width={1350} height={200} data={data}>
+            <ComposedChart width={1100} height={200} data={data}>
             <CartesianGrid />
             <XAxis dataKey="date" />
             <YAxis />
@@ -129,7 +129,7 @@ export default function TagsOverTime (props: any) {
             })}
             <Legend />
             </ComposedChart>
-            <BarChart width={1350} height={200} data={category_totals_ary}>
+            <BarChart width={1100} height={200} data={category_totals_ary}>
             <CartesianGrid />
             <XAxis dataKey="name" />
             <YAxis />

@@ -92,7 +92,7 @@ const WeekChart = () => {
     return (
         <div className="week-chart">
             <h2>Jobs for the week: <span className="meta"><label>This week:</label> {jobsTotal.total} <label>Last week:</label>{jobsTotal.lastWeek}</span></h2>
-            <ComposedChart width={830} height={300} data={data}>
+            <ComposedChart width={600} height={300} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis dataKey="" />

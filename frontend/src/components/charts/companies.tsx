@@ -28,7 +28,7 @@ const CompanyChart = (props: any) => {
         <div className="company-chart">
             <h2>Jobs per company</h2>
             <PieChart 
-                width={500}
+                width={480}
                 height={300}
                 data={data}
                 margin={{top: 5, right: 30, left: 20, bottom: 5}}>

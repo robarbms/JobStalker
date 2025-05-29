@@ -64,10 +64,18 @@ h1 label {
 }
 
 .job-list-container {
-    max-width: 1000px;
-    margin: 20px 10px 0;
+    max-width: 500px;
+    margin: 0 10px 0;
     display: inline-block;
     vertical-align: top;
+}
+
+.job-list-container + .job-list-container {
+    width: 800px;
+}
+
+.job-list-container h2 {
+    margin-top: 0;
 }
 
 .job-list table {
@@ -139,7 +147,12 @@ path.recharts-sector {
     text-shadow: 0 0 4px rgb(0, 0, 0);
 }
 
+.trends {
+    display: inline-block;
+    margin: 0 20px 20px 0;
+}
+
 .trends > div {
-    max-width: 1350px;
+    max-width: 1100px;
     display: inline-block;
 }

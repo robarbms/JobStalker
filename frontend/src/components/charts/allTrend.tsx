@@ -45,7 +45,7 @@ const AllTrendChart = () => {
     return (
         <div className="trend-chart">
             <h2>Job Trends</h2>
-            <ComposedChart width={1350} height={400} data={data}>
+            <ComposedChart width={1100} height={400} data={data}>
                 <CartesianGrid />
                 <XAxis dataKey="date" />
                 <YAxis />
