@@ -6,22 +6,21 @@ import re
 def getJobDetails(job_id: str, page):
     details = {}
     try:
-        url = "https://jobs.apple.com/en-us/details/{job_id}"
-        page.goto(url.format(job_id=job_id))
+        url = f"https://jobs.apple.com/en-us/details/{job_id}"
+        page.goto(url)
         time.sleep(3)
         extract = Extractor(page, "Apple", job_id)
 
         title = extract.getText("h1")
-        location = extract.getText("div#job-location-name", True)
-        team = extract.getText("div#job-team-name", True)
-        date_posted = extract.getText("time#jobPostDate", True)
-        summary = extract.getText("div#jd-job-summary", True)
-        job_description = extract.getText("div#jd-description", True)
-        min_qualifications = extract.getText("div#jd-minimum-qualifications")
-        key_qualifications = extract.getText("div#jd-key-qualifications")
-        preferred_qualifications = extract.getText("div#jd-preferred-qualifications")
+        location = extract.getText("label#jobdetails-joblocation", True)
+        team = extract.getText("label#jobdetails-teamname", True)
+        date_posted = extract.getText("time#jobdetails-jobpostdate", True)
+        summary = extract.getText("div#jobdetails-jobdetails-jobsummary-content-row", True)
+        job_description = extract.getText("div#jobdetails-jobdetails-jobdescription-content-row", True)
+        min_qualifications = extract.getText("div#jobdetails-jobdetails-minimumqualifications-content-row")
+        preferred_qualifications = extract.getText("div#jobdetails-jobdetails-preferredqualifications-content-row")
 
-        description = "{summary} {job_description} {min_qualifications} {preferred_qualifications} {key_qualifications}".format(summary=summary, job_description=job_description, min_qualifications=min_qualifications, preferred_qualifications=preferred_qualifications, key_qualifications=key_qualifications)
+        description = "{summary} {job_description} {min_qualifications} {preferred_qualifications}".format(summary=summary, job_description=job_description, min_qualifications=min_qualifications, preferred_qualifications=preferred_qualifications)
 
         details = {
             'job_id': job_id,
@@ -53,6 +52,7 @@ def getJobs(query, job_ids):
     url = query_url.format(query=query)
     jobs = []
     jobs_found = 0
+    new_jobs = []
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -62,26 +62,30 @@ def getJobs(query, job_ids):
             page.goto(url)
             time.sleep(3)
 
-            results_table = page.locator('div.results__table')
-            if results_table:
-                job_cells = results_table.locator('tbody').all()
+            result_set = page.locator('section#search-result-set')
+            if result_set:
+                job_listings = result_set.locator('li.rc-accordion-item').all()
 
-                if job_cells:
-                    jobs_found = len(job_cells)
-                    for cell in job_cells:
-                        cell_id = cell.get_attribute('id')
-                        job_id = re.split(r'[\-_]', cell_id)
-                        if job_id and len(job_id) > 2:
-                            if str(job_id[2]) not in job_ids:
-                                job_details = getJobDetails(job_id[2], page)
-                                jobs.append(job_details)
+                if job_listings:
+                    jobs_found = len(job_listings)
+                    for listing in job_listings:
+                        anchor = listing.locator('h3 a').all()
+                        link = anchor[0].get_attribute('href')
+                        job_id = re.search(r'/details/(\d+)/', link).group(1)
+                        if job_id:
+                            if job_id not in job_ids:
+                                new_jobs.append(job_id)
 
         except Exception as e:
             log(f"Problems parsing jobs for query \"{query}\"".format(query=query), "error")
             log(str(e), "error")
 
-        finally:
-            browser.close()
+        
+        for job in new_jobs:
+            job_details = getJobDetails(job, page)
+            jobs.append(job_details)
+
+        browser.close()
 
     return jobs, jobs_found
 
@@ -111,3 +115,6 @@ def getAppleJobs(job_ids):
 
     log("Total number of new positions found for Apple: {count}/{total_found}".format(count=len(jobs), total_found=total_found))
     return jobs
+
+if __name__ == "__main__": 
+    getAppleJobs([])
