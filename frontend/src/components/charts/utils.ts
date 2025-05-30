@@ -21,7 +21,7 @@ export let getJobsByDate = (jobs: JobDetails[], addEmpty=true, created_date=fals
     const one_day = 24 * 60 * 60 * 1000; // milliseconds in a day
     const timeOffset = 1000 * 60 * 60 * 7; // Times are coming in 7 hours behind because the DB time is in UTC
     let job_groups = jobs.reduce((acc: any, job: JobDetails) => {
-        const date = new Date(new Date(created_date ? job.created_at : job.date_posted).getTime() + timeOffset + one_day);
+        const date = new Date(new Date(created_date ? job.created_at : job.date_posted).getTime() + one_day);
         if (!isNaN(date.getTime())){
             const date_str = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
             let dateIndex = acc.findIndex((d: any) => d.date === date_str);

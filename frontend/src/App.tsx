@@ -80,7 +80,7 @@ function App() {
       today.setHours(0, 0, 0, 0); // Set to midnight of the current day
       setJobsToday(data.filter((job: JobDetails) => new Date(job.created_at).getTime() >= today.getTime()));
       const mostRecentScraped = new Date(data.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0]['created_at']);
-      mostRecentScraped.setTime(mostRecentScraped.getTime() + 1000 * 60 * 60 * 7); // Add 7 hours to the timestamp
+      mostRecentScraped.setTime(mostRecentScraped.getTime()); // + 1000 * 60 * 60 * 7); // Add 7 hours to the timestamp
       setLastScraped(mostRecentScraped);
       if (jobHandler.current !== null) {
         clearTimeout(jobHandler.current);
