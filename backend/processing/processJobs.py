@@ -7,7 +7,7 @@ import re
 # Additional information will be added here to be added to the job
 def process(description, title):
     desc_keyword_path = '../frontend/src/utils/'
-    keyword_files = ['tech_keywords.json', 'ds_keywords.json']
+    keyword_files = ['tech_keywords.json', 'ds_keywords.json', 'design_keywords.json']
     keywords = set()
 
     # Parse keywords in description
