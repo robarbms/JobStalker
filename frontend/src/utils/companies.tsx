@@ -9,9 +9,10 @@ import { ReactComponent as HuggingfaceIcon } from '../static/huggingface.svg';
 import { ReactComponent as OpenaiIcon } from '../static/openai.svg';
 import { ReactComponent as NvidiaIcon } from '../static/nvidia.svg';
 import { ReactComponent as MetaIcon } from '../static/meta.svg';
-import { ReactComponent as SalesforceIcon } from '../static/salesforce.svg'
-import { ReactComponent as Zillow } from '../static/zillow.svg'
-import { ReactComponent as AtlassianIcon } from '../static/atlassian.svg'
+import { ReactComponent as SalesforceIcon } from '../static/salesforce.svg';
+import { ReactComponent as Zillow } from '../static/zillow.svg';
+import { ReactComponent as AtlassianIcon } from '../static/atlassian.svg';
+import { ReactComponent as ExpediaIcon } from '../static/expedia.svg';
 
 export type Company = {
     icon: JSX.Element;
@@ -36,7 +37,7 @@ export const companyData: {[key: string]: Company} = {
         color: "#1868db"
     },
     Expedia: {
-        icon: <></>,
+        icon: <ExpediaIcon className="icon" />,
         color: "#fddb32"
     },
     Google: {
