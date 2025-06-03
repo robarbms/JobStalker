@@ -37,6 +37,8 @@ def insert_jobs (jobs, cur, conn):
                 if job['company'] not in job_ids or job['job_id'] not in job_ids[job['company']]:
                     insert_job(job, cur, conn, company_ids[job['company']])
                     jobs_inserted += 1
+            else:
+                print("Missing company or job_id")
         except Exception as e:
             print("Error inserting job: ", e)
     

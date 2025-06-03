@@ -94,8 +94,7 @@
 .filters-expand {
     float: right;
     padding: 0 10px 3px;
-    border-radius: 6px;
-    /* background: rgba(155, 155, 155, .1); */
+    opacity: 0.5;
 }
 
 .filter-system h2:hover {

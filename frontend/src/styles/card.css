@@ -35,7 +35,7 @@
 .job-card p {
     display: -webkit-box;
     line-clamp: 3; /* Limit the number of lines to display */
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis; /* Show an ellipsis (...) when content overflows */

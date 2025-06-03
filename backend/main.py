@@ -71,7 +71,7 @@ def main():
         summary = get_summary(job_description)
         updated_jobs[x]['summary'] = summary
 
-    log("Adding jobs to database")
+    log(f"Adding {len(updated_jobs)} jobs to database")
     new_job_count = insert_jobs(updated_jobs, cur, conn)
     log(f"Successfully added {new_job_count} new job(s) to the database")
     time.sleep(60 * 60 * 2.1) # sleep for 2 hours and a bit to avoid getting banned from websites

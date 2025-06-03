@@ -25,7 +25,6 @@ const FilterSystem = (props: FilterSystemProps) => {
     const { companies, filter } = useContext(JobContext);
     const [ showFilters, setShowFilters ] = useState(true);
     const keyup: any = (e: any) => {
-        console.log(e);
         if (e.code.toLowerCase() === "enter") props.filterChanged(e);
     }
 
@@ -34,8 +33,8 @@ const FilterSystem = (props: FilterSystemProps) => {
             <h2 onClick={() => setShowFilters(!showFilters)}>
                 Job Filtering
                 <span className="filters-expand">
-                {showFilters && <>&and;</>}
-                {!showFilters && <>&or;</>}
+                {showFilters && <>&#9650;</>}
+                {!showFilters && <>&#9660;</>}
                 </span>
             </h2>
             <div className={`filters-cont ${showFilters ? 'show-filters' : 'hide-filters'}`}>
@@ -50,7 +49,7 @@ const FilterSystem = (props: FilterSystemProps) => {
                         <fieldset>
                             <legend>Descrpition</legend>
                             <div className="filter-item">
-                                <input name="description" type="text" />
+                                <input name="description" type="text" onKeyUp={keyup} />
                             </div>
                         </fieldset>
                     </div>

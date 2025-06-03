@@ -11,6 +11,7 @@ import { ReactComponent as NvidiaIcon } from '../static/nvidia.svg';
 import { ReactComponent as MetaIcon } from '../static/meta.svg';
 import { ReactComponent as SalesforceIcon } from '../static/salesforce.svg'
 import { ReactComponent as Zillow } from '../static/zillow.svg'
+import { ReactComponent as AtlassianIcon } from '../static/atlassian.svg'
 
 export type Company = {
     icon: JSX.Element;
@@ -29,6 +30,10 @@ export const companyData: {[key: string]: Company} = {
     Amazon: {
         icon: <AmazonIcon className="icon" />,
         color: "#f79400",
+    },
+    Atlassian: {
+        icon: <AtlassianIcon className="icon" />,
+        color: "#1868db"
     },
     Google: {
         icon: <GoogleIcon className="icon" />,
@@ -56,6 +61,6 @@ export const companyData: {[key: string]: Company} = {
     },
     Zillow: {
         icon: <Zillow className="icon" />,
-        color: "#006aff"
+        color: "#000dff"
     }
 }

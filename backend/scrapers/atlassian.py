@@ -4,15 +4,17 @@ import time
 from datetime import datetime
 import re
 
-def getJobDetails(url: str):
+def getJobDetails(url: str, id: str):
     """Get job details from a given URL"""
     details = {
         'company': 'Atlassian',
+        'job_id': id,
+        'link': url,
         'salary_min': 0,
         'salary_max': 0,
         'notes': '',
         'summary': '',
-        'location': 'Sydney, Australia',
+        'location': 'Seattle, WA',
         'date_posted': datetime.now().strftime("%Y-%m-%d")
     }
 
@@ -24,9 +26,30 @@ def getJobDetails(url: str):
             page.goto(url)
             time.sleep(2) # Wait for the page to load
 
-            title = page.locator('h1').all()[0].text_content()
+            title = page.locator('h1.default.heading').all()[0].text_content()
             if title:
                 details['title'] = title
+            text_block = page.locator('div.column').all()[1]
+            
+            paragraphs = text_block.locator('p').all()
+            description = ""
+            compensation_found = False
+            for p in paragraphs:
+                text = p.text_content()
+                if (compensation_found == True):
+                    salaries = re.findall(r'\$[0-9,.]+', text)
+                    if len(salaries) > 0:
+                        details['salary_min'] = re.sub(r'[\$,.]', '', salaries[0])
+                        details['salary_max'] = re.sub(r'[\$,.]', '', salaries[1])
+                        break
+
+                if (text == "Compensation"):
+                    compensation_found = True
+                else:
+                    description += text
+
+            details['description'] = description
+
     
         except Exception as e:
             log("Error getting job details: {e}".format(e=e), "error")
@@ -48,7 +71,7 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
 
         try:
             page.goto(url)
-            time.sleep(5) # Wait for the page to load
+            time.sleep(2) # Wait for the page to load
 
             result_lists = page.locator(".careers table").all()
             for result_list in result_lists:
@@ -81,26 +104,14 @@ def getAtlassianJobs(job_ids: list[int]):
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
-        job_ids = job_ids + job_results
-        found_ids = found_ids + job_results
         total_jobs += jobs_found
+        found_ids += job_results
+        job_ids += job_results
         log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
-    
+
     for id in found_ids:
-        jobDetails = getJobDetails(f'https://atlassian/company/careers/details/{id}')
-
-
-        if (len(jobs) == 0):
-            jobs = job_results
-        else:
-            for job in job_results:
-                found = False
-                for existing_job in jobs:
-                    if (job and 'job_id' in job and existing_job and 'job_id' in existing_job and existing_job['job_id'] == job['job_id']):
-                        found = True
-                        break
-                if (not found):
-                    jobs.append(job)
+        jobDetails = getJobDetails(f'https://www.atlassian.com/company/careers/details/{id}', id)
+        jobs.append(jobDetails)
 
     log("Total number of new positions found for Atlassian: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
     return jobs
