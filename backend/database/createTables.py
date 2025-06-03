@@ -147,9 +147,9 @@ companies = [
         "stock": "TEAM",
     },
     {
-        "name": "Tableau",
+        "name": "Expedia",
         "address": "Seattle, WA",
-        "site_url": "https://www.tableau.com",
+        "site_url": "https://www.expedia.com",
         "stock": ""
     }
 ]

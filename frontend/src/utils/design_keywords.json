@@ -1,12 +1,17 @@
-{
-    "Visual Design & Illustration": [
+[
+  {
+    "name": "Visual Design & Illustration",
+    "libraries": [
       "Adobe Photoshop",
       "Adobe Illustrator",
       "Affinity Designer",
       "Procreate",
       "CorelDRAW"
-    ],
-    "UI/UX & Product Design": [
+    ]
+  },
+  {
+    "name": "UI/UX & Product Design",
+    "libraries": [
       "Figma",
       "Sketch",
       "Adobe XD",
@@ -15,28 +20,34 @@
       "Axure RP",
       "Balsamiq",
       "Zeplin"
-    ],
-    "User Research & Testing": [
-      "Maze",
-      "Optimal Workshop",
-      "Lookback",
-      "Dovetail",
-      "Hotjar"
-    ],
-    "Motion, Animation & 3D Design": [
+    ]
+  },
+  {
+    "name": "User Research & Testing",
+    "libraries": ["Maze", "Optimal Workshop", "Lookback", "Dovetail", "Hotjar"]
+  },
+  {
+    "name": "Motion, Animation & 3D Design",
+    "libraries": [
       "Adobe After Effects",
       "Blender",
       "Cinema 4D",
       "Lottie",
       "LottieFiles"
-    ],
-    "Web & Front-End Tools": [
+    ]
+  },
+  {
+    "name": "Web & Front-End Tools",
+    "libraries": [
       "Webflow",
       "Adobe Dreamweaver",
       "Pinegrow",
       "Visual Studio Code"
-    ],
-    "Content Management Systems (CMS)": [
+    ]
+  },
+  {
+    "name": "Content Management Systems (CMS)",
+    "libraries": [
       "Adobe Experience Manager (AEM)",
       "WordPress",
       "Drupal",
@@ -48,8 +59,11 @@
       "Wix",
       "Joomla!",
       "Ghost"
-    ],
-    "Asset Management & Collaboration": [
+    ]
+  },
+  {
+    "name": "Asset Management & Collaboration",
+    "libraries": [
       "Dropbox",
       "Google Drive",
       "Notion",
@@ -59,12 +73,10 @@
       "Jira",
       "Trello",
       "Asana"
-    ],
-    "Print & Layout Design": [
-      "Adobe InDesign",
-      "Canva",
-      "Lucidpress",
-      "Marq"
     ]
+  },
+  {
+    "name": "Print & Layout Design",
+    "libraries": ["Adobe InDesign", "Canva", "Lucidpress", "Marq"]
   }
-  
+]
