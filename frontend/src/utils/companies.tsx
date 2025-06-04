@@ -13,6 +13,7 @@ import { ReactComponent as SalesforceIcon } from '../static/salesforce.svg';
 import { ReactComponent as Zillow } from '../static/zillow.svg';
 import { ReactComponent as AtlassianIcon } from '../static/atlassian.svg';
 import { ReactComponent as ExpediaIcon } from '../static/expedia.svg';
+import { ReactComponent as AirbnbIcon } from '../static/airbnb.svg';
 
 export type Company = {
     icon: JSX.Element;
@@ -23,6 +24,10 @@ export const companyData: {[key: string]: Company} = {
     Adobe: {
         icon: <AdobeIcon className="icon" />,
         color: "#ff6038",
+    },
+    Airbnb: {
+        icon: <AirbnbIcon className="icon" />,
+        color: "rgb(255 56 92)",
     },
     Apple: {
         icon: <AppleIcon className="icon" />,

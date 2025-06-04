@@ -150,7 +150,13 @@ companies = [
         "name": "Expedia",
         "address": "Seattle, WA",
         "site_url": "https://www.expedia.com",
-        "stock": ""
+        "stock": "EXPE"
+    },
+    {
+        "name": "Airbnb",
+        "address": "San Francisco, CA",
+        "site_url": "https://www.airbnb.com",
+        "stock": "ABNB"
     }
 ]
 

@@ -2,81 +2,92 @@
   {
     "name": "Visual Design & Illustration",
     "libraries": [
-      "Adobe Photoshop",
-      "Adobe Illustrator",
-      "Affinity Designer",
-      "Procreate",
-      "CorelDRAW"
+      {"name": "Adobe Photoshop", "type": "application"},
+      {"name": "Adobe Illustrator", "type": "application"},
+      {"name": "Affinity Designer", "type": "application"},
+      {"name": "Procreate", "type": "application"},
+      {"name": "CorelDRAW", "type": "application"}
     ]
   },
   {
     "name": "UI/UX & Product Design",
     "libraries": [
-      "Figma",
-      "Sketch",
-      "Adobe XD",
-      "InVision",
-      "Framer",
-      "Axure RP",
-      "Balsamiq",
-      "Zeplin"
+      {"name": "Figma", "type": "application"},
+      {"name": "Sketch", "type": "application"},
+      {"name": "Adobe XD", "type": "application"},
+      {"name": "InVision", "type": "application"},
+      {"name": "Framer", "type": "application"},
+      {"name": "Axure RP", "type": "application"},
+      {"name": "Balsamiq", "type": "application"},
+      {"name": "Zeplin", "type": "application"}
     ]
   },
   {
     "name": "User Research & Testing",
-    "libraries": ["Maze", "Optimal Workshop", "Lookback", "Dovetail", "Hotjar"]
+    "libraries": [
+      {"name": "Maze", "type": "application"},
+      {"name": "Optimal Workshop", "type": "application"},
+      {"name": "Lookback", "type": "application"},
+      {"name": "Dovetail", "type": "application"},
+      {"name": "Hotjar", "type": "application"}
+    ]
   },
   {
     "name": "Motion, Animation & 3D Design",
     "libraries": [
-      "Adobe After Effects",
-      "Blender",
-      "Cinema 4D",
-      "Lottie",
-      "LottieFiles"
+      {"name": "Adobe After Effects", "type": "application"},
+      {"name": "Blender", "type": "application"},
+      {"name": "Cinema 4D", "type": "application"},
+      {"name": "Lottie", "type": "application"},
+      {"name": "LottieFiles", "type": "application"}
     ]
   },
   {
     "name": "Web & Front-End Tools",
     "libraries": [
-      "Webflow",
-      "Adobe Dreamweaver",
-      "Pinegrow",
-      "Visual Studio Code"
+      {"name": "Webflow", "type": "application"},
+      {"name": "Adobe Dreamweaver", "type": "application"},
+      {"name": "Pinegrow", "type": "application"},
+      {"name": "Visual Studio Code", "type": "application"}
     ]
   },
   {
     "name": "Content Management Systems (CMS)",
     "libraries": [
-      "Adobe Experience Manager (AEM)",
-      "WordPress",
-      "Drupal",
-      "Contentful",
-      "Sanity",
-      "Sitecore",
-      "Webflow CMS",
-      "Squarespace",
-      "Wix",
-      "Joomla!",
-      "Ghost"
+      {"name": "Adobe Experience Manager (AEM)", "type": "application"},
+      {"name": "WordPress", "type": "application"},
+      {"name": "Drupal", "type": "application"},
+      {"name": "Contentful", "type": "application"},
+      {"name": "Sanity", "type": "application"},
+      {"name": "Sitecore", "type": "application"},
+      {"name": "Webflow CMS", "type": "application"},
+      {"name": "Squarespace", "type": "application"},
+      {"name": "Wix", "type": "application"},
+      {"name": "Joomla!", "type": "application"},
+      {"name": "Ghost", "type": "application"}
     ]
   },
   {
     "name": "Asset Management & Collaboration",
     "libraries": [
-      "Dropbox",
-      "Google Drive",
-      "Notion",
-      "Miro",
-      "FigJam",
-      "Slack",
-      "Jira",
-      "Trello",
-      "Asana"
+      {"name": "Dropbox", "type": "application"},
+      {"name": "Google Drive", "type": "application"},
+      {"name": "Notion", "type": "application"},
+      {"name": "Miro", "type": "application"},
+      {"name": "FigJam", "type": "application"},
+      {"name": "Slack", "type": "application"},
+      {"name": "Jira", "type": "application"},
+      {"name": "Trello", "type": "application"},
+      {"name": "Asana", "type": "application"}
     ]
   },
   {
     "name": "Print & Layout Design",
-    "libraries": ["Adobe InDesign", "Canva", "Lucidpress", "Marq"]
+    "libraries": [
+      {"name": "Adobe InDesign", "type": "application"},
+      {"name": "Canva", "type": "application"},
+      {"name": "Lucidpress", "type": "application"},
+      {"name": "Marq", "type": "application"}
+    ]
   }
 ]
