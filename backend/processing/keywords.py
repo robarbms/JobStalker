@@ -33,19 +33,19 @@ def get_keywords(text: str, keyword_list):
         if word_in_text(name, text):
             keywords.add(name)
 
-            for key in category:
-                if key != 'name':
-                    for item in category[key]:
-                        if word_in_text(item['name'], text):
-                            keywords.add(item['name'])
+        for key in category:
+            if key != 'name' and key != 'type':
+                for item in category[key]:
+                    if word_in_text(item['name'], text):
+                        keywords.add(item['name'])
 
-                            if 'creator' in item:
-                                if word_in_text(item['creator'], text):
-                                    keywords.add(item['creator'])
+                        # if 'creator' in item:
+                        #     if word_in_text(item['creator'], text):
+                        #         keywords.add(item['creator'])
 
-                            if 'versions' in item:
-                                for version in item['versions']:
-                                    if word_in_text(version, text):
-                                        keywords.add(version)
+                        if 'versions' in item:
+                            for version in item['versions']:
+                                if word_in_text(version, text):
+                                    keywords.add(version)
         
     return list(keywords)

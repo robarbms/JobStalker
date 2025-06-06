@@ -1,11 +1,13 @@
 import techKeywordsJson from '../../utils/tech_keywords.json'
 import dsKeywordsJson from '../../utils/ds_keywords.json'
+import designKeywordsJson from '../../utils/design_keywords.json'
 
 export const getTagColors = () => {
     // Create a compilation of all tags to 
     //  equally distribute colors
     let tags = techKeywordsJson;
     tags = tags.concat(dsKeywordsJson as any[]);
+    tags = tags.concat(designKeywordsJson as any[]);
     const colors: any = {};
 
     // Figure out how spaced hue tints should be

@@ -59,15 +59,13 @@ h1 label {
 }
 
 .job-lists {
-    max-width: 1700px;
-    display: inline-block;
     vertical-align: top;
+    width: 50%;
+    min-width: 600px;
 }
 
 .job-list-container {
-    max-width: 500px;
     margin: 0 10px 0;
-    display: inline-block;
     vertical-align: top;
 }
 
@@ -161,4 +159,13 @@ path.recharts-sector {
 .trends > div {
     max-width: 1100px;
     display: inline-block;
+}
+
+.col-layout {
+    display: flex;
+    gap: 20px;
+}
+
+.job-charts {
+    width: 50%;
 }

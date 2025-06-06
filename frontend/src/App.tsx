@@ -7,11 +7,10 @@ import WeekChart from './components/charts/week';
 import AllTrendChart from './components/charts/allTrend';
 import TagsOverTime from './components/tags/tagsOverTime';
 import FilterSystem from './components/search/filterSystem';
-import { getTagColors, test_colors } from "./components/tags/tagColors";
-import techKeywordsJson from './utils/tech_keywords.json';
-import dsKeywordsJson from './utils/ds_keywords.json';
+import { getTagColors } from "./components/tags/tagColors";
 import Card from './components/job_card/Card';
 import ApiService from './components/api_service';
+import Switcher from './components/layout/switcher';
 
 type Filter = {
   title: string;
@@ -189,27 +188,8 @@ function App() {
           </h1>
         </header>
         {jobs && jobs.length > 0 &&
-          <>
-            <div className="trends">
-              <AllTrendChart />
-              <TagsOverTime />
-            </div>
-            <div className="job-search">
-              <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
-              <CompanyChart />
-              <WeekChart />
-            </div>
+          <div className="col-layout">
             <div className="job-lists">
-              <div className="job-list-container">
-                <h2>
-                  Top results
-                  <span className="meta">
-                    <label>Top 20 jobs: </label>
-                    {Math.min(jobs.length, 20)} / {allJobs.length} jobs
-                  </span>
-                </h2>
-                {jobs.slice(0, 20).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} />)}
-              </div>
               <div className="job-list-container">
                 <h2>
                   All results
@@ -218,10 +198,30 @@ function App() {
                     {jobs.length} / {allJobs.length} jobs
                   </span>            
                 </h2>
-                <Table></Table>
+                <Switcher options={[
+                  {
+                    'tab': 'Cards',
+                    'content': <>{jobs.slice(0, 20).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} />)}</>
+                  },
+                  {
+                    'tab': 'Table',
+                    'content': <Table />
+                  }
+                ]} />
               </div>
             </div>
-          </>
+            <div className="job-charts">
+            <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
+            <div className="trends">
+                <AllTrendChart />
+                <TagsOverTime />
+              </div>
+              <div className="job-search">
+                <CompanyChart />
+                <WeekChart />
+              </div>
+            </div>
+          </div>
         }
         {( !jobs || jobs.length < 1 ) &&
           <ApiService />

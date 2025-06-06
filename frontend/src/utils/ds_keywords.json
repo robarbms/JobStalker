@@ -2,20 +2,20 @@
   {
     "name": "Data Science",
     "libraries": [
-      { "name": "pandas", "type": "library" },
-      { "name": "numpy", "type": "library" },
-      { "name": "matplotlib", "type": "library" },
-      { "name": "seaborn", "type": "library" },
-      { "name": "scipy", "type": "library" },
-      { "name": "statsmodels", "type": "library" },
-      { "name": "plotly", "type": "library" },
-      { "name": "geopandas", "type": "library" },
-      { "name": "dask", "type": "library" },
-      { "name": "bokeh", "type": "library" },
-      { "name": "altair", "type": "library" },
-      { "name": "dash", "type": "library" },
-      { "name": "polars", "type": "library" },
-      { "name": "torch", "type": "library" }
+      { "name": "Pandas", "type": "library" },
+      { "name": "Numpy", "type": "library" },
+      { "name": "Matplotlib", "type": "library" },
+      { "name": "Seaborn", "type": "library" },
+      { "name": "Scipy", "type": "library" },
+      { "name": "Statsmodels", "type": "library" },
+      { "name": "Plotly", "type": "library" },
+      { "name": "Geopandas", "type": "library" },
+      { "name": "Dask", "type": "library" },
+      { "name": "Bokeh", "type": "library" },
+      { "name": "Altair", "type": "library" },
+      { "name": "Dash", "type": "library" },
+      { "name": "Polars", "type": "library" },
+      { "name": "Torch", "type": "library" }
     ],
     "methods": [
       { "name": "data wrangling", "type": "method" },
@@ -28,22 +28,21 @@
   {
     "name": "AI",
     "libraries": [
-      { "name": "tensorflow", "type": "library" },
-      { "name": "pytorch", "type": "library" },
-      { "name": "keras", "type": "library" },
-      { "name": "openai", "type": "library" },
-      { "name": "transformers", "type": "library" },
-      { "name": "deeplearning4j", "type": "library" },
-      { "name": "fastai", "type": "library" },
-      { "name": "spacy", "type": "library" },
+      { "name": "Tensorflow", "type": "library" },
+      { "name": "Pytorch", "type": "library" },
+      { "name": "Keras", "type": "library" },
+      { "name": "Transformers", "type": "library" },
+      { "name": "Deeplearning4j", "type": "library" },
+      { "name": "FastAI", "type": "library" },
+      { "name": "Spacy", "type": "library" },
       { "name": "allennlp", "type": "library" },
       { "name": "gpt-3", "type": "library" },
-      { "name": "stable-diffusion", "type": "library" },
+      { "name": "Stable Diffusion", "type": "library" },
       { "name": "neural-style-transfer", "type": "library" },
-      { "name": "neuro-symbolic-ai", "type": "library" },
-      { "name": "reinforcement-learning", "type": "library" }
+      { "name": "neuro-symbolic-ai", "type": "library" }
     ],
     "methods": [
+      { "name": "reinforcement-learning", "type": "method" },
       { "name": "fine-tuning", "type": "method" },
       { "name": "LoRA (Low-Rank Adaptation)", "type": "method" },
       { "name": "self-supervised learning", "type": "method" },
@@ -115,7 +114,6 @@
     ],
     "methods": [
       { "name": "interactive visualizations", "type": "method" },
-      { "name": "dashboards", "type": "method" },
       { "name": "geospatial visualizations", "type": "method" },
       { "name": "time series visualizations", "type": "method" },
       { "name": "heatmaps", "type": "method" }

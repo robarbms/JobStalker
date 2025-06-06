@@ -1,6 +1,6 @@
 [
   {
-    "name": "Visual Design & Illustration",
+    "name": "Visual Design",
     "libraries": [
       {"name": "Adobe Photoshop", "type": "application"},
       {"name": "Adobe Illustrator", "type": "application"},
@@ -10,7 +10,7 @@
     ]
   },
   {
-    "name": "UI/UX & Product Design",
+    "name": "Product Design",
     "libraries": [
       {"name": "Figma", "type": "application"},
       {"name": "Sketch", "type": "application"},
@@ -23,7 +23,7 @@
     ]
   },
   {
-    "name": "User Research & Testing",
+    "name": "User Research",
     "libraries": [
       {"name": "Maze", "type": "application"},
       {"name": "Optimal Workshop", "type": "application"},
@@ -33,7 +33,7 @@
     ]
   },
   {
-    "name": "Motion, Animation & 3D Design",
+    "name": "Motion Design",
     "libraries": [
       {"name": "Adobe After Effects", "type": "application"},
       {"name": "Blender", "type": "application"},
@@ -43,7 +43,7 @@
     ]
   },
   {
-    "name": "Web & Front-End Tools",
+    "name": "Web Tools",
     "libraries": [
       {"name": "Webflow", "type": "application"},
       {"name": "Adobe Dreamweaver", "type": "application"},
@@ -68,7 +68,7 @@
     ]
   },
   {
-    "name": "Asset Management & Collaboration",
+    "name": "Asset Management",
     "libraries": [
       {"name": "Dropbox", "type": "application"},
       {"name": "Google Drive", "type": "application"},
@@ -82,7 +82,7 @@
     ]
   },
   {
-    "name": "Print & Layout Design",
+    "name": "Layout Design",
     "libraries": [
       {"name": "Adobe InDesign", "type": "application"},
       {"name": "Canva", "type": "application"},

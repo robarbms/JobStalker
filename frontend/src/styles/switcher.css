@@ -1,0 +1,17 @@
+.switcher-tabs {
+    border-bottom: 1px solid #fff;
+    margin: 10px 0;
+}
+
+.switcher-tab {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-bottom: -1px;
+}
+
+.switcher-tab-active {
+    color: #fff;
+    border: 1px solid;
+    border-bottom-color: #000;
+}

@@ -82,7 +82,8 @@
       { "name": "NPM", "type": "package manager" },
       { "name": "Yarn", "type": "package manager" },
       { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "Subversion (SVN)", "type": "version control" },
+      { "name": "web components", "type": "technology" }
     ]
   },
   {

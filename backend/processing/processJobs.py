@@ -29,6 +29,7 @@ def process(description, title):
 
     # Prase pay from description
     salary_min, salary_max = get_pay(description)
+    keywords.sort()
 
     key_str = str(keywords)
     key_str = re.sub(r"'", "\"", key_str)
