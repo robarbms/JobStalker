@@ -58,3 +58,20 @@
     cursor: pointer;
     padding: 5px 10px;
 }
+
+.pag {
+    border: 1px solid;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    text-align: center;
+    margin: 0 5px 0 0;
+    cursor: pointer;
+}
+
+.pag-active,
+.pag:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}

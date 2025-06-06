@@ -83,7 +83,14 @@
       { "name": "Yarn", "type": "package manager" },
       { "name": "Git", "type": "version control" },
       { "name": "Subversion (SVN)", "type": "version control" },
-      { "name": "web components", "type": "technology" }
+      { "name": "web components", "type": "technology" },
+      { "name": "Lit", "type": "library" },
+      { "name": "FluentUI", "type": "library" },
+      { "name": "FAST Element", "type": "library" },
+      { "name": "Stencil", "type": "library" },
+      { "name": "Polymer", "type": "library" },
+      { "name": "Slim.js", "type": "library" },
+      { "name": "Hybrids", "type": "library" }
     ]
   },
   {

@@ -9,6 +9,7 @@ import TagsOverTime from './components/tags/tagsOverTime';
 import FilterSystem from './components/search/filterSystem';
 import { getTagColors } from "./components/tags/tagColors";
 import Card from './components/job_card/Card';
+import Cards from './components/job_card/Cards';
 import ApiService from './components/api_service';
 import Switcher from './components/layout/switcher';
 
@@ -192,16 +193,15 @@ function App() {
             <div className="job-lists">
               <div className="job-list-container">
                 <h2>
-                  All results
+                  Search Results
                   <span className="meta">
-                    <label>Search results: </label>
-                    {jobs.length} / {allJobs.length} jobs
+                    <label>{jobs.length} / {allJobs.length} jobs</label>
                   </span>            
                 </h2>
                 <Switcher options={[
                   {
                     'tab': 'Cards',
-                    'content': <>{jobs.slice(0, 20).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} />)}</>
+                    'content': <Cards jobs={jobs} tag_colors={tag_colors} />
                   },
                   {
                     'tab': 'Table',
