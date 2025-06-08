@@ -112,3 +112,11 @@
     max-height: 0;
 }
 
+.filter-date {
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.date-separate {
+    margin: 0 10px;
+}

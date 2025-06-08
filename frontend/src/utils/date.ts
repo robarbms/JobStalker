@@ -11,7 +11,7 @@ export const dateToKey = (date: Date | string) => {
     }
     const year = date.getFullYear();
     const month = `${date.getMonth() < 9 ? '0' : ''}${date.getMonth() + 1}`
-    const day = `${date.getDate() < 9 ? '0' : ''}${date.getDate() + 1}`;
+    const day = `${date.getDate() < 10 ? '0' : ''}${date.getDate()}`;
     return `${year}${month}${day}`
 }
 
@@ -24,4 +24,44 @@ export const keyToDate = (key: string) => {
     }
 
     return null;
+}
+
+/* Renders a date object as YYYY-MM-DD for use by date inputs */
+export const dateToString = (date: Date | undefined) => {
+    date = date || new Date();
+    const numbToString = (numb: number) => `${numb < 10 ? "0" : ""}${numb}`;
+    return `${date.getFullYear()}-${numbToString(date.getMonth() + 1)}-${numbToString(date.getDate())}`;
+}
+
+/* An object used to hold date offset settings */
+export type DateOffsetObj = {
+    years?: number;
+    months?: number;
+    weeks?: number;
+    days?: number;
+    hours?: number;
+    minutes?: number;
+    seconds?: number;
+    miliseconds?: number;
+}
+
+/* Returns a time based off of a date or current date time and a date offset setting object */
+export const dateOffset = (dateObj: DateOffsetObj, date?: Date | undefined) => {
+    const offsets: DateOffsetObj = {
+        years: 1000 * 60 * 60 * 24 * 365,
+        months: 1000 * 60 * 60 * 24 * 30,
+        weeks: 1000 * 60 * 60 * 24 * 7,
+        days: 1000 * 60 * 60 * 24,
+        hours: 1000 * 60 * 60,
+        minutes: 1000 * 60,
+        seconds: 1000,
+        miliseconds: 1,
+    }
+    let offsetTime = 0;
+    date = date || new Date();
+    let key: keyof DateOffsetObj;
+    for (key in dateObj) {
+        offsetTime += (dateObj[key] ?? 0) * (offsets[key] ?? 0)
+    }
+    return new Date(date.getTime() + offsetTime);
 }

@@ -1,7 +1,8 @@
-import React, {KeyboardEventHandler, useState} from 'react';
+import React, {KeyboardEventHandler, useEffect, useState, createRef} from 'react';
 import { useContext } from 'react';
 import { JobContext } from '../../App';
 import { companyData } from '../../utils/companies';
+import { dateToString, DateOffsetObj, dateOffset } from '../../utils/date';
 import '../../styles/filters.css';
 
 type FilterSystemProps = {
@@ -24,9 +25,29 @@ type FilterSystemProps = {
 const FilterSystem = (props: FilterSystemProps) => {
     const { companies, filter } = useContext(JobContext);
     const [ showFilters, setShowFilters ] = useState(true);
+    const dateStart = createRef<HTMLInputElement>();
+    const dateEnd = createRef<HTMLInputElement>();
     const keyup: any = (e: any) => {
-        if (e.code.toLowerCase() === "enter") props.filterChanged(e);
+        if (!!e.code && e.code.toLowerCase() === "enter") props.filterChanged(e);
     }
+
+    const getStartDate = () => {
+        const weekAgo = dateOffset({weeks: -1});
+        return dateToString(weekAgo);
+    }
+
+    const getEndDate = () => {
+        return dateToString(new Date());
+    }
+
+    useEffect(() => {
+        if (dateStart.current) {
+            dateStart.current.value = getStartDate();
+        }
+        if (dateEnd.current) {
+            dateEnd.current.value = getEndDate();
+        }
+    }, []);
 
     return (
         <div className="filter-system">
@@ -51,6 +72,10 @@ const FilterSystem = (props: FilterSystemProps) => {
                             <div className="filter-item">
                                 <input name="description" type="text" onKeyUp={keyup} />
                             </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Date Range</legend>
+                            <input className="filter-date" type="date" name="dateStart" ref={dateStart} onInput={keyup} /> <span className="date-separate">to</span> <input className="filter-date" type="date" name="dateEnd" ref={dateEnd} onChange={keyup} />
                         </fieldset>
                     </div>
                     <fieldset>

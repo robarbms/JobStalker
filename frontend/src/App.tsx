@@ -12,11 +12,14 @@ import Card from './components/job_card/Card';
 import Cards from './components/job_card/Cards';
 import ApiService from './components/api_service';
 import Switcher from './components/layout/switcher';
+import { dateOffset, DateOffsetObj, dateToString } from './utils/date';
 
 type Filter = {
   title: string;
   description: string;
   companies: string[];
+  dateStart: string;
+  dateEnd: string;
 }
 interface IContext {
   allJobs: JobDetails[],
@@ -39,7 +42,9 @@ function App() {
   const [ filter, setFilter ] = useState<Filter>({
     title: "",
     description: "",
-    companies: companies
+    companies: companies,
+    dateStart: dateToString(dateOffset({weeks: -1})),
+    dateEnd: dateToString(new Date())
   } as Filter);
   const jobHandler = useRef<NodeJS.Timeout|null>();
   const [jobsToday, setJobsToday] = useState<JobDetails[]>([]);
@@ -126,11 +131,15 @@ function App() {
      if(filter.description) {
        filteredJobs = filteredJobs.filter(job => textSearch(job.description, filter.description));
      }
+     if (filter.dateStart) {
+      filteredJobs = filteredJobs.filter(job => new Date(job.date_posted).getTime() > new Date(filter.dateStart).getTime());
+     }
      setJobs(filteredJobs);
   }, [allJobs, filter]);
 
   const filterChanged = (e: React.ChangeEvent<HTMLFormElement>) => {
     const {value, name} = e.target;
+    console.log({name, value});
     setFilter({...filter, [name]: value});
   }
 
@@ -211,14 +220,14 @@ function App() {
               </div>
             </div>
             <div className="job-charts">
-            <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
-            <div className="trends">
-                <AllTrendChart />
-                <TagsOverTime />
-              </div>
+              <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
               <div className="job-search">
-                <CompanyChart />
+                <CompanyChart jobs={jobs} />
                 <WeekChart />
+              </div>
+              <div className="trends">
+                <AllTrendChart jobs={jobs} />
+                <TagsOverTime jobs={jobs} />
               </div>
             </div>
           </div>

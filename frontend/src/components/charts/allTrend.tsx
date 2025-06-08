@@ -5,10 +5,15 @@ import { JobContext } from '../../App';
 import { JobDetails } from "../job";
 import { getJobsByDate, filterJobs } from "./utils";
 
-const AllTrendChart = () => {
+type AllTrendChartProps = {
+    jobs: JobDetails[];
+}
+
+const AllTrendChart = (props: AllTrendChartProps) => {
+    const { jobs } = props;
     const { allJobs } = useContext(JobContext);
  
-    const companies = allJobs.reduce((acc: any, job: JobDetails) => {
+    const companies = (jobs ?? allJobs).reduce((acc: any, job: JobDetails) => {
         if (!acc.find((company: any) => company === job.company)) {
             acc.push(job.company);
         }
@@ -30,10 +35,10 @@ const AllTrendChart = () => {
     const timeSinceStart = new Date().getTime() - new Date("2024-09-17").getTime();
     const daysSinceStart = Math.floor(timeSinceStart / (1000 * 60 * 60 * 24)) + 1;
 
-    const lastTwoMonths = filterJobs(allJobs, 30);
+    const lastTwoMonths = filterJobs(jobs ?? allJobs, 30);
 
     const data = getJobsByDate(lastTwoMonths);
-    const created_data = getJobsByDate(allJobs, true, true);
+    const created_data = getJobsByDate(jobs ?? allJobs, true, true);
     created_data.forEach((item: any) => {
         const {date} = item;
         const index = data.findIndex((d: any) => d.date === date);

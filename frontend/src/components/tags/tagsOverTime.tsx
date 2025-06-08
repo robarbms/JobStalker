@@ -8,8 +8,12 @@ import { getJobsByDate, filterJobs } from '../charts/utils';
 import { getTagColors } from './tagColors';
 import { dateToKey, keyToDate } from '../../utils/date';
 
+type TagsOverTimeProps = {
+    jobs: JobDetails[];
+}
 
-export default function TagsOverTime (props: any) {
+export default function TagsOverTime (props: TagsOverTimeProps) {
+    const { jobs } = props;
     const { allJobs } = useContext(JobContext);
     const colors = getTagColors();
     const getColor = (tag: string) => {
@@ -20,7 +24,7 @@ export default function TagsOverTime (props: any) {
     const timeSinceStart = new Date().getTime() - new Date("2024-09-17").getTime();
     const daysSinceStart = Math.floor(timeSinceStart / (1000 * 60 * 60 * 24)) + 1;
 
-    const jobsSinceStart = filterJobs(allJobs, daysSinceStart);
+    const jobsSinceStart = filterJobs(jobs ?? allJobs, daysSinceStart);
     const tags = TechTags.concat(DSTags as any);
     // Collect top level categories as a hash map
     const categories = tags.reduce((cats: any, cat: any) => {
