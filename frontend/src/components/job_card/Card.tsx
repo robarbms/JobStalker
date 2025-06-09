@@ -29,6 +29,7 @@ const payToString = (val: any) => {
 const Card = (props: any) => {
     const { company, date_posted, title, link, created_at, tags, salary_min, salary_max, tag_colors, summary } = props;
     const [expand, setExpand] = useState(false);
+    const useExpand = false;
 
     return (
         <div className="job-card">
@@ -41,7 +42,6 @@ const Card = (props: any) => {
                 <div className="col-2">
                     <h3>
                         <a href={link} target="_blank" rel="noreferrer">{title}</a>
-                        <span className="job-card-date">{getDateString(date_posted)}</span>
                     </h3>
                     <span className="job-card-company">
                         {company}
@@ -49,8 +49,11 @@ const Card = (props: any) => {
                     {salary_min && payToString(salary_min)}
                     {salary_min && salary_max && " - "}
                     {salary_max && payToString(salary_max)}
-                    <p className={expand ? "job-card-summary-all" : ""}>{summary}</p>
-                    <div className="job-card-summary-more"><span onClick={() => setExpand(expand === false)}>{expand ? "Show less" : "See more"}</span></div>
+                    <span className="job-card-date">{getDateString(date_posted)}</span>
+                    <p className={!useExpand || expand ? "job-card-summary-all" : ""}>{summary}</p>
+                    {useExpand &&
+                        <div className="job-card-summary-more"><span onClick={() => setExpand(expand === false)}>{expand ? "Show less" : "See more"}</span></div>
+                    }
                     <div className="job-card-tags">
                         {tags && Array.isArray(tags) && tags.map((tag: any, idx: number) => <Tag key={idx} color={tag_colors[tag]} name={tag} />)}
                     </div>

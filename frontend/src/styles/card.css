@@ -1,22 +1,25 @@
 .job-card {
     border: 1px solid rgba(255, 255, 255, 0.3);
+    background: #242222;
     margin: 0 10px 10px;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
     min-width: 500px;
-    min-height: 164px;
+    min-height: 200px;
     width: 45%;
     display: inline-block;
 }
 
 .job-card h3 {
-    margin: 0 0 10px;
+    margin: 0 0 5px;
 }
 
-.job-card h3 .job-card-date {
+.job-card .job-card-date {
     float: right;
     font-size: small;
+    font-weight: 700;
+    margin: 0 10px 0 0;
 }
 
 .job-card-layout {
@@ -42,6 +45,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis; /* Show an ellipsis (...) when content overflows */
+    margin: 5px 0 0;
     
 }
 
