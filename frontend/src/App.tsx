@@ -65,6 +65,7 @@ function App() {
   const getJobs = async () => {
     try {
       const api_url = window.location.protocol + "//" + window.location.hostname + ":5000/api";
+      console.log(api_url);
       const response = await fetch(api_url);
       let data = await response.json();
       data = data.sort((a: any, b: any) => new Date(a.date_posted) > new Date(b.date_posted) ? -1 : 1)
