@@ -14,7 +14,7 @@ import ApiService from './components/api_service';
 import Switcher from './components/layout/switcher';
 import { dateOffset, DateOffsetObj, dateToString } from './utils/date';
 
-type Filter = {
+export type Filter = {
   title: string;
   description: string;
   companies: string[];
@@ -35,26 +35,26 @@ interface IContext {
 export const JobContext = createContext({} as IContext);
 
 function App() {
-  const [allJobs, setAllJobs] = useState([] as JobDetails[]);
-  const [jobs, setJobs] = useState([] as JobDetails[]);
-  const [ companies, setCompanies] = useState([] as string[]);
-  const [ lastUpdated, setLastUpdated] = useState(new Date());
+  const [allJobs, setAllJobs] = useState<JobDetails[]>([]);
+  const [jobs, setJobs] = useState<JobDetails[]>([]);
+  const [ prevJobs, setPrevJobs ] = useState<JobDetails[]>([])
+  const [ companies, setCompanies] = useState<string[]>([]);
+  const [ lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [ filter, setFilter ] = useState<Filter>({
     title: "",
     description: "",
     companies: companies,
-    dateStart: dateToString(dateOffset({weeks: -1})),
+    dateStart: dateToString(dateOffset({days: -6})),
     dateEnd: dateToString(new Date())
   } as Filter);
   const jobHandler = useRef<NodeJS.Timeout|null>();
   const [jobsToday, setJobsToday] = useState<JobDetails[]>([]);
   const [ lastScraped, setLastScraped ] = useState<Date|null>(null);
 
-
   const value: IContext = { 
     allJobs,
     jobs,
-    setJobs,
+    setJobs, 
     companies,
     setCompanies,
     lastUpdated,
@@ -134,14 +134,18 @@ function App() {
        filteredJobs = filteredJobs.filter(job => textSearch(job.description, filter.description));
      }
      if (filter.dateStart) {
-      filteredJobs = filteredJobs.filter(job => new Date(job.date_posted).getTime() > new Date(filter.dateStart).getTime());
+      const ds = new Date(filter.dateStart).getTime();
+      const de = filter.dateEnd ? new Date(filter.dateEnd).getTime() : new Date().getTime();
+      const diff = Math.abs(de - ds);
+      const prevFilteredJobs = filteredJobs.filter(job => new Date(job.date_posted).getTime() < ds && new Date(job.date_posted).getTime() >= ds - diff);
+      setPrevJobs(prevFilteredJobs);
+      filteredJobs = filteredJobs.filter(job => new Date(job.date_posted).getTime() >= ds && new Date(job.date_posted).getTime() <= de);
      }
      setJobs(filteredJobs);
   }, [allJobs, filter]);
 
   const filterChanged = (e: React.ChangeEvent<HTMLFormElement>) => {
     const {value, name} = e.target;
-    console.log({name, value});
     setFilter({...filter, [name]: value});
   }
 
@@ -225,7 +229,7 @@ function App() {
               <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
               <div className="job-search">
                 <CompanyChart jobs={jobs} />
-                <WeekChart />
+                <WeekChart jobs={jobs} filter={filter} prevJobs={prevJobs} />
               </div>
               <div className="trends">
                 <AllTrendChart jobs={jobs} />

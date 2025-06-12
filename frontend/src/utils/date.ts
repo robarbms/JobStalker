@@ -61,7 +61,34 @@ export const dateOffset = (dateObj: DateOffsetObj, date?: Date | undefined) => {
     date = date || new Date();
     let key: keyof DateOffsetObj;
     for (key in dateObj) {
-        offsetTime += (dateObj[key] ?? 0) * (offsets[key] ?? 0)
+        offsetTime += (dateObj[key] ?? 0) * (offsets[key] ?? 0);
     }
     return new Date(date.getTime() + offsetTime);
+}
+
+export const dateSeparation = (date1: Date | string, date2: Date | string) => {
+    date1 = new Date(date1);
+    date2 = new Date(date2);
+    const timeDiff = Math.abs(date1.getTime() - date2.getTime());
+    const timeInDay = 1000 * 60 * 60 * 24;
+    const days = Math.round(timeDiff / timeInDay) + 1;
+    const toString = (amt: number, label: string) => `${amt} ${label}${amt > 1 ? "s" : ""}`;
+    if (days < 7) {
+        return toString(days, 'day');
+    }
+    if (days < 30) {
+        const weeks = Math.round((days - days % 7) / 7);
+        const daysString = days % 7 >= 1 ? " " + toString(days % 7, 'day') : ""; 
+        return toString(weeks, 'week') + daysString;
+    }
+    if (days < 365) {
+        const months = toString(Math.round(days / 30), 'month');
+        const daysString = days % 30 >= 1 ? " " + toString(days % 30, 'day') : "";
+        return months + daysString;
+    }
+    else {
+        const years = (days - days % 365) / 365;
+        const months = Math.round((days % 365 / 30));
+        return toString(years, 'year') + ' ' + toString(months, 'month');
+    }
 }

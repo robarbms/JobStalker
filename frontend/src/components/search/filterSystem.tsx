@@ -32,7 +32,7 @@ const FilterSystem = (props: FilterSystemProps) => {
     }
 
     const getStartDate = () => {
-        const weekAgo = dateOffset({weeks: -1});
+        const weekAgo = dateOffset({days: -6});
         return dateToString(weekAgo);
     }
 

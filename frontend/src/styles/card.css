@@ -1,10 +1,9 @@
 .job-card {
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: #242222;
+    background-image: linear-gradient(to top, #111111, #242222);
     margin: 0 10px 10px;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
     min-width: 500px;
     min-height: 200px;
     width: 45%;

@@ -1,33 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, Line, ComposedChart, Area } from 'recharts';
 import {companyData} from "../../utils/companies";
-import { JobContext } from '../../App';
 import { JobDetails } from "../job";
 import { getJobsByDate } from "./utils";
+import { Filter } from '../../App';
+import { dateSeparation } from '../../utils/date';
 
-const WeekChart = () => {
+type WeekChartProps = {
+    jobs: JobDetails[];
+    prevJobs: JobDetails[];
+    filter: Filter;
+}
+
+const WeekChart = (props: WeekChartProps) => {
+    const { jobs, filter, prevJobs } = props;
+    const separation = dateSeparation(filter.dateEnd, filter.dateStart);
     const [ jobsTotal, setJobsTotal ] = useState({
         total: 0,
         lastWeek: 0
     });
     const [ data, setData ] = useState([]);
     const [ companies, setCompanies ] = useState([]);
-    const { jobs } = useContext(JobContext);
+//    const { jobs } = useContext(JobContext);
     useEffect(() => {
-        // Helper function to get data between a specific timeframe
-        const filterJobs = (end: number, start: number = 0) => {
-            const now = new Date();
-            now.setHours(0, 0, 0, 0);
-            const day = 1000 * 60 * 60 * 24; // milliseconds in a day
-            start = now.getTime() - (start === 0 ? start * day : 0);
-            end = start - end * day;
-
-            return jobs.filter((job: JobDetails) => {
-                const jobDateTime = new Date(job.date_posted).getTime();
-                return jobDateTime < start && jobDateTime >= end;
-            });
-        }
-
         // Helper function to get the total number of jobs
         const getTotalJobs = (jobs: any[]) => jobs.reduce((total, job) => {
             for (let key in job) {
@@ -38,13 +33,7 @@ const WeekChart = () => {
             return total;
         }, 0);
 
-        /**
-         * Creates a data array of jobs for each day over the past week
-         */
-        const thisWeek = filterJobs(7);
-        const lastWeek = filterJobs(7, 8);
-
-        const companiesParsed = thisWeek.reduce((acc: any, job: JobDetails) => {
+        const companiesParsed = jobs.reduce((acc: any, job: JobDetails) => {
             if (!acc.find((company: any) => company === job.company)) {
                 acc.push(job.company);
             }
@@ -62,9 +51,9 @@ const WeekChart = () => {
          *      Google: 5,
          *  }]
          */
-        const parsedLastWeekData = getJobsByDate(lastWeek);
+        const parsedLastWeekData = getJobsByDate(prevJobs);
 
-        const dataParsed = getJobsByDate(thisWeek)
+        const dataParsed = getJobsByDate(jobs)
         .map((day: any, idx: number) => {
                 let total = 0;
                 let lastTotal = 0;
@@ -91,7 +80,7 @@ const WeekChart = () => {
  
     return (
         <div className="week-chart">
-            <h2>Jobs for the week: <span className="meta"><label>This week:</label> {jobsTotal.total} <label>Last week:</label>{jobsTotal.lastWeek}</span></h2>
+            <h2>Jobs over time: <span className="meta"><label>Current {separation}:</label> {jobsTotal.total} <label>Previous {separation}:</label>{jobsTotal.lastWeek}</span></h2>
             <ComposedChart width={600} height={300} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
