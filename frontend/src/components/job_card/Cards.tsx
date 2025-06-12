@@ -18,9 +18,6 @@ const Cards = (props: CardsProps) => {
 
     return (
         <div className="cards">
-            <h2>Results
-                <span className="meta"><label>{startIndex + 1} - {Math.min(startIndex + 1 + perPage, jobs.length)} of {jobs.length}</label></span>
-            </h2>
             {props.jobs.slice(startIndex, startIndex + perPage).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} />)}
             <Pagination itemCount={jobs.length} itemsPerPage={perPage} currentIndex={startIndex} setPage={setStartIndex} />
         </div>

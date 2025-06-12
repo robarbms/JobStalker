@@ -6,7 +6,7 @@
     box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
     min-width: 500px;
     min-height: 200px;
-    width: 45%;
+    width: calc(50% - 20px);
     display: inline-block;
 }
 
@@ -60,6 +60,13 @@
 .job-card-summary-more span {
     cursor: pointer;
     padding: 5px 10px;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
 }
 
 .pag {

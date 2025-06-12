@@ -1,5 +1,10 @@
+.title-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .switcher-tabs {
-    border-bottom: 1px solid #fff;
     margin: 10px 0;
 }
 
@@ -12,6 +17,5 @@
 
 .switcher-tab-active {
     color: #fff;
-    border: 1px solid;
     border-bottom-color: #000;
 }

@@ -25,6 +25,8 @@ type SwitcherOption = {
 }
 
 type SwitcherProps = {
+    title: string;
+    job_count: number;
     options: SwitcherOption[]
 }
 
@@ -33,9 +35,11 @@ const Switcher = (props: SwitcherProps) => {
 
     return (
         <div className="switcher">
-            <h2>Search Results <span></span></h2>
-            <div className="switcher-tabs">
-                {props.options.map((option, index) => <SwitcherTab key={index} index={index} text={option.tab} activeIdx={selectedOption} setSelectedTab={setSelectedOption} />)}
+            <div className="title-area">
+                <h2>Search Results <span className="meta">{props.job_count}</span></h2>
+                <div className="switcher-tabs">
+                    {props.options.map((option, index) => <SwitcherTab key={index} index={index} text={option.tab} activeIdx={selectedOption} setSelectedTab={setSelectedOption} />)}
+                </div>
             </div>
             <div className="switcher-content">
                 {props.options[selectedOption].content}

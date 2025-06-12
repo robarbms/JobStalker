@@ -207,13 +207,7 @@ function App() {
           <div className="col-layout">
             <div className="job-lists">
               <div className="job-list-container">
-                <h2>
-                  Search Results
-                  <span className="meta">
-                    <label>{jobs.length} / {allJobs.length} jobs</label>
-                  </span>            
-                </h2>
-                <Switcher options={[
+                <Switcher title="Search Results" job_count={jobs.length} options={[
                   {
                     'tab': 'Cards',
                     'content': <Cards jobs={jobs} tag_colors={tag_colors} />
