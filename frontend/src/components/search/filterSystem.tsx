@@ -33,11 +33,14 @@ const FilterSystem = (props: FilterSystemProps) => {
 
     const getStartDate = () => {
         const weekAgo = dateOffset({days: -6});
+        weekAgo.setHours(0, 0, 0);
         return dateToString(weekAgo);
     }
 
     const getEndDate = () => {
-        return dateToString(new Date());
+        const today = new Date();
+        today.setHours(23, 59, 59);
+        return dateToString(today);
     }
 
     useEffect(() => {

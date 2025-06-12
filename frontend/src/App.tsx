@@ -65,11 +65,10 @@ function App() {
   const getJobs = async () => {
     try {
       const api_url = window.location.protocol + "//" + window.location.hostname + ":5000/api";
-      console.log(api_url);
       const response = await fetch(api_url);
       let data = await response.json();
-      data = data.sort((a: any, b: any) => new Date(a.date_posted) > new Date(b.date_posted) ? -1 : 1)
-        .map((job: JobDetails) => {
+      data.sort((a: any, b: any) => new Date(b.date_posted).getTime() - new Date(a.date_posted).getTime())
+      data = data.map((job: JobDetails) => {
           job.tags = JSON.parse(job.tags as string) as any[];
           return job;
         });
@@ -86,9 +85,11 @@ function App() {
       const today = new Date();
       today.setHours(0, 0, 0, 0); // Set to midnight of the current day
       setJobsToday(data.filter((job: JobDetails) => new Date(job.created_at).getTime() >= today.getTime()));
-      const mostRecentScraped = new Date(data.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0]['created_at']);
-      mostRecentScraped.setTime(mostRecentScraped.getTime()); // + 1000 * 60 * 60 * 7); // Add 7 hours to the timestamp
-      setLastScraped(mostRecentScraped);
+      let mostRecentScraped = 0;
+      data.forEach((job: JobDetails) => {
+        mostRecentScraped = Math.max(new Date(job.created_at).getTime(), mostRecentScraped);
+      });
+      setLastScraped(new Date(mostRecentScraped));
       if (jobHandler.current !== null) {
         clearTimeout(jobHandler.current);
       }
@@ -135,7 +136,9 @@ function App() {
      }
      if (filter.dateStart) {
       const ds = new Date(filter.dateStart).getTime();
-      const de = filter.dateEnd ? new Date(filter.dateEnd).getTime() : new Date().getTime();
+      const dateEnd = new Date(filter.dateEnd + "T01:00:00");
+      dateEnd.setHours(23, 59, 59);
+      const de = filter.dateEnd ? dateEnd.getTime() : new Date().getTime();
       const diff = Math.abs(de - ds);
       const prevFilteredJobs = filteredJobs.filter(job => new Date(job.date_posted).getTime() < ds && new Date(job.date_posted).getTime() >= ds - diff);
       setPrevJobs(prevFilteredJobs);
