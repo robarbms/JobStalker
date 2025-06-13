@@ -67,9 +67,10 @@ def main():
 
     updated_jobs = processJobs(jobs)
     for x in range(len(updated_jobs)):
-        job_description = updated_jobs[x]['description']
-        summary = get_summary(job_description)
-        updated_jobs[x]['summary'] = summary
+        if len(updated_jobs) > x and 'description' in updated_jobs[x]:
+            job_description = updated_jobs[x]['description']
+            summary = get_summary(job_description)
+            updated_jobs[x]['summary'] = summary
 
     log(f"Adding {len(updated_jobs)} jobs to database")
     new_job_count = insert_jobs(updated_jobs, cur, conn)

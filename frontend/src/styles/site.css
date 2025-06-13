@@ -146,16 +146,14 @@ path.recharts-sector {
 
 .tag {
     display: inline-block;
-    background: #888;
+    background: #444!important;
     color: #fff;
     font-size: x-small;
-    font-weight: 700;
     min-width: 40px;
-    padding: 4px;
+    padding: 4px 8px;
     margin: 10px 10px 0 0;
     text-align: center;
     border-radius: 4px;
-    text-shadow: 0 0 5px black;
 }
 
 .trends {
