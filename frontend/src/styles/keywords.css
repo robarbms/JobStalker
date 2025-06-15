@@ -1,0 +1,22 @@
+.keywords {
+    width: 100%;
+}
+
+.keyword-tabs {
+    display: flex;
+}
+
+.keyword-tab {
+    padding: 5px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+.active-tab {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.keyword-tab:hover {
+    color: #fff;
+}

@@ -1,0 +1,61 @@
+div.company-filters {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 10px;
+    padding: 10px;
+}
+
+.company-filter {
+    flex-basis: 15%;
+    padding: 10px;
+    text-align: center;
+    border-radius: 6px;
+    background-image: linear-gradient(to top, #111111, #242222);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.company-controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+.company-controls > div {
+    cursor: pointer;
+}
+
+.toggle {
+    margin: 5px 0 0;
+    width: 40px;
+    height: 12px;
+    border-radius: 6px;
+    background: #333;
+    cursor: pointer;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, .5);
+    border: 1px solid #222;
+}
+
+.toggle::before {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    background: #555;
+    border-radius: 50%;
+    margin-left: 0;
+    transition: .5s ease-out;
+}
+
+.toggle.enabled::before {
+    margin-left: 30px;
+    background: green;
+}
+
+.toggle.enabled {
+    background: #030;
+}
+
+.toggle:hover {
+    background: #666;
+}

@@ -13,6 +13,9 @@ import Cards from './components/job_card/Cards';
 import ApiService from './components/api_service';
 import Switcher from './components/layout/switcher';
 import { dateOffset, DateOffsetObj, dateToString } from './utils/date';
+import CompanyFilters from './components/search/companyFilters';
+import TagFilters from './components/search/tagFilters';
+import Keywords from './components/charts/keywords';
 
 export type Filter = {
   title: string;
@@ -20,6 +23,9 @@ export type Filter = {
   companies: string[];
   dateStart: string;
   dateEnd: string;
+  focusedCompany: string | null;
+  tagsInclude: string[];
+  tagsExclude: string[];
 }
 interface IContext {
   allJobs: JobDetails[],
@@ -45,7 +51,8 @@ function App() {
     description: "",
     companies: companies,
     dateStart: dateToString(dateOffset({days: -6})),
-    dateEnd: dateToString(new Date())
+    dateEnd: dateToString(new Date()),
+    focusedCompany: null
   } as Filter);
   const jobHandler = useRef<NodeJS.Timeout|null>();
   const [jobsToday, setJobsToday] = useState<JobDetails[]>([]);
@@ -80,6 +87,7 @@ function App() {
           return c;
       }, []).sort();
       setCompanies(companies);
+      setFilter({...filter, companies});
       setAllJobs(data);
       setLastUpdated(new Date());
       const today = new Date();
@@ -125,7 +133,10 @@ function App() {
 
   const applyFilters = useCallback(() => {
      let filteredJobs = allJobs;
-     if (filter.companies.length > 0) {
+     if (filter.focusedCompany) {
+        filteredJobs = filteredJobs.filter(job => job.company === filter.focusedCompany);
+     }
+     else if (filter.companies.length > 0) {
       filteredJobs = filteredJobs.filter(job => filter.companies.includes(job.company));
      }
      if(filter.title) {
@@ -159,6 +170,15 @@ function App() {
     }
     const updatedFilter = {...filter, companies: filter_companies};
     setFilter(updatedFilter);
+  }
+
+  const focusCompany = (company: string) => () => {
+    const updatedFilter = Object.assign({}, filter, {focusedCompany: filter.focusedCompany === company ? null : company});
+    setFilter(updatedFilter);
+  }
+
+  const filterTags = () => {
+
   }
 
   useEffect(() => {
@@ -230,7 +250,8 @@ function App() {
               </div>
               <div className="trends">
                 <AllTrendChart jobs={jobs} />
-                <TagsOverTime jobs={jobs} />
+                <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
+                <Keywords jobs={jobs.map(({tags, date_posted}) => ({tags, date_posted})).filter(job => job.tags.length > 0)} filter={filter} filterTags={filterTags} tagColors={tag_colors as {[tag: string]: string}} />
               </div>
             </div>
           </div>

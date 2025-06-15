@@ -81,10 +81,6 @@ const FilterSystem = (props: FilterSystemProps) => {
                             <input className="filter-date" type="date" name="dateStart" ref={dateStart} onInput={keyup} /> <span className="date-separate">to</span> <input className="filter-date" type="date" name="dateEnd" ref={dateEnd} onChange={keyup} />
                         </fieldset>
                     </div>
-                    <fieldset>
-                        <legend>Companies</legend>
-                        {companies.map((company, idx) => <CompanySelect key={idx} company={company} toggle={props.toggleCompany(company)} filter={filter} />)}
-                    </fieldset>
                 </form>
             </div>
         </div>
