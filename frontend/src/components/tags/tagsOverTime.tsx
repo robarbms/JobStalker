@@ -2,18 +2,34 @@ import React, { useContext } from 'react';
 import { Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, BarChart, ComposedChart, Cell } from 'recharts';
 import TechTags from '../../utils/tech_keywords.json';
 import DSTags from '../../utils/ds_keywords.json';
+import DesignTags from '../../utils/design_keywords.json';
 import { JobContext } from '../../App';
 import { JobDetails } from '../job';
 import { getJobsByDate, filterJobs } from '../charts/utils';
 import { getTagColors } from './tagColors';
 import { dateToKey, keyToDate } from '../../utils/date';
+import { KeywordGroupName, keywordGroups} from '../charts/keywords';
 
 type TagsOverTimeProps = {
     jobs: JobDetails[];
+    category: KeywordGroupName;
 }
 
 export default function TagsOverTime (props: TagsOverTimeProps) {
-    const { jobs } = props;
+    const { jobs, category }: {
+        jobs: JobDetails[],
+        category: KeywordGroupName
+    } = props;
+    const categoryData = keywordGroups[category];
+    const compiledTags = {}
+    console.log({categoryData});
+    // filter tags to only the current active tab
+
+    const filteredTags = jobs.map((job) => {
+
+    })
+
+    console.log({jobs});
     const { allJobs } = useContext(JobContext);
     const colors = getTagColors();
     const getColor = (tag: string) => {

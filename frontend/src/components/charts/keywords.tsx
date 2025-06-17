@@ -6,8 +6,9 @@ import developerTags from '../../utils/tech_keywords.json';
 import datascienceTags from '../../utils/ds_keywords.json';
 import designTags from '../../utils/design_keywords.json';
 import KeywordGroupOverview from './keywordGroup';
+import TagsOverTime from '../tags/tagsOverTime';
 
-type TagCategoryItem = {
+export type TagCategoryItem = {
     name: string;
     type: string;
 };
@@ -15,19 +16,19 @@ type TagCategoryItem = {
 /**
  * Type representing a tag list category
  */
-type TagListCategory = {
+export type TagListCategory = {
     'name': string;
     'libraries'?: TagCategoryItem[],
     'methods'?: TagCategoryItem[],
     'models'?: TagCategoryItem[]
 }
 
-type TagList = TagListCategory[];
+export type TagList = TagListCategory[];
 
 /**
  * Data used to render the tabs and parse data to the correct group
  */
-const keywordGroups = {
+export const keywordGroups = {
     'Developer': {
         tags: developerTags as TagList
     },
@@ -39,15 +40,15 @@ const keywordGroups = {
     }
 }
 
-type KeywordGroupsT = typeof keywordGroups;
+export type KeywordGroupsT = typeof keywordGroups;
 
 /**
  * Typing for tabs
  */
-type KeywordGroupName = keyof typeof keywordGroups;
+export type KeywordGroupName = keyof typeof keywordGroups;
 
 
-type KeywordTabProps = {
+export type KeywordTabProps = {
     name: string;
     isActive: boolean;
     setActiveTab: React.Dispatch<React.SetStateAction<KeywordGroupName>>;
@@ -56,7 +57,7 @@ type KeywordTabProps = {
 /**'
  * A tab for a keyword section
  */
-const KeywordTab = (props: KeywordTabProps) => {
+export const KeywordTab = (props: KeywordTabProps) => {
     const { name, isActive, setActiveTab } = props;
     return (
         <div className={`keyword-tab ${isActive ? "active-tab" : ""}`} onClick={() => setActiveTab(name as KeywordGroupName)}>
@@ -68,7 +69,7 @@ const KeywordTab = (props: KeywordTabProps) => {
 /**
  * Properties for the Keywords component
  */
-type KeywordsProps = {
+export type KeywordsProps = {
     jobs: {
         tags: string | any[];
         date_posted: string;
@@ -157,9 +158,12 @@ const Keywords = (props: KeywordsProps) => {
             </div>
             <div className="keyword-content">
                 {tagData && activeTab in tagData &&
-                    <KeywordGroupOverview data={(tagData as any)[activeTab]} tagColors={tagColors} />
+                    <>
+                        <KeywordGroupOverview data={(tagData as any)[activeTab]} tagColors={tagColors} />
+                        <TagsOverTime jobs={jobs as JobDetails[]} category={activeTab} />
+                    </>
                 }
-            </div>
+            </div>            
         </div>
     );
 };
