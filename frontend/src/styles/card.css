@@ -12,6 +12,7 @@
 
 .job-card h3 {
     margin: 0 0 5px;
+    height: 40px;
 }
 
 .job-card .job-card-date {
@@ -45,7 +46,7 @@
     overflow: hidden;
     text-overflow: ellipsis; /* Show an ellipsis (...) when content overflows */
     margin: 5px 0 0;
-    
+    height: 85px;
 }
 
 .job-card p.job-card-summary-all {
@@ -84,4 +85,11 @@
 .pag:hover {
     background: rgba(255, 255, 255, 0.1);
     color: #fff;
+}
+
+.job-card-tags {
+    height: 64px;
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
 }
