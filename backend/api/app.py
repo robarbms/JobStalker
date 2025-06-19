@@ -12,7 +12,7 @@ def getCompanyName(companies, companyId):
         
     return ""
 
-@app.route("/api", methods=['GET'])
+@app.route("/api")
 def api():
     try:
         cur, conn = connect_to_db()
@@ -41,4 +41,4 @@ def api():
         conn.close()
 
 if __name__== '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=False)
