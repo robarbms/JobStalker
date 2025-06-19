@@ -22,14 +22,12 @@ export default function TagsOverTime (props: TagsOverTimeProps) {
     } = props;
     const categoryData = keywordGroups[category];
     const compiledTags = {}
-    console.log({categoryData});
     // filter tags to only the current active tab
 
     const filteredTags = jobs.map((job) => {
 
     })
 
-    console.log({jobs});
     const { allJobs } = useContext(JobContext);
     const colors = getTagColors();
     const getColor = (tag: string) => {

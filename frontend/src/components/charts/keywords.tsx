@@ -77,6 +77,7 @@ export type KeywordsProps = {
     filter: Filter;
     filterTags: (data: any) => void;
     tagColors: {[tag: string]: string};
+    parsedTagData: any;
 }
 
 /**
@@ -85,9 +86,10 @@ export type KeywordsProps = {
  * @returns 
  */
 const Keywords = (props: KeywordsProps) => {
-    const { jobs, filter, filterTags, tagColors } = props;
+    const { jobs, filter, filterTags, tagColors, parsedTagData } = props;
     const [ activeTab, setActiveTab ] = useState<KeywordGroupName>('Developer');
     const [ tagData, setTagData ] = useState({});
+    const [ tagGroupData, setTagGroupData ] = useState();
 
     useEffect(() => {
         // Go through jobs and create a tag map with counts
@@ -147,21 +149,38 @@ const Keywords = (props: KeywordsProps) => {
                 children: groupChildren
             }
         }
+        const groupData: any = { children: [], total: 0};
+        for (let name in parsedTagData) {
+            const group: any = parsedTagData[name];
+            groupData.total += group.total;
+            groupData.children.push({
+                name,
+                count: group.total
+            });
+        }
+        setTagGroupData(groupData);
 
         setTagData(tagDataLocal);
     }, [jobs, filter]);
     return (
         <div className="keywords">
             <h2>Keywords</h2>
-            <div className="keyword-tabs">
-                {(Object.keys(keywordGroups) as KeywordGroupName[]).map((group: KeywordGroupName, index: number) => <KeywordTab key={index} name={group} isActive={group === activeTab} setActiveTab={setActiveTab} />)}
-            </div>
             <div className="keyword-content">
+                <div className="keyword-overviews">
+                    {tagGroupData &&
+                        <KeywordGroupOverview data={tagGroupData} tagColors={tagColors} />
+                    }
+                    <div className="keyword-cat-select">
+                        <div className="keyword-tabs">
+                            {(Object.keys(keywordGroups) as KeywordGroupName[]).map((group: KeywordGroupName, index: number) => <KeywordTab key={index} name={group} isActive={group === activeTab} setActiveTab={setActiveTab} />)}
+                        </div>
+                        {tagData && activeTab in tagData &&
+                            <KeywordGroupOverview data={(tagData as any)[activeTab]} tagColors={tagColors} />
+                        }
+                    </div>
+                </div>
                 {tagData && activeTab in tagData &&
-                    <>
-                        <KeywordGroupOverview data={(tagData as any)[activeTab]} tagColors={tagColors} />
-                        <TagsOverTime jobs={jobs as JobDetails[]} category={activeTab} />
-                    </>
+                    <TagsOverTime jobs={jobs as JobDetails[]} category={activeTab} />
                 }
             </div>            
         </div>

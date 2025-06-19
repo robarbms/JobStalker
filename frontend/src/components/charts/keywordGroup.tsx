@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tooltip, Legend, PieChart, Pie, Cell, Label } from 'recharts';
 
-const hslToHex = ({hue: h, saturation: s, lightness: l}: {hue: number, saturation: number, lightness: number}): string => {
+export const hslToHex = ({hue: h, saturation: s, lightness: l}: {hue: number, saturation: number, lightness: number}): string => {
   h /= 360;
   s /= 100;
   l /= 100;
@@ -48,7 +48,7 @@ const TagCategoryChart = (props: TagCategoryChartProps) => {
 
     return (
         <PieChart 
-            width={580}
+            width={620}
             height={300}
             data={data}
             margin={{top: 5, right: 30, left: 20, bottom: 5}}>

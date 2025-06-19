@@ -181,6 +181,14 @@ path.recharts-sector {
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0 5px;
+}
+
+.button-inactive {
+    color: inherit;
 }
 
 .button:hover {

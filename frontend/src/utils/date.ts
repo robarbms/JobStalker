@@ -66,6 +66,12 @@ export const dateOffset = (dateObj: DateOffsetObj, date?: Date | undefined) => {
     return new Date(date.getTime() + offsetTime);
 }
 
+/**
+ * Calculates the number of days, weeks, months or years between 2 dates
+ * @param date1 first date
+ * @param date2 second date
+ * @returns 
+ */
 export const dateSeparation = (date1: Date | string, date2: Date | string) => {
     date1 = new Date(date1);
     date2 = new Date(date2);
@@ -91,4 +97,29 @@ export const dateSeparation = (date1: Date | string, date2: Date | string) => {
         const months = Math.round((days % 365 / 30));
         return toString(years, 'year') + ' ' + toString(months, 'month');
     }
+}
+
+/**
+ * Helper function that creates an object of days that are keyed by day
+ * @param dateStart Date to begin the array
+ * @param dateEnd Optional date to end the array. Uses todays date if no date end is provided
+ */
+export const getDateMap = (dateStart: string | Date, dateEnd?: string | Date) => {
+    // initialize dateStart and dateEnd with Date objects to work with
+    if (typeof dateStart === 'string') dateStart = new Date(dateStart);
+    if (!dateEnd || dateEnd === '') dateEnd = new Date();
+    else if (typeof dateEnd === 'string') dateEnd = new Date(dateEnd);
+
+    const dateMap: {[date: string]: any} = {};
+    const oneDayInMilliseconds = 1000 * 60 * 60 * 24;
+    let currDate: Date = dateStart;
+    currDate.setHours(0, 0, 0);
+    while (currDate.getTime() < dateEnd.getTime()) {
+        dateMap[dateToKey(currDate)] = {
+            dateObj: currDate
+        }
+        currDate = new Date(currDate.getTime() + oneDayInMilliseconds)
+    }
+
+    return dateMap;
 }

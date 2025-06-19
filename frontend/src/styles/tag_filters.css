@@ -1,3 +1,31 @@
 .tag-filters {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tag-group {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.tag-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag-category {
+    padding: 10px;
+    border: 1px solid;
+    min-width: 200px;
+}
+
+.keyword-overviews {
+    display: flex;   
+}
+
+.keyword-cat-select {
+    border-left: 1px solid;
 }

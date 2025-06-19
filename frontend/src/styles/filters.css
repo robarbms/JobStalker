@@ -8,18 +8,15 @@
 
 /* Filter groups */
 .filter-system fieldset {
-    max-width: 640px;
+    width: calc(50% - 20px);
     padding: 10px;
     border-radius: 5px;
-}
-
-.filter-system fieldset + fieldset {
-    margin-top: 20px;
+    margin: 20px 10px 0 0;
+    display: inline-block;
 }
 
 .text-search {
-    float: left;
-    width: 500px;
+    width: 100%;
     margin: 0 20px 0 0;
 }
 

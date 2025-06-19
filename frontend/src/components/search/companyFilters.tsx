@@ -43,11 +43,16 @@ const CompanyFilters = (props: CompanyFiltersProps) => {
     const { companies, filter } = useContext(JobContext);
     const isEnabled = (company: string) => filter.companies.includes(company) || filter.companies.length === 0;
     const allOn = () => props.setFilter({...filter, companies});
+    const clearFocus = () => props.setFilter({...filter, focusedCompany: null});
+    const hasFilter = filter.companies.length > 0 && filter.companies.length < companies.length; 
 
     return (
     <div>
-        <h2>Company Filters</h2>
-        <div className="button" onClick={allOn}>Enable all</div>
+        <h2>
+            Company Filters
+            <div className={`button ${hasFilter ? '' : 'button-inactive'}`} onClick={allOn}>Clear filters</div>
+            <div className={`button ${filter.focusedCompany ? '' : 'button-inactive'}`} onClick={clearFocus}>Clear focus</div>
+        </h2>
         <div className="company-filters">
             {companies.map((company, index) => <CompanyFilter key={index} company={company} focused={filter.focusedCompany === company} enabled={isEnabled(company)} toggle={props.toggleCompany(company)} setFocus={props.focusCompany(company)} />)}
         </div>

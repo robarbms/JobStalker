@@ -12,10 +12,12 @@ import Card from './components/job_card/Card';
 import Cards from './components/job_card/Cards';
 import ApiService from './components/api_service';
 import Switcher from './components/layout/switcher';
-import { dateOffset, DateOffsetObj, dateToString } from './utils/date';
+import { dateOffset, DateOffsetObj, dateToString, getDateMap } from './utils/date';
+import DateFilters from './components/search/dateFilters';
 import CompanyFilters from './components/search/companyFilters';
-import TagFilters from './components/search/tagFilters';
 import Keywords from './components/charts/keywords';
+import { parseTags } from './utils/data';
+import TagFilters from './components/search/tagFilters';
 
 export type Filter = {
   title: string;
@@ -46,6 +48,7 @@ function App() {
   const [ prevJobs, setPrevJobs ] = useState<JobDetails[]>([])
   const [ companies, setCompanies] = useState<string[]>([]);
   const [ lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [ tagData, setTagData] = useState<any>({});
   const [ filter, setFilter ] = useState<Filter>({
     title: "",
     description: "",
@@ -143,7 +146,7 @@ function App() {
         filteredJobs = filteredJobs.filter(job => textSearch(job.title, filter.title)); 
      }
      if(filter.description) {
-       filteredJobs = filteredJobs.filter(job => textSearch(job.description, filter.description));
+       filteredJobs = filteredJobs.filter(job => textSearch(job.summary, filter.description));
      }
      if (filter.dateStart) {
       const ds = new Date(filter.dateStart).getTime();
@@ -154,8 +157,10 @@ function App() {
       const prevFilteredJobs = filteredJobs.filter(job => new Date(job.date_posted).getTime() < ds && new Date(job.date_posted).getTime() >= ds - diff);
       setPrevJobs(prevFilteredJobs);
       filteredJobs = filteredJobs.filter(job => new Date(job.date_posted).getTime() >= ds && new Date(job.date_posted).getTime() <= de);
-     }
-     setJobs(filteredJobs);
+    }
+    setJobs(filteredJobs);
+    const parsedTags = parseTags(jobs);
+    setTagData(parsedTags);
   }, [allJobs, filter]);
 
   const filterChanged = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -244,14 +249,16 @@ function App() {
             </div>
             <div className="job-charts">
               <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
+              <DateFilters filterChanged={filterChanged} />
+              <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
               <div className="job-search">
                 <CompanyChart jobs={jobs} />
                 <WeekChart jobs={jobs} filter={filter} prevJobs={prevJobs} />
               </div>
               <div className="trends">
                 <AllTrendChart jobs={jobs} />
-                <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
-                <Keywords jobs={jobs.map(({tags, date_posted}) => ({tags, date_posted})).filter(job => job.tags.length > 0)} filter={filter} filterTags={filterTags} tagColors={tag_colors as {[tag: string]: string}} />
+                <Keywords parsedTagData={tagData} jobs={jobs} filter={filter} filterTags={filterTags} tagColors={tag_colors as {[tag: string]: string}} />
+                <TagFilters tagData={tagData} />
               </div>
             </div>
           </div>
