@@ -26,15 +26,17 @@ const Tag = (props: TagProps) => {
 
 type TagCategoryProps = TagGroupProps & {
     tagColors: any;
+    useColors?: boolean;
 }
 
 const TagCategory = (props: TagCategoryProps) => {
-    const {name, tagColors, total, count} = props;
+    const {name, tagColors, total, count, useColors } = props;
+    const colorStyles = useColors ? {
+        borderColor:  hslToHex(tagColors[name])
+    } : {};
 
     return (
-        <div className="tag-category" style={{
-            borderColor: hslToHex(tagColors[name])
-        }}>
+        <div className="tag-category tag-status-active" style={colorStyles}>
             <div>{props.name} ({(count || 0) + (total || 0)})</div>
         </div>
     )
@@ -45,6 +47,7 @@ type TagGroupProps = {
     children: any[];
     total?: number;
     count?: number;
+    useColors?: boolean;
 }
 
 const TagGroup = (props: TagGroupProps) => {

@@ -64,7 +64,6 @@ class JobAnalyzer:
         # Set device to GPU
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         # self.device = "cpu"
-        print("DEVICE >>>> ", self.device)
         self.embedder = SentenceTransformer('all-MiniLM-L6-v2')
 
     def clear_context(self):

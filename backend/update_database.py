@@ -9,19 +9,14 @@ def update_keywords(job, cur):
     if keywords != job[15]:
         sql = f"UPDATE jobs SET tags='{keywords}' WHERE id='{job[0]}'"
         cur.execute(sql)
-        print(sql)
-    else:
-        print("MATCH!!!!!!")
 
 def update_summary(job, cur):
     description = job[3]
     summary = job[13]
-    print(f"updating summary for {job[2]} with description length: {len(description)} and current summary length: {len(summary)}")
     if len(summary) < 10 and description != "":
         ai_summary = get_summary(description)
         sql = f"UPDATE jobs SET summary='{ai_summary}' WHERE id='{job[0]}'"
         cur.execute(sql)
-        print(f"Summary length: {len(ai_summary)}")
 
 
 if __name__ == "__main__": 

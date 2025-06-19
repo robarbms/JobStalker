@@ -20,8 +20,6 @@ def get_company_ids(cur, conn):
     for company in companies:
         company_ids[company[1]] = company[0]
 
-    print(company_ids)
-
     return company_ids
     
 # Inserts a list of jobs

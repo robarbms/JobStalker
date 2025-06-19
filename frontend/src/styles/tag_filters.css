@@ -7,7 +7,12 @@
 .tag-group {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 4px;
-    padding: 10px;
+    padding: 10px 10px 20px;
+    margin: 0 0 20px;
+}
+
+.tag-group h2 {
+    margin: 0 0 20px;
 }
 
 .tag-categories {
@@ -19,7 +24,10 @@
 .tag-category {
     padding: 10px;
     border: 1px solid;
-    min-width: 200px;
+    min-width: calc(25% - 10px);
+    border-radius: 4px;
+    box-sizing: border-box;
+    position: relative;
 }
 
 .keyword-overviews {
@@ -28,4 +36,23 @@
 
 .keyword-cat-select {
     border-left: 1px solid;
+}
+
+.tag-status-active::before,
+.tag-status-disabled::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #006600;
+    border: 1px solid;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.tag-status-disabled::before {
+    background: #666666;
 }

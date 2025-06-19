@@ -13,9 +13,8 @@ def get_summary(description: str):
     words_count = len(description.split())
     if words_count<200:
         return description
-    # Set device to GPU
+    # Set device to GPU if available
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    # device = "cpu"
     chunks = chunk_text(description, 300)
 
     try:
@@ -23,15 +22,18 @@ def get_summary(description: str):
         if len(chunks) > 1:
             summaries = []
             for chunk in chunks:
-                if len(chunk) == 300:
+                if len(chunk) > 200:
                     chunk_summary = summarizer(' '.join(chunk), max_length=200, min_length=50, do_sample=False)
                     if chunk_summary and chunk_summary[0]:
                         summaries.append(chunk_summary[0]['summary_text'])
                 else:
                     summaries.append(' '.join(chunk))
             description = ' '.join(summaries)
-        summary_obj = summarizer(description, max_length=200, min_length=50, do_sample=False)
-        summary = summary_obj[0]['summary_text']
+        if len(description.split()) > 200:
+            summary_obj = summarizer(description, max_length=200, min_length=50, do_sample=False)
+            summary = summary_obj[0]['summary_text']
+        else:
+            summary = description
         summary = summary.replace("'", "") # Escape single quotes for SQL query
         summary = summary.strip()
 
