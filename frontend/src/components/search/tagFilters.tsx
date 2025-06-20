@@ -74,6 +74,7 @@ type TagFiltersProps = {
 
 const TagFilters = (props: TagFiltersProps) => {
     const { tagData } = props;
+    return <></>
 
     return (
         <div className="tag-filters">
