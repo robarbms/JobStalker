@@ -15,12 +15,13 @@ const objToArray = (obj: any) => {
 }
 
 type TagProps = {
-
-}
+    name: string;
+}  
 
 const Tag = (props: TagProps) => {
+    const { name } = props;
     return (
-        <div className="tag"></div>
+        <div className="tag-filter">{name}</div>
     );
 }
 
@@ -30,14 +31,17 @@ type TagCategoryProps = TagGroupProps & {
 }
 
 const TagCategory = (props: TagCategoryProps) => {
-    const {name, tagColors, total, count, useColors } = props;
+    const {name, tagColors, total, count, useColors, children } = props;
     const colorStyles = useColors ? {
         borderColor:  hslToHex(tagColors[name])
     } : {};
 
     return (
-        <div className="tag-category tag-status-active" style={colorStyles}>
+        <div className={`tag-category tag-status-active`} style={colorStyles}>
             <div>{props.name} ({(count || 0) + (total || 0)})</div>
+            <div className="tag-filters">
+                {objToArray(children).map((data, index) => <Tag key={index} {...data} tagColors={tagColors} />)}
+            </div>
         </div>
     )
 }
@@ -70,7 +74,7 @@ type TagFiltersProps = {
 
 const TagFilters = (props: TagFiltersProps) => {
     const { tagData } = props;
-    console.dir(tagData);
+
     return (
         <div className="tag-filters">
             <h2>Tag Filters</h2>

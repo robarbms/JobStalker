@@ -56,3 +56,14 @@
 .tag-status-disabled::before {
     background: #666666;
 }
+
+.tag-filters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tag-filter {
+    padding: 5px;
+}

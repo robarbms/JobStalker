@@ -164,8 +164,16 @@ function App() {
   }, [allJobs, filter]);
 
   const filterChanged = (e: React.ChangeEvent<HTMLFormElement>) => {
-    const {value, name} = e.target;
-    setFilter({...filter, [name]: value});
+    let data = {};
+    if ('target' in e) {
+      const {name, value} = e.target;
+      data = {[name]: value}
+    }
+    else {
+      data = e;
+    }
+    console.log(data);
+    setFilter({...filter, ...data});
   }
 
   const toggleCompany = (company: string) => () => {
@@ -248,7 +256,6 @@ function App() {
               </div>
             </div>
             <div className="job-charts">
-              <FilterSystem filterChanged={filterChanged} toggleCompany={toggleCompany} />
               <DateFilters filterChanged={filterChanged} />
               <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
               <div className="job-search">
