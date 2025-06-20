@@ -168,7 +168,18 @@ path.recharts-sector {
 
 .col-layout {
     display: flex;
+    flex-direction: row;
     gap: 20px;
+}
+
+@media (max-width: 1000px) {
+    .col-layout {
+        flex-direction: column;
+    }
+    .job-lists,
+    .job-charts {
+        width: auto;
+    }
 }
 
 .job-charts {
