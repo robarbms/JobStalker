@@ -10,7 +10,7 @@ type CardsProps = {
 const Cards = (props: CardsProps) => {
     const {jobs, tag_colors} = props;
     const [startIndex, setStartIndex] = useState(0);
-    const perPage = 40;
+    const perPage = 36;
 
     useEffect(() => {
         setStartIndex(0);
