@@ -136,3 +136,6 @@ venv/
 
 # LLM files
 /backend/ai/models/*
+
+# DBs
+/backend/database/*.db

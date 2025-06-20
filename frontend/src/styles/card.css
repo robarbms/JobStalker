@@ -6,13 +6,12 @@
 }
 
 .job-card {
-    --card-width: 500px;
+    --card-width: 400px;
     background-image: linear-gradient(to top, #111111, #242222);
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
     min-width: var(--card-width);
-    min-height: 200px;
     width: 100%;
     box-sizing: border-box;
     display: inline-block;
@@ -20,19 +19,18 @@
 
 @container job-list (width > 1000px) {
     .job-card{
-        width: calc(50% - 20px);
+        width: calc(50% - 5px);
     }
 }
 
 @container job-list (width > 1550px) {
     .job-card {
-        width: calc(33% - 30px);
+        width: calc(33% - 5px);
     }
 }
 
 .job-card h3 {
     margin: 0 0 5px;
-    height: 40px;
 }
 
 .job-card .job-card-date {
@@ -67,7 +65,7 @@
     overflow: hidden;
     text-overflow: ellipsis; /* Show an ellipsis (...) when content overflows */
     margin: 5px 0 0;
-    height: 85px;
+    max-height: 85px;
 }
 
 .job-card p.job-card-summary-all {
@@ -109,7 +107,6 @@
 }
 
 .job-card-tags {
-    height: 64px;
     display: flex;
     align-items: flex-end;
     flex-wrap: wrap;
