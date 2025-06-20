@@ -1,5 +1,6 @@
 import React, { createRef, useEffect, useCallback } from 'react';
 import { dateToString, DateOffsetObj, dateOffset } from '../../utils/date';
+import '../../styles/date_filters.css';
 
 type DateFilterButtonProps = {
     text: string;
@@ -7,6 +8,8 @@ type DateFilterButtonProps = {
     end?: any;
     changeDates: Function;
 }
+
+const dateString = (date: Date) => `${date.getMonth() + 1}/${date.getDate()}`;
 
 const DateFilterButton = (props: DateFilterButtonProps) => {
     const { text, changeDates } = props;
@@ -23,7 +26,8 @@ const DateFilterButton = (props: DateFilterButtonProps) => {
 
     return (
         <div className="button" onClick={() => changeDates(data)}>
-            {text}
+            <div>{text}</div>
+            <div className="sub-data">{dateString(start)} - {dateString(end)}</div>
         </div>
     )
 }
@@ -101,8 +105,8 @@ const DateFilters = (props: DateFiltersProps) => {
         <div className="date-filters">
             <h2>Date Filters</h2>
             {filters.map((data, index) => <DateFilterButton {...data} key={index} changeDates={props.filterChanged} />)}
-            <form onBlur={props.filterChanged} id="job-search-form">
-                <label>Custom date range:</label>&nbsp;&nbsp;
+            <form onBlur={props.filterChanged} id="date-search-form">
+                <label>Custom date range:</label>
                 <input className="filter-date" type="date" name="dateStart" ref={dateStart} onInput={keyup} /> <span className="date-separate">to</span> <input className="filter-date" type="date" name="dateEnd" ref={dateEnd} onChange={keyup} />
                 <div className="button">Change date</div>
             </form>

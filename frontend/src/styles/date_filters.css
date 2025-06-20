@@ -1,0 +1,26 @@
+.date-filters {
+    margin: 0 0 20px;
+    padding: 0 0 20px;
+}
+
+.date-filters h2 {
+    margin-bottom: 20px;
+}
+
+.date-filters .button {
+    min-width: 120px;
+    text-align: center;
+}
+
+.date-filters form {
+    margin: 20px 0 0;
+}
+
+.date-filters label {
+    font-weight: bold;
+    margin: 0 10px 0 0;
+}
+
+.date-filters input {
+    margin: 0 10px;
+}

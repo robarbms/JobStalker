@@ -205,3 +205,7 @@ path.recharts-sector {
 .button:hover {
     background: #333;
 }
+
+.sub-data {
+    opacity: .6;
+}
