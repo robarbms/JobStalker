@@ -57,6 +57,12 @@ export const getTagMappings = (data: any) => {
     return { tagMap, tagKeyMap};
 }
 
+export const tagMappings = () => getTagMappings({
+        Developer: devKeywords,
+        'Data Scientist': dataScienceKeywords,
+        Designer: designKeywords
+    });
+
 /**
  * Helper function to get the parent node of the tag mappings based on an array of parent nodes
  * @param data A data structure
@@ -66,11 +72,7 @@ export const getTagMappings = (data: any) => {
 export const getParentFromPaths = (data: any, paths: string[]) => paths.reduce((curr, dir: string) => curr?.children?.[dir] ?? curr, data);
 
 export const parseTags = (jobs: JobDetails[]) => {
-    const keywordMappings = getTagMappings({
-        Developer: devKeywords,
-        'Data Scientist': dataScienceKeywords,
-        Designer: designKeywords
-    });
+    const keywordMappings = tagMappings();
     const tagCounts: any = {...keywordMappings.tagMap};
     const addTag = (tag: string | string[]) => {
         if (Array.isArray(tag)) tag.forEach(addTag);

@@ -8,7 +8,7 @@
 .job-card {
     --card-width: 400px;
     background-image: linear-gradient(to top, #111111, #242222);
-    padding: 10px;
+    padding: 10px 10px 20px;
     border-radius: 10px;
     box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
     min-width: var(--card-width);
@@ -31,6 +31,10 @@
 
 .job-card h3 {
     margin: 0 0 5px;
+}
+
+.job-card a {
+    text-decoration: none;
 }
 
 .job-card .job-card-date {
@@ -87,6 +91,7 @@
     align-items: center;
     justify-content: center;
     margin: 20px 0;
+    width: 100%;
 }
 
 .pag {

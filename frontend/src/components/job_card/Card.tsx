@@ -40,17 +40,19 @@ const Card = (props: any) => {
                     }
                 </div>
                 <div className="col-2">
-                    <h3>
-                        <a href={link} target="_blank" rel="noreferrer">{title}</a>
-                    </h3>
-                    <span className="job-card-company">
-                        {company}
-                    </span>
-                    {salary_min && payToString(salary_min)}
-                    {salary_min && salary_max && " - "}
-                    {salary_max && payToString(salary_max)}
-                    <span className="job-card-date">{getDateString(date_posted)}</span>
-                    <p className={!useExpand || expand ? "job-card-summary-all" : ""}>{summary}</p>
+                    <a href={link} target="_blank" rel="noreferrer">
+                        <h3>
+                            {title}
+                        </h3>
+                        <span className="job-card-company">
+                            {company}
+                        </span>
+                        {salary_min && payToString(salary_min)}
+                        {salary_min && salary_max && " - "}
+                        {salary_max && payToString(salary_max)}
+                        <span className="job-card-date">{getDateString(date_posted)}</span>
+                        <p className={!useExpand || expand ? "job-card-summary-all" : ""}>{summary}</p>
+                    </a>
                     {useExpand &&
                         <div className="job-card-summary-more"><span onClick={() => setExpand(expand === false)}>{expand ? "Show less" : "See more"}</span></div>
                     }

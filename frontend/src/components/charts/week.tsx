@@ -21,6 +21,8 @@ const WeekChart = (props: WeekChartProps) => {
     });
     const [ data, setData ] = useState([]);
     const [ companies, setCompanies ] = useState([]);
+    const day = 1000 * 60 * 60 * 24;
+    const days = Math.round((new Date(filter.dateEnd).getTime() - new Date(filter.dateStart).getTime()) / day * 10) / 10;
 //    const { jobs } = useContext(JobContext);
     useEffect(() => {
         // Helper function to get the total number of jobs
@@ -80,7 +82,14 @@ const WeekChart = (props: WeekChartProps) => {
  
     return (
         <div className="week-chart">
-            <h2>Jobs over time: <span className="meta"><label>Current {separation}:</label> {jobsTotal.total} <label>Previous {separation}:</label>{jobsTotal.lastWeek}</span></h2>
+            <h2>Jobs over time: 
+                <span className="meta">
+                    <label>Current {separation}:</label> {jobsTotal.total}
+                    <label>Avg:</label>{Math.floor(jobsTotal.total / days * 10) / 10}
+                    <label>Previous {separation}:</label>{jobsTotal.lastWeek}
+                    <label>Prev avg:</label>{Math.floor(jobsTotal.lastWeek / days * 10) / 10}
+                </span>
+            </h2>
             <ComposedChart width={600} height={300} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />

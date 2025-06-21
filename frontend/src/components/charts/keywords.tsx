@@ -32,10 +32,10 @@ export const keywordGroups = {
     'Developer': {
         tags: developerTags as TagList
     },
-    'Datascience': {
+    'Data Scientist': {
         tags: datascienceTags as TagList
     },
-    'Design': {
+    'Designer': {
         tags: designTags as TagList
     }
 }

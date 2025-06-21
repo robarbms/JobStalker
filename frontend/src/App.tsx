@@ -239,40 +239,35 @@ function App() {
             <label>Last scraped: </label><span className={`last_scraped ${getStatus(lastScraped)}`}>{lastScraped && lastScraped.toLocaleString()}</span>
           </h1>
         </header>
-        {jobs && jobs.length > 0 &&
-          <div className="col-layout">
-            <div className="job-lists">
-              <div className="job-list-container">
-                <Switcher title="Search Results" job_count={jobs.length} options={[
-                  {
-                    'tab': 'Cards',
-                    'content': <Cards jobs={jobs} tag_colors={tag_colors} />
-                  },
-                  {
-                    'tab': 'Table',
-                    'content': <Table />
-                  }
-                ]} />
-              </div>
-            </div>
-            <div className="job-charts">
-              <DateFilters filterChanged={filterChanged} />
-              <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
-              <div className="job-search">
-                <CompanyChart jobs={jobs} />
-                <WeekChart jobs={jobs} filter={filter} prevJobs={prevJobs} />
-              </div>
-              <div className="trends">
-                <AllTrendChart jobs={jobs} />
-                <Keywords parsedTagData={tagData} jobs={jobs} filter={filter} filterTags={filterTags} tagColors={tag_colors as {[tag: string]: string}} />
-                <TagFilters tagData={tagData} />
-              </div>
+        <div className="col-layout">
+          <div className="job-lists">
+            <div className="job-list-container">
+              <Switcher title="Search Results" job_count={jobs.length} options={[
+                {
+                  'tab': 'Cards',
+                  'content': <Cards jobs={jobs} tag_colors={tag_colors} />
+                },
+                {
+                  'tab': 'Table',
+                  'content': <Table />
+                }
+              ]} />
             </div>
           </div>
-        }
-        {( !jobs || jobs.length < 1 ) &&
-          <ApiService />
-        }
+          <div className="job-charts">
+            <DateFilters filterChanged={filterChanged} />
+            <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
+            <div className="job-search">
+              <CompanyChart jobs={jobs} />
+              <WeekChart jobs={jobs} filter={filter} prevJobs={prevJobs} />
+            </div>
+            <div className="trends">
+              <AllTrendChart jobs={jobs} />
+              <Keywords parsedTagData={tagData} jobs={jobs} filter={filter} filterTags={filterTags} tagColors={tag_colors as {[tag: string]: string}} />
+              <TagFilters tagData={tagData} />
+            </div>
+          </div>
+        </div>
       </div>
     </JobContext.Provider>
   );

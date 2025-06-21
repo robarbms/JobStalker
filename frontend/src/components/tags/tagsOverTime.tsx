@@ -9,6 +9,7 @@ import { getJobsByDate, filterJobs } from '../charts/utils';
 import { getTagColors } from './tagColors';
 import { dateToKey, keyToDate } from '../../utils/date';
 import { KeywordGroupName, keywordGroups} from '../charts/keywords';
+import { tagMappings } from '../../utils/data';
 
 type TagsOverTimeProps = {
     jobs: JobDetails[];
@@ -24,9 +25,10 @@ export default function TagsOverTime (props: TagsOverTimeProps) {
     const compiledTags = {}
     // filter tags to only the current active tab
 
+    console.log({category});
     const filteredTags = jobs.map((job) => {
 
-    })
+    });
 
     const { allJobs } = useContext(JobContext);
     const colors = getTagColors();
@@ -39,7 +41,7 @@ export default function TagsOverTime (props: TagsOverTimeProps) {
     const daysSinceStart = Math.floor(timeSinceStart / (1000 * 60 * 60 * 24)) + 1;
 
     const jobsSinceStart = filterJobs(jobs ?? allJobs, daysSinceStart);
-    const tags = TechTags.concat(DSTags as any);
+    const tags = TechTags.concat(DSTags as any, DesignTags);
     // Collect top level categories as a hash map
     const categories = tags.reduce((cats: any, cat: any) => {
         cats[cat.name] = 0;
@@ -110,6 +112,12 @@ export default function TagsOverTime (props: TagsOverTimeProps) {
     }
     category_totals_ary.sort((a: any, b: any) => b.count - a.count);
     const top_ten_cats = category_totals_ary.slice(0, 10);
+    
+    // get the category names for the different groups, 'Developer', 'Data Scientist', 'Designer'
+    const tagMap = tagMappings();
+    const cats = Object.keys(tagMap.tagMap[category].children)
+    console.log({cats})
+    category_totals_ary = category_totals_ary.filter(cat => cats.includes(cat.name));
 
     // Create a tag map for the top 10 categories
     const top_ten_map = top_ten_cats.reduce((map: any, total: any) => {
@@ -121,11 +129,6 @@ export default function TagsOverTime (props: TagsOverTimeProps) {
     const data = [];
     for (let date_key in tag_counts) {
         const dataItem = tag_counts[date_key];
-        for (let key in dataItem) {
-            if (!(key in top_ten_map)) {
-                delete dataItem[key];
-            }
-        }
         const date = keyToDate(date_key);
         if (date) {
             const date_str = `${date?.getMonth() + 1}/${date.getDate() + 1}`;
@@ -137,15 +140,15 @@ export default function TagsOverTime (props: TagsOverTimeProps) {
     return (
         <div className="tags-over-time">
             <h2>Technology Trends</h2>
-            <ComposedChart width={1100} height={200} data={data}>
-            <CartesianGrid />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            {top_ten_cats.map((category: any, idx: number) => {
-                return <Line dataKey={category.name} key={idx} stroke={getColor(category.name)} dot={false} />
-            })}
-            <Legend />
+            <ComposedChart width={1100} height={400} data={data}>
+                <CartesianGrid />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                {cats.map((category: string, idx: number) => {
+                    return <Line dataKey={category} key={idx} stroke={getColor(category)} dot={false} />
+                })}
+                <Legend />
             </ComposedChart>
             <BarChart width={1100} height={200} data={category_totals_ary}>
             <CartesianGrid />

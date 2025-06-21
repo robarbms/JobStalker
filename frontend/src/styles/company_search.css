@@ -17,9 +17,14 @@ div.company-filters {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.company-title {
+    font-weight: 700;
+}
+
 .company-controls {
     display: flex;
     justify-content: space-between;
+    margin: 10px 0 0;
 }
 
 .company-controls > div {
