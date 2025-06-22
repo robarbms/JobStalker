@@ -24,8 +24,6 @@ export default function TagsOverTime (props: TagsOverTimeProps) {
     const categoryData = keywordGroups[category];
     const compiledTags = {}
     // filter tags to only the current active tab
-
-    console.log({category});
     const filteredTags = jobs.map((job) => {
 
     });
@@ -116,7 +114,6 @@ export default function TagsOverTime (props: TagsOverTimeProps) {
     // get the category names for the different groups, 'Developer', 'Data Scientist', 'Designer'
     const tagMap = tagMappings();
     const cats = Object.keys(tagMap.tagMap[category].children)
-    console.log({cats})
     category_totals_ary = category_totals_ary.filter(cat => cats.includes(cat.name));
 
     // Create a tag map for the top 10 categories

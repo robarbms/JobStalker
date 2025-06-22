@@ -182,6 +182,12 @@ path.recharts-sector {
     }
 }
 
+@media only screen and (max-device-width: 480px) {
+    .job-charts {
+        display: none;
+    }
+}
+
 .job-charts {
     width: 50%;
 }
