@@ -61,7 +61,6 @@ h1 label {
 
 .job-lists {
     vertical-align: top;
-    width: 50%;
     min-width: 600px;
 }
 
@@ -167,16 +166,15 @@ path.recharts-sector {
 }
 
 .col-layout {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1200px;
 }
 
 @media (max-width: 1000px) {
     .col-layout {
         flex-direction: column;
     }
-    .job-lists,
+    .job-lists, 
     .job-charts {
         width: auto;
     }
@@ -189,7 +187,6 @@ path.recharts-sector {
 }
 
 .job-charts {
-    width: 50%;
 }
 
 .button {
