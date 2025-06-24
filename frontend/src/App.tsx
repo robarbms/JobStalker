@@ -18,10 +18,12 @@ import CompanyFilters from './components/search/companyFilters';
 import Keywords from './components/charts/keywords';
 import { parseTags } from './utils/data';
 import TagFilters from './components/search/tagFilters';
+import TextSearch from './components/search/textSearch';
 
 export type Filter = {
   title: string;
   description: string;
+  summary: string;
   companies: string[];
   dateStart: string;
   dateEnd: string;
@@ -146,7 +148,10 @@ function App() {
         filteredJobs = filteredJobs.filter(job => textSearch(job.title, filter.title)); 
      }
      if(filter.description) {
-       filteredJobs = filteredJobs.filter(job => textSearch(job.summary, filter.description));
+       filteredJobs = filteredJobs.filter(job => textSearch(job.description, filter.description));
+     }
+     if(filter.summary) {
+      filteredJobs = filteredJobs.filter(job => textSearch(job.summary, filter.summary));
      }
      if (filter.dateStart) {
       const ds = new Date(filter.dateStart).getTime();
@@ -255,6 +260,7 @@ function App() {
             </div>
           </div>
           <div className="job-charts">
+            <TextSearch filterChanged={filterChanged} />
             <DateFilters filterChanged={filterChanged} />
             <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
             <div className="job-search">

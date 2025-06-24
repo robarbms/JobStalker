@@ -1,0 +1,17 @@
+.text-search label {
+    font-weight: bold;
+    width: 100px;
+    display: inline-block;
+    margin: 0 10px 0 0;
+    text-align: right;
+}
+
+.text-search-item {
+    margin: 0 0 10px;
+}
+
+.text-search-item input {
+    border: 1px solid;
+    padding: 5px 10px;
+    width: 400px;
+}
