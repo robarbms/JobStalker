@@ -48,7 +48,7 @@ const CompanyFilters = (props: CompanyFiltersProps) => {
 
     return (
     <div>
-        <h2>
+        <h2 className="company-filters-title">
             Company Filters
             <div className={`button ${hasFilter ? '' : 'button-inactive'}`} onClick={allOn}>Clear filters</div>
             <div className={`button ${filter.focusedCompany ? '' : 'button-inactive'}`} onClick={clearFocus}>Clear focus</div>
