@@ -1,13 +1,6 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     background: #111;
     color: #888;
-    padding: 10px;
     font-size: small;
 }
 
@@ -20,6 +13,11 @@ h1 {
 h2 {
     font-weight: 400;
     margin: 10px 0;
+}
+
+.App {
+    max-width: 95%;
+    margin: 0 auto;
 }
 
 .meta {
@@ -168,6 +166,7 @@ path.recharts-sector {
 .col-layout {
     display: grid;
     grid-template-columns: 1fr 1200px;
+    gap: 20px;
 }
 
 @media (max-width: 1000px) {
