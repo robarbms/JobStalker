@@ -1,3 +1,9 @@
+.text-search {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 20px 0 0;
+}
+
 .text-search label {
     font-weight: bold;
     width: 100px;
@@ -7,11 +13,11 @@
 }
 
 .text-search-item {
-    margin: 0 0 10px;
+    margin: 30px 0;
 }
 
 .text-search-item input {
     border: 1px solid;
     padding: 5px 10px;
-    width: 400px;
+    width: 300px;
 }
