@@ -1,3 +1,6 @@
+.company-filter-container {
+}
+
 div.company-filters {
     width: 100%;
     display: flex;
@@ -5,22 +8,23 @@ div.company-filters {
     justify-content: space-between;
     row-gap: 10px;
     padding: 10px;
-    max-width: 1110px;
+    box-sizing: border-box;
 }
 
 .company-filter {
     flex-basis: 15%;
+    min-width: 120px;
     padding: 10px;
     text-align: center;
     border-radius: 6px;
     background-image: linear-gradient(to top, #111111, #242222);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    box-sizing: border-box;
 }
 
 .company-filters-title {
     display: grid;
     grid-template-columns: 1fr 120px 120px;
-    max-width: 1100px;
 }
 
 .company-title {

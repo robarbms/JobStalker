@@ -47,7 +47,7 @@ const CompanyFilters = (props: CompanyFiltersProps) => {
     const hasFilter = filter.companies.length > 0 && filter.companies.length < companies.length; 
 
     return (
-    <div>
+    <div className="company-filter-container">
         <h2 className="company-filters-title">
             Company Filters
             <div className={`button ${hasFilter ? '' : 'button-inactive'}`} onClick={allOn}>Clear filters</div>

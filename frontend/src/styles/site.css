@@ -159,7 +159,6 @@ path.recharts-sector {
 }
 
 .trends > div {
-    max-width: 1100px;
     display: inline-block;
 }
 
@@ -167,6 +166,27 @@ path.recharts-sector {
     display: grid;
     grid-template-columns: 1fr 1200px;
     gap: 20px;
+}
+
+@media (max-width: 2560px) {
+    .col-layout {
+        grid-template-columns: 1fr 600px;
+    }
+    .trend-chart,
+    .tags-over-time {
+        scale: 0.5;
+        transform-origin: 0;
+    }
+    .trend-chart h2,
+    .tags-over-time h2 {
+        scale: 2;
+        transform-origin: 0;
+        position: relative;
+        top: -40px;
+    }
+    .keyword-overviews {
+        flex-direction: column;
+    }
 }
 
 @media (max-width: 1000px) {
