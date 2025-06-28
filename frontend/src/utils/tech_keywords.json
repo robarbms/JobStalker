@@ -26,9 +26,7 @@
       { "name": "Pygal", "type": "visualization" },
       { "name": "Geopandas", "type": "library" },
       { "name": "Scikit-learn", "type": "library" },
-      { "name": "Pip", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "Pip", "type": "package manager" }
     ]
   },
   {
@@ -81,8 +79,6 @@
       { "name": "Gulp", "type": "task runner" },
       { "name": "NPM", "type": "package manager" },
       { "name": "Yarn", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" },
       { "name": "web components", "type": "technology" },
       { "name": "Lit", "type": "library" },
       { "name": "FluentUI", "type": "library" },
@@ -90,12 +86,8 @@
       { "name": "Stencil", "type": "library" },
       { "name": "Polymer", "type": "library" },
       { "name": "Slim.js", "type": "library" },
-      { "name": "Hybrids", "type": "library" }
-    ]
-  },
-  {
-    "name": "TypeScript",
-    "libraries": [
+      { "name": "Hybrids", "type": "library" },
+      { "name": "TypeScript", "type": "framework" },
       { "name": "NestJS", "type": "framework" },
       { "name": "TypeORM", "type": "library" },
       { "name": "TSLint", "type": "linter" },
@@ -105,10 +97,7 @@
       { "name": "Webpack", "type": "bundler" },
       { "name": "Parcel", "type": "bundler" },
       { "name": "Rollup", "type": "bundler" },
-      { "name": "NPM", "type": "package manager" },
-      { "name": "Yarn", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "Yarn", "type": "package manager" }
     ]
   },
   {
@@ -124,9 +113,7 @@
       { "name": "JUnit", "type": "testing" },
       { "name": "Mockito", "type": "testing" },
       { "name": "Maven", "type": "package manager" },
-      { "name": "Gradle", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "Gradle", "type": "package manager" }
     ]
   },
   {
@@ -141,9 +128,7 @@
       { "name": "RSpec", "type": "testing" },
       { "name": "Capybara", "type": "testing" },
       { "name": "Bundler", "type": "package manager" },
-      { "name": "RubyGems", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "RubyGems", "type": "package manager" }
     ]
   },
   {
@@ -157,9 +142,7 @@
       { "name": "Carbon", "type": "library" },
       { "name": "PHPUnit", "type": "testing" },
       { "name": "PHPSpec", "type": "testing" },
-      { "name": "Composer", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "Composer", "type": "package manager" }
     ]
   },
   {
@@ -182,13 +165,11 @@
       { "name": "Serilog", "type": "library" },
       { "name": "Quartz.NET", "type": "library" },
       { "name": "MSBuild", "type": "bundler" },
-      { "name": "NuGet", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "NuGet", "type": "package manager" }
     ]
   },
   {
-    "name": "Go",
+    "name": "Golang",
     "libraries": [
       { "name": "Gin", "type": "framework" },
       { "name": "Beego", "type": "framework" },
@@ -196,9 +177,7 @@
       { "name": "Gorilla Mux", "type": "library" },
       { "name": "GORM", "type": "library" },
       { "name": "Testify", "type": "testing" },
-      { "name": "Go Modules", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "Go Modules", "type": "package manager" }
     ]
   },
   {
@@ -211,11 +190,9 @@
       { "name": "SQLAlchemy", "type": "library" },
       { "name": "pg-promise", "type": "library" },
       { "name": "Knex.js", "type": "library" },
-      { "name": "SQLite3", "type": "library" },
-      { "name": "Django ORM", "type": "library" },
-      { "name": "ActiveRecord", "type": "library" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "SQLite", "type": "library" },
+      { "name": "Django", "type": "library" },
+      { "name": "ActiveRecord", "type": "library" }
     ]
   },
   {
@@ -236,9 +213,7 @@
       { "name": "readr", "type": "library" },
       { "name": "RMarkdown", "type": "library" },
       { "name": "CRAN", "type": "package manager" },
-      { "name": "devtools", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "devtools", "type": "package manager" }
     ]
   },
   {
@@ -251,17 +226,22 @@
       { "name": "SDWebImage", "type": "library" },
       { "name": "RestKit", "type": "library" },
       { "name": "JSONModel", "type": "library" },
-      { "name": "CocoaPods", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "CocoaPods", "type": "package manager" }
     ]
   },
   {
     "name": "Rust",
     "libraries": [
       { "name": "Cargo", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "Tokio", "type": "library" },
+      { "name": "Serde", "type": "library" },
+      { "name": "Actix", "type": "library" },
+      { "name": "Rayon", "type": "library" },
+      { "name": "Diesel", "type": "library" },
+      { "name": "Rocket", "type": "library" },
+      { "name": "Hyper", "type": "library" },
+      { "name": "thiserror", "type": "library" },
+      { "name": "Rkyv", "type": "library" }
     ]
   },
   {
@@ -269,8 +249,13 @@
     "libraries": [
       { "name": "Swift Package Manager", "type": "package manager" },
       { "name": "CocoaPods", "type": "package manager" },
-      { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "Carthage", "type": "library" },
+      { "name": "Swift Package Manager (SPM)", "type": "library" },
+      { "name": "Alamofire", "type": "library" },
+      { "name": "SwiftyJSON", "type": "library" },
+      { "name": "Lottie", "type": "library" },
+      { "name": "RxSwift", "type": "library" },
+      { "name": "Masonry", "type": "library" }
     ]
   },
   {
@@ -278,8 +263,33 @@
     "libraries": [
       { "name": "Conan", "type": "package manager" },
       { "name": "Vcpkg", "type": "package manager" },
+      { "name": "Boost", "type": "library" },
+      { "name": "Poco", "type": "library" },
+      { "name": "OpenSSL", "type": "library" },
+      { "name": "Dear ImGui", "type": "library" },
+      { "name": "GoogleTest", "type": "library" },
+      { "name": "Eclipse Mosquitto", "type": "library" },
+      { "name": "OpenCV", "type": "library" },
+      { "name": "OneAPI Threading Building Blocks (oneTBB)", "type": "library" }
+    ]
+  },
+  {
+    "name": "Version Control",
+    "libraries": [
       { "name": "Git", "type": "version control" },
-      { "name": "Subversion (SVN)", "type": "version control" }
+      { "name": "Subversion (SVN)", "type": "version control" },
+      { "name": "Pipelines", "type": "version control" }
+    ]
+  },
+  {
+    "name": "Cloud Services",
+    "libraries": [
+      { "name": "Amazon Web Services (AWS)", "type": "library" },
+      { "name": "Azure DevOps", "type": "library" },
+      { "name": "Azure", "type": "library" },
+      { "name": "Google Cloud", "type": "library" },
+      { "name": "Kubernetes", "type": "framework" },
+      { "name": "Docker", "type": "framework" }
     ]
   }
 ]

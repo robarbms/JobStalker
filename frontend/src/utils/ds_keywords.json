@@ -28,9 +28,6 @@
   {
     "name": "AI",
     "libraries": [
-      { "name": "Tensorflow", "type": "library" },
-      { "name": "Pytorch", "type": "library" },
-      { "name": "Keras", "type": "library" },
       { "name": "Transformers", "type": "library" },
       { "name": "Deeplearning4j", "type": "library" },
       { "name": "FastAI", "type": "library" },
@@ -55,6 +52,9 @@
   {
     "name": "Machine Learning",
     "libraries": [
+      { "name": "Tensorflow", "type": "library" },
+      { "name": "Pytorch", "type": "library" },
+      { "name": "Keras", "type": "library" },
       { "name": "scikit-learn", "type": "library" },
       { "name": "xgboost", "type": "library" },
       { "name": "lightgbm", "type": "library" },
@@ -77,7 +77,11 @@
       { "name": "ensemble methods", "type": "method" },
       { "name": "gradient boosting", "type": "method" },
       { "name": "hyperparameter tuning", "type": "method" },
-      { "name": "cross-validation", "type": "method" }
+      { "name": "cross-validation", "type": "method" },
+      { "name": "regression test", "type": "method" },
+      { "name": "Natural Language Processing (NLP)", "type": "method" },
+      { "name": "Classification", "type": "method" },
+      { "name": "Time series", "type": "method" }
     ]
   },
   {
@@ -114,7 +118,7 @@
     ],
     "methods": [
       { "name": "interactive visualizations", "type": "method" },
-      { "name": "geospatial visualizations", "type": "method" },
+      { "name": "geospatial", "type": "method" },
       { "name": "time series visualizations", "type": "method" },
       { "name": "heatmaps", "type": "method" }
     ]

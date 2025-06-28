@@ -91,7 +91,9 @@
     align-items: center;
     justify-content: center;
     margin: 20px 0;
-    width: 100%;
+    width: 90%;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .pag {
@@ -101,7 +103,6 @@
     line-height: 30px;
     display: inline-block;
     text-align: center;
-    margin: 0 5px 0 0;
     cursor: pointer;
 }
 

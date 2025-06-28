@@ -94,3 +94,24 @@ export const parseTags = (jobs: JobDetails[]) => {
     jobs.forEach(({tags}: {tags: string | string[]}) => addTag(tags));
     return tagCounts;
 }
+
+export const childrenToArray = (node: any) => {
+    if ('children' in node) {
+        let children = [];
+        for (let name in node.children) {
+            const obj = {
+                name,
+                ...node.children[name]
+            }
+            const nodeWithChildren = childrenToArray(obj);
+            children.push(nodeWithChildren);
+            children = children.filter((child: any) => 'count' in child && child.count > 0);
+        }
+        node.children = children;
+    }
+    return node;
+}
+
+export const removeEmpty = (node: any) => {
+
+}
