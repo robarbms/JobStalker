@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
 import { companyData } from '../../utils/companies';
 import { getDateString } from '../job';
+import { Filter } from '../../App';
 import '../../styles/card.css';
 
+type TagProps = {
+    name: string;
+    color: {
+        hue: number;
+        saturation: number;
+        lightness: number;
+    };
+    filterTags: (tag: string | string[], action: string) => void;
+    isActive: boolean;
+}
+
 const Tag = (props: any) => {
-    const { name, color } = props;
+    const { name, color, filterTags, isActive } = props;
     let hsl = "155, 0%, 50%";
     if (color) {
         const { hue, saturation, lightness } = color;
         hsl = `${hue}, ${saturation}%, ${lightness}%`
     }
     return (
-        <div className="tag" style={{background: `hsl(${hsl})`}}>{name}</div>
+        <div className="tag" style={isActive === true ? {background: `#00aa00`} : {}} onClick={() => filterTags(name, "include")}>{name}</div>
     )
 }
 
@@ -26,8 +38,23 @@ const payToString = (val: any) => {
     return `$${val.join("")}`
 }
 
-const Card = (props: any) => {
-    const { company, date_posted, title, link, created_at, tags, salary_min, salary_max, tag_colors, summary } = props;
+type CardProps = {
+    company: string;
+    date_posted: string;
+    title: string;
+    link: string;
+    created_at: string;
+    tags: string | any[];
+    salary_min?: string;
+    salary_max?: string;
+    tag_colors: any[];
+    summary: string;
+    filterTags: (tag: string | string[], action: string) => void;
+    filter: Filter;
+}
+
+const Card = (props: CardProps) => {
+    const { company, date_posted, title, link, created_at, tags, salary_min, salary_max, tag_colors, summary, filterTags, filter } = props;
     const [expand, setExpand] = useState(false);
     const useExpand = false;
 
@@ -57,7 +84,7 @@ const Card = (props: any) => {
                         <div className="job-card-summary-more"><span onClick={() => setExpand(expand === false)}>{expand ? "Show less" : "See more"}</span></div>
                     }
                     <div className="job-card-tags">
-                        {tags && Array.isArray(tags) && tags.map((tag: any, idx: number) => <Tag key={idx} color={tag_colors[tag]} name={tag} />)}
+                        {tags && Array.isArray(tags) && tags.map((tag: any, idx: number) => <Tag key={idx} isActive={filter.tagsInclude.includes(tag)} color={tag_colors[tag]} name={tag} filterTags={filterTags} />)}
                     </div>
                 </div>
             </div>

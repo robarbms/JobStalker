@@ -292,7 +292,7 @@ function App() {
               <Switcher title="Search Results" job_count={jobs.length} options={[
                 {
                   'tab': 'Cards',
-                  'content': <Cards jobs={jobs} tag_colors={tag_colors} />
+                  'content': <Cards jobs={jobs} tag_colors={tag_colors} filterTags={filterTags} filter={filter} />
                 },
                 {
                   'tab': 'Table',
