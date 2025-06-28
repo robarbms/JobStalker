@@ -1,5 +1,4 @@
 .tag-filters {
-    width: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -22,48 +21,108 @@
 }
 
 .tag-category {
+    --cat-width: 294px;
     padding: 10px;
-    border: 1px solid;
-    min-width: calc(25% - 10px);
-    border-radius: 4px;
     box-sizing: border-box;
     position: relative;
+    border: 1px solid;
+    border-radius: 6px;
+    width: var(--cat-width);
+    background-image: linear-gradient(to top, #111111, #242222);
+}
+
+.tag-cat-2-col {
+    width: calc(var(--cat-width) * 2 + 10px);
+}
+
+.tag-category-name {
+    margin: 0 0 10px;
+    font-size: medium;
 }
 
 .keyword-overviews {
     display: flex;   
 }
-
+ 
 .keyword-cat-select {
     border-left: 1px solid;
 }
 
+.tag-status::before,
 .tag-status-active::before,
 .tag-status-disabled::before {
     content: "";
-    display: block;
+    display: block; 
     position: absolute;
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #006600;
+    background: #005500;
     border: 1px solid;
     position: absolute;
     top: 5px;
     right: 5px;
 }
 
-.tag-status-disabled::before {
-    background: #666666;
+.tag-status-active::before {
+    background: #00aa00;
+    box-shadow: 0 0 6px rgba(0, 255, 0, 1);
 }
 
-.tag-filters {
+.tag-status-disabled::before {
+    background: #aa0000;
+    box-shadow: 0 0 6px rgba(255, 0, 0, 1);
+}
+
+.tags {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 5px;
+    justify-content: space-between;
+    row-gap: 10px;
 }
 
 .tag-filter {
-    padding: 5px;
+    padding: 5px 10px;
+    min-width: 100px;
+    border: 1px solid;
+    border-radius: 5px;
+    position: relative;
+    background: #111;
+}
+
+.tag-name {
+    font-weight: bold;
+    text-align: center;
+}
+
+.tag-controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tag-disable-cont,
+.tag-activate-cont {
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 10px 0 -5px -10px;
+    border-radius: 0 0 0 4px;
+    border-top: 1px solid;
+    border-right: 1px solid;
+    background: #222;
+}
+
+.tag-activate-cont {
+    margin-left: -1px;
+    margin-right: -10px;
+    border-radius: 0 0 4px 0;
+    border-right: 0;
+    border-left: 1px solid;
+}
+
+.tag-disable-cont:hover,
+.tag-activate-cont:hover,
+.tag-status-active > .tag-controls > .tag-activate-cont {
+    background: #444;
+    color: #fff;
 }

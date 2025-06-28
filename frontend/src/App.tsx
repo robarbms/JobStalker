@@ -5,19 +5,14 @@ import Table from './components/table';
 import CompanyChart from './components/charts/companies';
 import WeekChart from './components/charts/week';
 import AllTrendChart from './components/charts/allTrend';
-import TagsOverTime from './components/tags/tagsOverTime';
-import FilterSystem from './components/search/filterSystem';
 import { getTagColors } from "./components/tags/tagColors";
-import Card from './components/job_card/Card';
 import Cards from './components/job_card/Cards';
-import ApiService from './components/api_service';
 import Switcher from './components/layout/switcher';
-import { dateOffset, DateOffsetObj, dateToString, getDateMap } from './utils/date';
+import { dateOffset, dateToString } from './utils/date';
 import DateFilters from './components/search/dateFilters';
 import CompanyFilters from './components/search/companyFilters';
 import Keywords from './components/charts/keywords';
 import { parseTags } from './utils/data';
-import TagFilters from './components/search/tagFilters';
 import TextSearch from './components/search/textSearch';
 
 export type Filter = {
@@ -54,10 +49,13 @@ function App() {
   const [ filter, setFilter ] = useState<Filter>({
     title: "",
     description: "",
+    summary: "",
     companies: companies,
     dateStart: dateToString(dateOffset({days: -6})),
     dateEnd: dateToString(new Date()),
-    focusedCompany: null
+    focusedCompany: null,
+    tagsInclude: [],
+    tagsExclude: []
   } as Filter);
   const jobHandler = useRef<NodeJS.Timeout|null>();
   const [jobsToday, setJobsToday] = useState<JobDetails[]>([]);
@@ -163,9 +161,15 @@ function App() {
       setPrevJobs(prevFilteredJobs);
       filteredJobs = filteredJobs.filter(job => new Date(job.date_posted).getTime() >= ds && new Date(job.date_posted).getTime() <= de);
     }
-    setJobs(filteredJobs);
-    const parsedTags = parseTags(jobs);
+    const parsedTags = parseTags(filteredJobs);
     setTagData(parsedTags);
+    if (filter.tagsInclude.length > 0) {
+      filteredJobs = filteredJobs.filter(job => (job.tags as string[]).some((tag: string) => filter.tagsInclude.includes(tag)));
+    }
+    if (filter.tagsExclude.length > 0) {
+      filteredJobs = filteredJobs.filter(job => !(job.tags as string[]).some((tag: string) => filter.tagsExclude.includes(tag)));
+    }
+    setJobs(filteredJobs);
   }, [allJobs, filter]);
 
   const filterChanged = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -195,8 +199,46 @@ function App() {
     setFilter(updatedFilter);
   }
 
-  const filterTags = () => {
-
+  const filterTags = (tag: string | string[], action="include") => {
+    const filter_cpy = {...filter};
+    if (action === 'clear') {
+      if (tag === 'clear') {
+        filter_cpy.tagsInclude = [];
+        filter_cpy.tagsExclude = [];
+      }
+      else if (Array.isArray(tag)) {
+        filter_cpy.tagsInclude = filter_cpy.tagsInclude.filter(t => !tag.includes(t))
+      }
+    }
+    else if (action === "include") {
+      if (Array.isArray(tag)) {
+        tag.forEach((curr) => {
+          if (!filter_cpy.tagsInclude.includes(curr)) {
+            filter_cpy.tagsInclude.push(curr);
+          }
+        })
+      }
+      else if (!filter_cpy.tagsInclude.includes(tag)) {
+        filter_cpy.tagsInclude.push(tag);
+        filter_cpy.tagsExclude = filter_cpy.tagsExclude.filter(tag_a => tag_a !== tag);
+      }
+      else {
+        filter_cpy.tagsInclude = filter_cpy.tagsInclude.filter(tag_a => tag_a !== tag);
+      }
+    }
+    else {
+      if (Array.isArray(tag)) {
+        filter_cpy.tagsExclude = filter_cpy.tagsExclude.filter(tag_a => !tag.includes(tag_a))
+      }
+      else if (!filter_cpy.tagsExclude.includes(tag)) {
+        filter_cpy.tagsExclude.push(tag);
+        filter_cpy.tagsInclude = filter_cpy.tagsInclude.filter(tag_a => tag_a !== tag);
+      }
+      else {
+        filter_cpy.tagsExclude = filter_cpy.tagsExclude.filter(tag_a => tag_a !== tag);
+      }
+    }
+    setFilter(filter_cpy);
   }
 
   useEffect(() => {
@@ -270,7 +312,6 @@ function App() {
             <div className="trends">
               <AllTrendChart jobs={jobs} />
               <Keywords parsedTagData={tagData} jobs={jobs} filter={filter} filterTags={filterTags} tagColors={tag_colors as {[tag: string]: string}} />
-              <TagFilters tagData={tagData} />
             </div>
           </div>
         </div>

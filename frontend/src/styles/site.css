@@ -172,6 +172,9 @@ path.recharts-sector {
     .col-layout {
         grid-template-columns: 1fr 600px;
     }
+    .tag-filters {
+        width: 600px;
+    }
     .trend-chart,
     .tags-over-time {
         scale: 0.5;
@@ -189,23 +192,26 @@ path.recharts-sector {
     }
 }
 
-@media (max-width: 1000px) {
-    .col-layout {
-        flex-direction: column;
-    }
-    .job-lists, 
-    .job-charts {
-        width: auto;
-    }
-}
-
-@media only screen and (max-device-width: 480px) {
-    .job-charts {
+@media (max-width: 1600px) {
+    .job-list table th:nth-child(3),
+    .job-list table td:nth-child(3) {
         display: none;
     }
 }
 
-.job-charts {
+@media (max-width: 1000px) {
+    .col-layout {
+        flex-direction: column;
+    }
+    .job-lists {
+        width: auto;
+    }
+    .col-layout {
+        grid-template-columns: 1fr;
+    }
+    .job-charts {
+        display: none;
+    }
 }
 
 .button {

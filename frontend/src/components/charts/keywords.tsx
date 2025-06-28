@@ -7,6 +7,8 @@ import datascienceTags from '../../utils/ds_keywords.json';
 import designTags from '../../utils/design_keywords.json';
 import KeywordGroupOverview from './keywordGroup';
 import TagsOverTime from '../tags/tagsOverTime';
+import TagFilters from '../search/tagFilters';
+import { childrenToArray, parseTags } from '../../utils/data';
 
 export type TagCategoryItem = {
     name: string;
@@ -75,7 +77,7 @@ export type KeywordsProps = {
         date_posted: string;
     }[];
     filter: Filter;
-    filterTags: (data: any) => void;
+    filterTags: (tag: string | string[], action: string) => void;
     tagColors: {[tag: string]: string};
     parsedTagData: any;
 }
@@ -89,79 +91,36 @@ const Keywords = (props: KeywordsProps) => {
     const { jobs, filter, filterTags, tagColors, parsedTagData } = props;
     const [ activeTab, setActiveTab ] = useState<KeywordGroupName>('Developer');
     const [ tagData, setTagData ] = useState({});
+    const [ tagList, setTagList ] = useState({});
     const [ tagGroupData, setTagGroupData ] = useState();
 
     useEffect(() => {
-        // Go through jobs and create a tag map with counts
-        const jobTags: {[tag: string]: number} = {};
-        if (jobs && Array.isArray(jobs)) {
-            jobs.forEach(job => {
-                if (Array.isArray(job.tags)) {
-                    job.tags.forEach((tag) => {
-                        if (!(tag in jobTags)) {
-                            jobTags[tag] = 0;
-                        }
-                        jobTags[tag] += 1;
-                    });
-                }
-            });
-        }
-
-        // Parse tags from jobs to figure out counts for each
-        const tagDataLocal: any = {};
-        for (const groupName in keywordGroups as KeywordGroupsT) {
-            const tagLists = keywordGroups[groupName as KeywordGroupName].tags;
-            let groupTotal = 0;
-            const groupChildren: any[] = [];
-            tagLists.forEach((category) => {
-                const {name} = category;
-                const areas = ['libraries', 'methods', 'models'];
-                const children: any[] = [];
-                const categoryCount = name in jobTags ? jobTags[name] : 0;
-                let categoryTotal = categoryCount;
-                areas.forEach((area) => {
-                    if (area in category) {
-                        const foundTags = category[area as ('libraries' | 'methods' | 'models')]?.map((item: TagCategoryItem) => item.name);
-                        if (foundTags) {
-                            foundTags.forEach((tag) => {
-                                if (tag in jobTags) {
-                                    const count = jobTags[tag];
-                                    categoryTotal += count;
-                                    children.push({
-                                        name: tag,
-                                        count
-                                    });
-                                }
-                            });
-                        }
-                    }
-                });
-                groupChildren.push({
+        if (jobs && Array.isArray(jobs) && jobs.length > 0) {
+            const groupData: any = { children: [], total: 0};
+            for (let name in parsedTagData) {
+                const group: any = parsedTagData[name];
+                groupData.total += group.total;
+                groupData.children.push({
                     name,
-                    count: categoryCount,
-                    total: categoryTotal,
-                    children
+                    count: group.total
                 });
-                groupTotal += categoryTotal;
-            });
-            tagDataLocal[groupName] = {
-                total: groupTotal,
-                children: groupChildren
             }
+            setTagGroupData(groupData);
+            const tagDataAsArray: any = {};
+            for (const type in parsedTagData) {
+                const node = childrenToArray(parsedTagData[type]);
+                node.children.sort((a: any, b: any) => b.children.length - a.children.length)
+                tagDataAsArray[type] = node;
+            }
+            setTagList(tagDataAsArray);
+            const keywordCounts: any = parseTags(jobs as any);
+            const keywordCountsAsArray: any = {}
+            for (let type in keywordCounts) {
+                keywordCountsAsArray[type] = childrenToArray(keywordCounts[type]);
+            }
+            setTagData(keywordCountsAsArray);
         }
-        const groupData: any = { children: [], total: 0};
-        for (let name in parsedTagData) {
-            const group: any = parsedTagData[name];
-            groupData.total += group.total;
-            groupData.children.push({
-                name,
-                count: group.total
-            });
-        }
-        setTagGroupData(groupData);
-
-        setTagData(tagDataLocal);
-    }, [jobs, filter]);
+    }, [jobs, filter, parsedTagData]);
     return (
         <div className="keywords">
             <h2>Keywords</h2>
@@ -180,9 +139,12 @@ const Keywords = (props: KeywordsProps) => {
                     </div>
                 </div>
                 {tagData && activeTab in tagData &&
-                    <TagsOverTime jobs={jobs as JobDetails[]} category={activeTab} />
+                    <>
+                        <TagsOverTime jobs={jobs as JobDetails[]} category={activeTab} />
+                        <TagFilters tagData={(tagList as any)[activeTab]} filter={filter} filterTags={filterTags} />
+                    </>
                 }
-            </div>            
+            </div>
         </div>
     );
 };
