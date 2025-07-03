@@ -44,8 +44,10 @@ def processJobs(jobs):
         if 'title' in job and 'description' in job:
             tags, salary_min, salary_max = process(job['description'], job['title'])
             job['tags'] = f"{tags}"
-            job['salary_min'] = salary_min
-            job['salary_max'] = salary_max
+            if salary_min:
+                job['salary_min'] = salary_min
+            if salary_max:
+                job['salary_max'] = salary_max
             jobs[index] = job
         else:
             print(f"Error: Missing property for getting properties. has title: {'title' in job}; has description: {'description' in job}")
