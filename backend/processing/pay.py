@@ -16,6 +16,6 @@ def get_pay(text):
             return salary_min, salary_max
 
     except Exception as e:
-        print("Error: Could not find a pay range.", e)
+        print("Error: Could not find a pay range.", e, prices)
 
     return None, None

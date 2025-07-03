@@ -10,14 +10,14 @@ def chunk_text(text, chunk_size=500):
 # Gets a summary of a job description using BART base model.
 def get_summary(description: str):
     description = description.strip()
-    words_count = len(description.split())
-    if words_count<200:
-        return description
-    # Set device to GPU if available
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    chunks = chunk_text(description, 300)
-
     try:
+        words_count = len(description.split())
+        if words_count<200:
+            return description
+        # Set device to GPU if available
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        chunks = chunk_text(description, 300)
+
         summarizer = pipeline('summarization', model="./ai/models/bart-large-cnn", device=device)
         if len(chunks) > 1:
             summaries = []
