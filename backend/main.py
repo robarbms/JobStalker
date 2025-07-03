@@ -69,7 +69,7 @@ def main():
     for x in range(len(updated_jobs)):
         if len(updated_jobs) > x and 'description' in updated_jobs[x]:
             job_description = updated_jobs[x]['description']
-            summary = get_summary(job_description)
+            summary = get_summary(job_description, True)
             updated_jobs[x]['summary'] = summary
 
     log(f"Adding {len(updated_jobs)} jobs to database")

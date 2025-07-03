@@ -55,7 +55,8 @@ def processJobs(jobs):
                     job['salary_min'] = salary_min
                 if salary_max:
                     job['salary_max'] = salary_max
-                jobs[index] = job
+            
+            jobs[index] = job
         else:
             print(f"Error: Missing property for getting properties. has title: {'title' in job}; has description: {'description' in job}")
             print(f">>> company: {job['company']}")
