@@ -33,6 +33,9 @@ if %errorlevel%==0 (
             echo Initializing database...
             python .\backend\database\createTables.py
 
+            echo Setting up Playwright
+            playwright install
+
             echo Downloading summarization models
 
             :: Create download directory if it doesn't exist
