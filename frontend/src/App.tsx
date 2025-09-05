@@ -11,7 +11,8 @@ import Switcher from './components/layout/switcher';
 import { dateOffset, dateToString } from './utils/date';
 import DateFilters from './components/search/dateFilters';
 import CompanyFilters from './components/search/companyFilters';
-import Keywords from './components/charts/keywords';
+import Keywords, { KeywordGroupName } from './components/charts/keywords';
+import TagFilters from './components/search/tagFilters';
 import { parseTags } from './utils/data';
 import TextSearch from './components/search/textSearch';
 
@@ -60,6 +61,8 @@ function App() {
   const jobHandler = useRef<NodeJS.Timeout|null>();
   const [jobsToday, setJobsToday] = useState<JobDetails[]>([]);
   const [ lastScraped, setLastScraped ] = useState<Date|null>(null);
+  const [ tagList, setTagList ] = useState({});
+  const [ activeTab, setActiveTab ] = useState<KeywordGroupName>('Developer');
 
   const value: IContext = { 
     allJobs,
@@ -297,6 +300,27 @@ function App() {
                 {
                   'tab': 'Table',
                   'content': <Table />
+                },
+                {
+                  'tab': 'Graphs',
+                  'content':  <><div className="job-search">
+                                <CompanyChart jobs={jobs} />
+                                <WeekChart jobs={jobs} filter={filter} prevJobs={prevJobs} />
+                              </div>
+                              <div className="trends">
+                                <AllTrendChart jobs={jobs} />
+                                <Keywords 
+                                  parsedTagData={tagData}
+                                  jobs={jobs}
+                                  filter={filter}
+                                  filterTags={filterTags}
+                                  tagList={tagList}
+                                  setTagList={setTagList}
+                                  activeTab={activeTab}
+                                  setActiveTab={setActiveTab}
+                                  tagColors={tag_colors as {[tag: string]: string}} />
+                              </div>
+                            </>
                 }
               ]} />
             </div>
@@ -305,14 +329,7 @@ function App() {
             <TextSearch filterChanged={filterChanged} />
             <DateFilters filterChanged={filterChanged} />
             <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
-            <div className="job-search">
-              <CompanyChart jobs={jobs} />
-              <WeekChart jobs={jobs} filter={filter} prevJobs={prevJobs} />
-            </div>
-            <div className="trends">
-              <AllTrendChart jobs={jobs} />
-              <Keywords parsedTagData={tagData} jobs={jobs} filter={filter} filterTags={filterTags} tagColors={tag_colors as {[tag: string]: string}} />
-            </div>
+            <TagFilters tagData={(tagList as any)['Developer']} filter={filter} filterTags={filterTags} />
           </div>
         </div>
       </div>

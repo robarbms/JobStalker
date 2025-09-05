@@ -107,7 +107,7 @@ const TagFilters = (props: TagFiltersProps) => {
                 <div className="button" onClick={() => filterTags('clear', 'clear')}>Clear all</div>
             </h2>
             <div className="tag-categories">
-                {tagData.children.map((data: any, index: number) => <TagCategory key={index} {...data} filter={filter} tagColors={tag_colors} filterTags={filterTags} />)}
+                {tagData && tagData.children.map((data: any, index: number) => <TagCategory key={index} {...data} filter={filter} tagColors={tag_colors} filterTags={filterTags} />)}
             </div>
         </div>
     )

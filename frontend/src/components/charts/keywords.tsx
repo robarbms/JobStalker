@@ -80,6 +80,10 @@ export type KeywordsProps = {
     filterTags: (tag: string | string[], action: string) => void;
     tagColors: {[tag: string]: string};
     parsedTagData: any;
+    tagList: any;
+    setTagList: React.Dispatch<React.SetStateAction<{}>>;
+    activeTab: KeywordGroupName;
+    setActiveTab: React.Dispatch<React.SetStateAction<KeywordGroupName>>;
 }
 
 /**
@@ -88,10 +92,8 @@ export type KeywordsProps = {
  * @returns 
  */
 const Keywords = (props: KeywordsProps) => {
-    const { jobs, filter, filterTags, tagColors, parsedTagData } = props;
-    const [ activeTab, setActiveTab ] = useState<KeywordGroupName>('Developer');
+    const { jobs, filter, filterTags, tagColors, parsedTagData, tagList, setTagList, activeTab, setActiveTab } = props;
     const [ tagData, setTagData ] = useState({});
-    const [ tagList, setTagList ] = useState({});
     const [ tagGroupData, setTagGroupData ] = useState();
 
     useEffect(() => {
@@ -141,7 +143,6 @@ const Keywords = (props: KeywordsProps) => {
                 {tagData && activeTab in tagData &&
                     <>
                         <TagsOverTime jobs={jobs as JobDetails[]} category={activeTab} />
-                        <TagFilters tagData={(tagList as any)[activeTab]} filter={filter} filterTags={filterTags} />
                     </>
                 }
             </div>
