@@ -3,6 +3,8 @@ from .scraper_utils import log, get_queries
 import time
 import datetime
 
+MULTI_PAGE_RESULTS=True
+
 # Converts a date string (e.g., "Posted 2 Days Ago") to a datetime object
 def getDate(date_str):
     date_str = date_str.replace("Posted ", "")
@@ -39,16 +41,16 @@ def getJobDetails(url: str, page: Page):
     try:
         page.goto(url)
         time.sleep(1)
-        title = page.locator('h2').all()[0].text_content()
+        title = page.locator('h2[data-automation-id="jobPostingHeader"]')
         if title:
-            details['title'] = title
+            details['title'] = title.text_content()
 
         def_lists = page.locator('dl').all()
 
         for deff in def_lists:
             key = deff.locator('dt').text_content().strip()
             value = deff.locator('dd').all()
-            value = " ".join([v.text_content().strip() if type(v) is Locator else v for v in value])
+            value = " - ".join([v.text_content().strip() if type(v) is Locator else v for v in value])
 
             if key and value:
                 if key == 'locations':
@@ -70,8 +72,8 @@ def getJobDetails(url: str, page: Page):
         return details
 
 def getJobs(query: str, job_ids: list[str]):
-    # query_url = "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/jobs?q={query}&locations=91336993fab910af6d7169a81124c410&locations=91336993fab910af6d701e82d004c2c0&locations=16fc4607fc4310011e929f7115f90000&locations=d2088e737cbb01d5e2be9e52ce01926f&workerSubType=0c40f6bd1d8f10adf6dae161b1844a15&timeType=5509c0b5959810ac0029943377d47364"
-    query_url = "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/jobs?q={query}&locations=91336993fab910af6d7169a81124c410&locations=91336993fab910af6d701e82d004c2c0&locations=16fc4607fc4310011e929f7115f90000&locations=d2088e737cbb01d5e2be9e52ce01926f&timeType=5509c0b5959810ac0029943377d47364"
+    # query_url = "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/jobs?q={query}&locations=91336993fab910af6d7169a81124c410&locations=91336993fab910af6d701e82d004c2c0&locations=16fc4607fc4310011e929f7115f90000&locations=d2088e737cbb01d5e2be9e52ce01926f&timeType=5509c0b5959810ac0029943377d47364"
+    query_url = "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/jobs?q={query}&locations=16fc4607fc4310011e929f7115f90000&timeType=5509c0b5959810ac0029943377d47364"
     url = query_url.format(query=query)
     jobs = []
 
@@ -79,7 +81,7 @@ def getJobs(query: str, job_ids: list[str]):
         def get_links(page: Page, job_ids: list[str]):
             jobs_found = 0
             links = []
-            result_list = page.locator('section[data-automation-id=jobResults] > ul > li').all()
+            result_list = page.locator('section > ul > li').all()
 
             if result_list:
                 jobs_found += len(result_list)
@@ -90,11 +92,14 @@ def getJobs(query: str, job_ids: list[str]):
                         if anchor and len(anchor) > 0:
                             link = anchor[0].get_attribute('href')
                             links.append(link)
+
+                if MULTI_PAGE_RESULTS==False:
+                    return links, jobs_found
                 
                 # If there is a full page of results (20)
                 # Check for a next button and click it.
                 if jobs_found >= 20:
-                    nav = page.locator('nav[aria-label=pagination] > div > ol + button')
+                    nav = page.locator('nav[aria-label="pagination"] > div > ol + button')
                     if nav:
                         nav.click()
                         time.sleep(1)
@@ -106,11 +111,12 @@ def getJobs(query: str, job_ids: list[str]):
 
         browser = p.chromium.launch()
         page = browser.new_page()
+        page.set_default_timeout(6000)
         jobs_found = 0
 
         try:
             page.goto(url)
-            time.sleep(1)
+            time.sleep(3)
 
             links, jobs_found = get_links(page, job_ids)
 

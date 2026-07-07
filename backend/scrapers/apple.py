@@ -71,7 +71,7 @@ def getJobs(query, job_ids):
                     for listing in job_listings:
                         anchor = listing.locator('h3 a').all()
                         link = anchor[0].get_attribute('href')
-                        job_id = re.search(r'/details/(\d+)/', link).group(1)
+                        job_id = re.search(r'/details\/([\d-]+)/', link).group(1)
                         if job_id:
                             if job_id not in job_ids:
                                 new_jobs.append(job_id)

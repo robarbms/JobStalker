@@ -157,6 +157,12 @@ companies = [
         "address": "San Francisco, CA",
         "site_url": "https://www.airbnb.com",
         "stock": "ABNB"
+    },
+    {
+        "name": "Blizzard",
+        "address": "Irvine, CA",
+        "site_url": "https://www.blizzard.com",
+        "stock": "MSFT"
     }
 ]
 

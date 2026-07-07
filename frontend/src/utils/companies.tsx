@@ -14,6 +14,7 @@ import { ReactComponent as Zillow } from '../static/zillow.svg';
 import { ReactComponent as AtlassianIcon } from '../static/atlassian.svg';
 import { ReactComponent as ExpediaIcon } from '../static/expedia.svg';
 import { ReactComponent as AirbnbIcon } from '../static/airbnb.svg';
+import BlizzardIconSrc from '../static/blizzard.png';
 
 export type Company = {
     icon: JSX.Element;
@@ -40,6 +41,10 @@ export const companyData: {[key: string]: Company} = {
     Atlassian: {
         icon: <AtlassianIcon className="icon" />,
         color: "#1868db"
+    },
+    Blizzard: {
+        icon: <img src={BlizzardIconSrc} className="icon" />,
+        color: "#67a3f6"
     },
     Expedia: {
         icon: <ExpediaIcon className="icon" />,

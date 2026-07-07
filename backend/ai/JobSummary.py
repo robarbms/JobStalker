@@ -10,6 +10,8 @@ def chunk_text(text, chunk_size=500):
 # Gets a summary of a job description using BART base model.
 def get_summary(description: str, skipAi=False):
     description = description.strip()
+    desc_length = len(description)
+    description = description[0:4000]
     if skipAi == False:
         try:
             words_count = len(description.split())
@@ -40,6 +42,6 @@ def get_summary(description: str, skipAi=False):
 
             return summary
         except Exception as e:
-            print(f"Error occurred while summarizing the job description: {e}")
+            print(f"Error occurred while summarizing the job description: {e} for description of {desc_length} characters")
     
     return description[0:400]

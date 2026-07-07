@@ -5,24 +5,33 @@ import re
 
 def getJobDetails(job_number: str, page: Page):
     try:
-        url = f"https://jobs.careers.microsoft.com/global/en/job/{job_number}".format(job_number=job_number)
+        url = f"https://apply.careers.microsoft.com/careers/job/{job_number}".format(job_number=job_number)
+        # https://jobs.careers.microsoft.com/global/en/job/1970393556629426
         page.goto(url)
         time.sleep(2)
-        h1 = page.locator("h1").all()
-        title = h1[0].text_content().strip()
-        p_tags = page.locator("p").all()
+        title = page.locator('h2[class^="position-title-"]').text_content().strip()
         date_posted = ""
-        team = ""
-        group = page.get_by_role("group")
-        stacks = group.locator("div.ms-Stack").all()
-        for idx in range(len(stacks)):
-            if stacks[idx].text_content().strip().startswith("Date posted") and date_posted == "":
-                date_posted = stacks[idx].text_content().replace("Date posted", "").strip()    
-            if stacks[idx].text_content().strip().startswith("Discipline") and idx < len(stacks) - 1:
-                team = stacks[idx + 1].text_content().strip()
+        location = ""
 
-        after_hr = page.locator("hr + div").all()
-        description = after_hr[1].text_content()
+        detail_block = page.locator('div[class^="detailContainer-"]').all()
+
+        for detail_item in detail_block:
+            label = detail_item.locator('div[class^="detailLabel-"]')
+            if label:
+                value = detail_item.locator('div[class^="detailValue-"]').text_content().strip()
+                label_text = label.text_content().strip()
+                if label_text and value:
+                    if label_text == 'Date posted':
+                        date_posted = value
+                    if label_text == 'Work site':
+                        location = value
+
+        job_description = page.locator("#job-description-container")
+        job_description_paragraphs = job_description.locator("p").all()
+        description = ""
+
+        for desc in job_description_paragraphs:
+            description += desc.text_content() + " "
 
         details = {
             "title": title,
@@ -31,7 +40,7 @@ def getJobDetails(job_number: str, page: Page):
             "link": url,
             "salary_min": 0,
             "salary_max": 0,
-            "location": p_tags[0].text_content(),
+            "location": location,
             "date_posted": date_posted,
             "team": "",
             "description": description,
@@ -48,7 +57,8 @@ def getJobDetails(job_number: str, page: Page):
 
 def getJobs(query, job_ids):
     # query_url = "https://jobs.careers.microsoft.com/global/en/search?q={query}&lc=Bellevue%2C%20Washington%2C%20United%20States&lc=Redmond%2C%20Washington%2C%20United%20States&lc=Seattle%2C%20Washington%2C%20United%20States&p=Software%20Engineering&l=en_us&pg=1&pgSz=20&o=Recent&flt=true"
-    query_url = "https://jobs.careers.microsoft.com/global/en/search?q={query}&lc=Bellevue%2C%20Washington%2C%20United%20States&lc=Redmond%2C%20Washington%2C%20United%20States&lc=Seattle%2C%20Washington%2C%20United%20States&l=en_us&pg=1&pgSz=20&o=Recent&flt=true"
+    # query_url = "https://jobs.careers.microsoft.com/global/en/search?q={query}&lc=Bellevue%2C%20Washington%2C%20United%20States&lc=Redmond%2C%20Washington%2C%20United%20States&lc=Seattle%2C%20Washington%2C%20United%20States&l=en_us&pg=1&pgSz=20&o=Recent&flt=true"
+    query_url = "https://apply.careers.microsoft.com/careers?query={query}&start=0&location=United+States&pid=1970393556629426&sort_by=timestamp&filter_include_remote=1&filter_work_site=0+days+%2F+week+in-office+%E2%80%93+remote&filter_profession=software+engineering&filter_seniority=Manager%2CSenior"
     url = query_url.format(query=query)
     jobs = []
     jobs_found = 0
@@ -61,11 +71,16 @@ def getJobs(query, job_ids):
             time.sleep(5)
 
             main = page.locator("main")
-            job_num_conts = main.locator('div[aria-label*="Job item"]').all()
+            job_num_conts = main.locator('div[data-test-id="job-listing"]').all()
+            # job_num_conts = main.locator('div[aria-label*="Job item"]').all()
 
             job_nums = []
             for job_num_cont in job_num_conts:
-                job_nums.append(job_num_cont.get_attribute('aria-label').replace('Job item ', ''))
+                anchor = job_num_cont.locator('a')
+                link = anchor.get_attribute('href')
+                job_id = link.replace('/careers/job/', '')
+                job_nums.append(job_id)
+                # job_nums.append(job_num_cont.get_attribute('aria-label').replace('Job item ', ''))
 
             jobs_found = len(job_nums)
 

@@ -40,9 +40,9 @@ def getJobDetails(url: str):
                 date_str = re.sub('"datePublished":"', "", date_str)
                 details["date_posted"] = date_str
 
-            title = page.locator('h1').text_content().strip()
+            title = page.locator('h1')
             if title:
-                details['title'] = title
+                details['title'] = title.text_content().strip() if type(title) is Locator else title[0].text_content().strip()
 
             info = page.locator('div.job-detail p, div.job-detail ul').all()
             for block in info:
@@ -64,16 +64,20 @@ def getJobs(query: str, job_map: dict):
     query_url = "https://careers.airbnb.com/positions/?_search_input={query}&_offices=united-states&_workplace_type=live-and-work-anywhere&_jobs_sort=updated_at"
     url = query_url.format(query=query)
     job_links = []
-    jobs = []
     jobs_found = 0
     
     def set_job(job_anchor, job_linksl, job_mapl):
+        count = 0
         link_str = job_anchor.get_attribute("href")
-        job_id = get_id(link_str)
-        if job_id not in job_mapl:
-            job_linksl.append(link_str)
-            job_mapl[job_id] = True
-        return job_linksl, job_mapl
+        if link_str:
+            job_match = re.search(r'\/positions\/\d+\/', link_str)
+            if job_match:
+                job_id = get_id(link_str)
+                count += 1
+                if job_id not in job_mapl:
+                    job_linksl.append(link_str)
+                    job_mapl[job_id] = True
+        return job_linksl, job_mapl, count
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
@@ -83,10 +87,10 @@ def getJobs(query: str, job_map: dict):
             page.goto(url)
             time.sleep(2) # Wait for the page to load
 
-            links = page.locator("h3 a").all()
-            jobs_found += len(links)
+            links = page.locator("a").all()
             for link in links:
-                job_links, job_map = set_job(link, job_links, job_map)
+                job_links, job_map, count = set_job(link, job_links, job_map)
+                jobs_found += count
 
             # Get how many pages of results there are
             page_count = 1
@@ -105,7 +109,8 @@ def getJobs(query: str, job_map: dict):
                 links = page.locator("h3 a").all()
                 jobs_found += len(links)
                 for link in links:
-                    job_links, job_map = set_job(link, job_links, job_map)
+                    job_links, job_map, count = set_job(link, job_links, job_map)
+                    jobs_found += count
                 index += 1
 
         except Exception as e:

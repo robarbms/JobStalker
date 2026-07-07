@@ -13,6 +13,7 @@ from .zillow import getZillowJobs
 from .atlassian import getAtlassianJobs
 from .expedia import getExpediaJobs
 from .airbnb import getAirbnbJobs
+from .blizzard import getBlizzardJobs
 
 def getAllJobs(job_ids):
     log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", None)
@@ -26,25 +27,26 @@ def getAllJobs(job_ids):
         return []
     
     jobScrapers = {
-        'Amazon': getAmazonJobs,
+        # 'Amazon': getAmazonJobs,
         'Apple': getAppleJobs,
         'Google': getGoogleJobs,
         'Microsoft': getMicrosoftJobs,
         'Netflix': getNetflixJobs,
         'Nvidia': getNvidiaJobs,
-        'Salesforce': getSalesforceJobs,
+        # 'Salesforce': getSalesforceJobs,
         'Zillow': getZillowJobs,
-        'Atlassian': getAtlassianJobs,
-        'Expedia': getExpediaJobs,
-        'Airbnb': getAirbnbJobs
+        # 'Atlassian': getAtlassianJobs,
+        # 'Expedia': getExpediaJobs,
+        'Airbnb': getAirbnbJobs,
+        'Blizzard': getBlizzardJobs
     }
 
     # Cloudflare is blocking Adobe and Meta when scraping too often
     # Scraping 3 times daily ~5am, ~11am, ~5pm
-    now = datetime.now()
-    if (now.hour > 4 and now.hour <= 6) or (now.hour > 10 and now.hour <= 12) or (now.hour > 16 and now.hour <= 18):
-        jobScrapers['Adobe'] = getAdobeJobs
-        jobScrapers['Meta'] = getMetaJobs
+    # now = datetime.now()
+    # if (now.hour > 4 and now.hour <= 6) or (now.hour > 10 and now.hour <= 12) or (now.hour > 16 and now.hour <= 18):
+    #     jobScrapers['Adobe'] = getAdobeJobs
+    #     jobScrapers['Meta'] = getMetaJobs
 
     num_scrapers = len(jobScrapers)
 
