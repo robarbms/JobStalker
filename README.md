@@ -60,7 +60,7 @@ You will need the following files:
 - model.safetensors
 - vocab.json
 
-In the /backend/ai/models directory, create a folder named `bart-large-cnn` and place the downloaded files.
+Place the downloaded files in the /backend/ai/models/bart-large-cnn directory.
 
 ### Initialize Application
 To automatically setup the project, run the `setup.bat` file. This will install packages, initialize a database and kick off services. Content will not show up untill the scrapers have finished getting content. You will not need to use start.bat on setup, it will be ran automatically as a part of the setup process.

@@ -135,7 +135,8 @@ __pycache__/
 venv/
 
 # LLM files
-/backend/ai/models/*
+/backend/ai/models/bart-large-cnn/*
+!/backend/ai/models/bart-large-cnn/README.md
 
 # DBs
 /backend/database/*.db
