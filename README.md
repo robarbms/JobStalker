@@ -62,8 +62,5 @@ You will need the following files:
 
 Place the downloaded files in the /backend/ai/models/bart-large-cnn directory.
 
-### Initialize Application
-To automatically setup the project, run the `setup.bat` file. This will install packages, initialize a database and kick off services. Content will not show up untill the scrapers have finished getting content. You will not need to use start.bat on setup, it will be ran automatically as a part of the setup process.
-
-### Application start
-If you close the services or reboot your computer and want to start the app again, you can run the `start.bat` file.
+### Application setup and start
+To start up the application and setup the application, run the `start.bat` file.

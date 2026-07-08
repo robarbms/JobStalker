@@ -18,3 +18,5 @@ protobuf
 accelerate>=0.26.0
 bitsandbytes>0.37.0
 waitress
+aiohttp
+aiofiles
