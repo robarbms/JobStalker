@@ -63,4 +63,4 @@ You will need the following files:
 Place the downloaded files in the /backend/ai/models/bart-large-cnn directory.
 
 ### Application setup and start
-To start up the application and setup the application, run the `start.bat` file.
+To setup and start the application, run the `start.bat` file. This will create a python virtual environment, install required libraries, set up database tables and start services.
