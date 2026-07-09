@@ -56,9 +56,7 @@ def getJobDetails(job_number: str, page: Page):
 
 
 def getJobs(query, job_ids):
-    # query_url = "https://jobs.careers.microsoft.com/global/en/search?q={query}&lc=Bellevue%2C%20Washington%2C%20United%20States&lc=Redmond%2C%20Washington%2C%20United%20States&lc=Seattle%2C%20Washington%2C%20United%20States&p=Software%20Engineering&l=en_us&pg=1&pgSz=20&o=Recent&flt=true"
-    # query_url = "https://jobs.careers.microsoft.com/global/en/search?q={query}&lc=Bellevue%2C%20Washington%2C%20United%20States&lc=Redmond%2C%20Washington%2C%20United%20States&lc=Seattle%2C%20Washington%2C%20United%20States&l=en_us&pg=1&pgSz=20&o=Recent&flt=true"
-    query_url = "https://apply.careers.microsoft.com/careers?query={query}&start=0&location=United+States&pid=1970393556629426&sort_by=timestamp&filter_include_remote=1&filter_work_site=0+days+%2F+week+in-office+%E2%80%93+remote&filter_profession=software+engineering&filter_seniority=Manager%2CSenior"
+    query_url = "https://apply.careers.microsoft.com/careers?query={query}&start=0&location=United+States&sort_by=timestamp&filter_include_remote=1&filter_work_site=0+days+%2F+week+in-office+%E2%80%93+remote"
     url = query_url.format(query=query)
     jobs = []
     jobs_found = 0
