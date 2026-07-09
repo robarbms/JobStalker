@@ -15,25 +15,25 @@ def get_summary(description: str, skipAi=False):
     if skipAi == False:
         try:
             words_count = len(description.split())
-            if words_count<200:
+            if words_count <= 256:
                 return description
             # Set device to GPU if available
             device = "cuda" if torch.cuda.is_available() else "cpu"
-            chunks = chunk_text(description, 300)
+            chunks = chunk_text(description, 512)
 
-            summarizer = pipeline('summarization', model="./ai/models/bart-large-cnn", device=device)
+            summarizer = pipeline('summarization', model="./ai/models/bart-base-job-info-summarizer", device=device)
             if len(chunks) > 1:
                 summaries = []
                 for chunk in chunks:
-                    if len(chunk) > 200:
-                        chunk_summary = summarizer(' '.join(chunk), max_length=200, min_length=50, do_sample=False)
+                    if len(chunk) > 256:
+                        chunk_summary = summarizer(' '.join(chunk), min_length=50, do_sample=False)
                         if chunk_summary and chunk_summary[0]:
                             summaries.append(chunk_summary[0]['summary_text'])
                     else:
                         summaries.append(' '.join(chunk))
                 description = ' '.join(summaries)
-            if len(description.split()) > 200:
-                summary_obj = summarizer(description, max_length=200, min_length=50, do_sample=False)
+            if len(description.split()) > 256:
+                summary_obj = summarizer(description, min_length=50, do_sample=False)
                 summary = summary_obj[0]['summary_text']
             else:
                 summary = description

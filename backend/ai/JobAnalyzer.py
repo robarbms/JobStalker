@@ -25,7 +25,7 @@ class JobAnalyzer:
             '8-bit': False
         },
         'summary': {
-            'directory': 'bart-large-cnn',
+            'directory': 'bart-base-job-info-summarizer',
             'type': 'bart',
             '8-bit': False
         }

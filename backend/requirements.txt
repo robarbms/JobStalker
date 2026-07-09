@@ -20,3 +20,4 @@ bitsandbytes>0.37.0
 waitress
 aiohttp
 aiofiles
+huggingface_hub

@@ -50,17 +50,5 @@ You will need a couple things installed before you start.
 - Python: https://www.python.org/downloads/
 - Node: https://nodejs.org/en/download
 
-### Download
-You will need to either download files or git clone the repository to your computer.
-
-Download the Bart Large CNN model from Huggingface: https://huggingface.co/facebook/bart-large-cnn/tree/main
-You will need the following files:
-- config.json
-- merges.txt
-- model.safetensors
-- vocab.json
-
-Place the downloaded files in the /backend/ai/models/bart-large-cnn directory.
-
 ### Application setup and start
-To setup and start the application, run the `start.bat` file. This will create a python virtual environment, install required libraries, set up database tables and start services.
+To setup and start the application, run the `start.bat` file. This will create a python virtual environment, install required libraries, set up database tables and start services. If you need to restart the app you can just rerun start.bat.

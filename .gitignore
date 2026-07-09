@@ -137,6 +137,8 @@ venv/
 # LLM files
 /backend/ai/models/bart-large-cnn/*
 !/backend/ai/models/bart-large-cnn/README.md
+/backend/ai/models/bart-base-job-info-summarizer/*
+!/backend/ai/models/bart-base-job-info-summarizer/README.md
 
 # DBs
 /backend/database/*.db

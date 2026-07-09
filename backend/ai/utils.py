@@ -1,13 +1,9 @@
 from datetime import datetime
-from pathlib import Path
-import asyncio
-import os
-import aiohttp
-import aiofiles
+from huggingface_hub import hf_hub_download
 
 def log(message: str, level="info"):
     ct = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    fd = datetime.now().strftime("%Y-%m-%d")
+    # fd = datetime.now().strftime("%Y-%m-%d")
 
     log_msg = message
     if level != None:
@@ -15,45 +11,12 @@ def log(message: str, level="info"):
         
     print(log_msg)
 
-async def download_file(session: aiohttp.ClientSession, url: str, out: str):
-    """Downloads a single file asynchronously by streaming chunks to disk."""
-    # Extract filename from URL
-    filename = os.path.basename(url) or "downloaded_file"
-    filepath = os.path.join(out, filename)
-    
-    print(f"Starting download: {url}")
-    print(f"Outputting to: {filepath}")
-    
-    try:
-        async with session.get(url) as response:
-            # Check for bad HTTP response statuses (like 404 or 500)
-            response.raise_for_status()
-            
-            # Open file asynchronously and stream contents
-            async with aiofiles.open(filepath, "wb") as f:
-                async for chunk in response.content.iter_chunked(8192): # 8KB chunks
-                    await f.write(chunk)
-                    
-        print(f" Finished: {filename}")
-    except Exception as e:
-        print(f"Error downloading {url}: {e}")
+def download_hf_model(repo_id: str, output: str):
+    local_dir = 'backend/ai/models/' + output + '/'
+    filenames = ['config.json', 'merges.txt', 'vocab.json', 'model.safetensors']
 
-async def ensure_model():
-    directory = './models/bart-large-cnn/'
-    files = ['config.json', 'merges.txt', 'vocab.json', 'model.safetensors']
-    repo_url = 'https://huggingface.co/facebook/bart-large-cnn/resolve/main/'
-    has_files = True
+    for filename in filenames:
+        hf_hub_download(repo_id=repo_id, filename=filename, local_dir=local_dir)
 
-    for file in files:
-        file_path = Path(directory + file)
-        if file_path.is_file() == False:
-            has_files = False
-            break
-
-    if has_files:
-        return True
-    
-    async with aiohttp.ClientSession() as session:
-        tasks = [download_file(session, repo_url + file, directory + file) for file in files]
-
-    await asyncio.gather(*tasks)
+if __name__ == "__main__": 
+    download_hf_model(repo_id='avisena/bart-base-job-info-summarizer', output='bart-base-job-info-summarizer')

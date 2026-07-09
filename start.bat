@@ -29,6 +29,9 @@ if %errorlevel%==0 (
             echo Initializing database...
             python .\backend\database\createTables.py
 
+            echo Downloading summarization model...
+            python .\backend\ai\utils.py
+
             echo Setting up Playwright
             playwright install
 
@@ -50,6 +53,7 @@ if %errorlevel%==0 (
             echo Starting job scraper service...
 
             start cmd /k "title JobStalker job scraper & cd .\backend & .\venv\Scripts\activate & python .\main.py"
+            
         ) else (
             echo npm is NOT installed. Install npm and run setup again.
         )
