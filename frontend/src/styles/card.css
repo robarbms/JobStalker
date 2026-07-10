@@ -7,9 +7,10 @@
 
 .job-card {
     --card-width: 400px;
-    background-image: linear-gradient(to top, #111111, #242222);
+    /* background-image: linear-gradient(to top, #111111, #242222); */
+    background: rgba(0, 0, 0, .5);
     padding: 10px 10px 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
     min-width: var(--card-width);
     width: 100%;

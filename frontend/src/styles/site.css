@@ -20,6 +20,18 @@ h2 {
     margin: 0 auto;
 }
 
+.App-header {
+    width: 105.2631%;
+    margin-left: -2.63155%;
+    padding: 0 2.63155%;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, .5);
+}
+
+.App-header h1 {
+    padding: 5px 0 5px;
+}
+
 .meta {
     font-size: small;
 }

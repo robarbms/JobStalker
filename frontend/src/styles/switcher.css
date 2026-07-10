@@ -4,8 +4,17 @@
     justify-content: space-between;
 }
 
+.title-area h2 {
+    margin: 0;
+}
+
 .switcher-tabs {
-    margin: 10px 10px 10px 0;
+    margin: 10px 10px -0.6px 20px;
+    font-size: 1.3em;
+    display: flex;
+    gap: 4px;
+    position: relative;
+    z-index: 2;
 }
 
 .switcher-tab {
@@ -13,10 +22,19 @@
     padding: 5px 10px;
     cursor: pointer;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px 6px 0 0;
 }
 
 .switcher-tab-active,
 .switcher-tab:hover {
     color: #fff;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom-color: rgba(0, 0, 0, 0.7);
+}
+
+.switcher-content {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
 }

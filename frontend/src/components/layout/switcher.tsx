@@ -36,10 +36,10 @@ const Switcher = (props: SwitcherProps) => {
     return (
         <div className="switcher">
             <div className="title-area">
-                <h2>Search Results <span className="meta">{props.job_count} jobs</span></h2>
                 <div className="switcher-tabs">
                     {props.options.map((option, index) => <SwitcherTab key={index} index={index} text={option.tab} activeIdx={selectedOption} setSelectedTab={setSelectedOption} />)}
                 </div>
+                <h2><span className="meta">Search results: </span>{props.job_count}</h2>
             </div>
             <div className="switcher-content">
                 {props.options[selectedOption].content}
