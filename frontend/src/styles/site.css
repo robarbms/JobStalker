@@ -20,16 +20,31 @@ h2 {
     margin: 0 auto;
 }
 
-.App-header {
+.App-header,
+.App-footer {
     width: 105.2631%;
     margin-left: -2.63155%;
     padding: 0 2.63155%;
     box-sizing: border-box;
     background: rgba(0, 0, 0, .5);
+    min-height: 40px;
+}
+
+.App-footer {
+    margin-top: 20px;
 }
 
 .App-header h1 {
     padding: 5px 0 5px;
+    display: flex;
+    align-items: center;
+}
+
+.app-name {
+    color: #a00;
+    font-size: xx-large;
+    font-weight: 400;
+    letter-spacing: -2px;
 }
 
 .meta {

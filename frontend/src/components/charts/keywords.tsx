@@ -9,6 +9,7 @@ import KeywordGroupOverview from './keywordGroup';
 import TagsOverTime from '../tags/tagsOverTime';
 import TagFilters from '../search/tagFilters';
 import { childrenToArray, parseTags } from '../../utils/data';
+import useTagList from '../../hooks/useTagList';
 
 export type TagCategoryItem = {
     name: string;
@@ -68,6 +69,41 @@ export const KeywordTab = (props: KeywordTabProps) => {
     );
 }
 
+export const getGroupData = (parsedTagData: any) => {
+    const groupData: any = { children: [], total: 0};
+    for (let name in parsedTagData) {
+        const group: any = parsedTagData[name];
+        groupData.total += group.total;
+        groupData.children.push({
+            name,
+            count: group.total
+        });
+    }
+    return groupData;
+}
+
+export const getTagDataAsArray = (parsedTagData: any) => {
+    const tagDataAsArray: any = {};
+    for (const dtype in parsedTagData) {
+        const node = childrenToArray(parsedTagData[dtype]);
+        node.children.sort((a: any, b: any) => b.children.length - a.children.length)
+        tagDataAsArray[dtype] = node;
+    }
+    return tagDataAsArray;
+}
+
+export const getKeywordCountsAsArray = (jobs: {
+        tags: string | any[];
+        date_posted: string;
+    }[]) => {
+        const keywordCounts: any = parseTags(jobs as any);
+        const keywordCountsAsArray: any = {}
+        for (let type in keywordCounts) {
+            keywordCountsAsArray[type] = childrenToArray(keywordCounts[type]);
+        }
+        return keywordCountsAsArray;
+    }
+
 /**
  * Properties for the Keywords component
  */
@@ -77,11 +113,8 @@ export type KeywordsProps = {
         date_posted: string;
     }[];
     filter: Filter;
-    filterTags: (tag: string | string[], action: string) => void;
     tagColors: {[tag: string]: string};
     parsedTagData: any;
-    tagList: any;
-    setTagList: React.Dispatch<React.SetStateAction<{}>>;
     activeTab: KeywordGroupName;
     setActiveTab: React.Dispatch<React.SetStateAction<KeywordGroupName>>;
 }
@@ -92,34 +125,19 @@ export type KeywordsProps = {
  * @returns 
  */
 const Keywords = (props: KeywordsProps) => {
-    const { jobs, filter, filterTags, tagColors, parsedTagData, tagList, setTagList, activeTab, setActiveTab } = props;
+    const { jobs, filter, tagColors, parsedTagData, activeTab, setActiveTab } = props;
+    // const {
+    //     tagData,
+    //     tagGroupData
+    // } = useTagList(jobs, parsedTagData, setTagList);
     const [ tagData, setTagData ] = useState({});
     const [ tagGroupData, setTagGroupData ] = useState();
 
     useEffect(() => {
         if (jobs && Array.isArray(jobs) && jobs.length > 0) {
-            const groupData: any = { children: [], total: 0};
-            for (let name in parsedTagData) {
-                const group: any = parsedTagData[name];
-                groupData.total += group.total;
-                groupData.children.push({
-                    name,
-                    count: group.total
-                });
-            }
+            const groupData: any = getGroupData(parsedTagData);
             setTagGroupData(groupData);
-            const tagDataAsArray: any = {};
-            for (const type in parsedTagData) {
-                const node = childrenToArray(parsedTagData[type]);
-                node.children.sort((a: any, b: any) => b.children.length - a.children.length)
-                tagDataAsArray[type] = node;
-            }
-            setTagList(tagDataAsArray);
-            const keywordCounts: any = parseTags(jobs as any);
-            const keywordCountsAsArray: any = {}
-            for (let type in keywordCounts) {
-                keywordCountsAsArray[type] = childrenToArray(keywordCounts[type]);
-            }
+            const keywordCountsAsArray: any = getKeywordCountsAsArray(jobs);
             setTagData(keywordCountsAsArray);
         }
     }, [jobs, filter, parsedTagData]);

@@ -15,6 +15,7 @@ import Keywords, { KeywordGroupName } from './components/charts/keywords';
 import TagFilters from './components/search/tagFilters';
 import { parseTags } from './utils/data';
 import TextSearch from './components/search/textSearch';
+import { getTagDataAsArray } from './components/charts/keywords';
 
 export type Filter = {
   title: string;
@@ -277,12 +278,17 @@ function App() {
   }
   const tag_colors = getTagColors();
 
+  useEffect(() => {
+    const tagDataAsArray = getTagDataAsArray(tagData);
+    setTagList(tagDataAsArray);
+  }, [jobs]);
+
   return (
     <JobContext.Provider value={value}>
       <div className="App">
         <header className="App-header">
           <h1>
-            Job Stalker
+            <span className="app-name">Job Stalker</span>
             <label>Last updated: </label><span className={`update_time ${getStatus(lastUpdated, 1000 * 5)}`}>{lastUpdated.toLocaleString()}</span>
             <label>Total Jobs: </label><span className="total_jobs">{allJobs.length}</span>
             <label>Jobs found today:</label><span className="jobs_today">{jobsToday.length}</span>
@@ -313,9 +319,6 @@ function App() {
                                   parsedTagData={tagData}
                                   jobs={jobs}
                                   filter={filter}
-                                  filterTags={filterTags}
-                                  tagList={tagList}
-                                  setTagList={setTagList}
                                   activeTab={activeTab}
                                   setActiveTab={setActiveTab}
                                   tagColors={tag_colors as {[tag: string]: string}} />
@@ -332,6 +335,7 @@ function App() {
             <TagFilters tagData={(tagList as any)['Developer']} filter={filter} filterTags={filterTags} />
           </div>
         </div>
+        <div className="App-footer"></div>
       </div>
     </JobContext.Provider>
   );
