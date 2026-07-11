@@ -7,9 +7,7 @@ import datascienceTags from '../../utils/ds_keywords.json';
 import designTags from '../../utils/design_keywords.json';
 import KeywordGroupOverview from './keywordGroup';
 import TagsOverTime from '../tags/tagsOverTime';
-import TagFilters from '../search/tagFilters';
 import { childrenToArray, parseTags } from '../../utils/data';
-import useTagList from '../../hooks/useTagList';
 
 export type TagCategoryItem = {
     name: string;
@@ -69,6 +67,11 @@ export const KeywordTab = (props: KeywordTabProps) => {
     );
 }
 
+/**
+ * Groups children tags and gets counts for groups
+ * @param parsedTagData - tag information
+ * @returns 
+ */
 export const getGroupData = (parsedTagData: any) => {
     const groupData: any = { children: [], total: 0};
     for (let name in parsedTagData) {
@@ -82,6 +85,11 @@ export const getGroupData = (parsedTagData: any) => {
     return groupData;
 }
 
+/**
+ * Formats the tag data into an array to be consumed by React components
+ * @param parsedTagData - tag information
+ * @returns 
+ */
 export const getTagDataAsArray = (parsedTagData: any) => {
     const tagDataAsArray: any = {};
     for (const dtype in parsedTagData) {
@@ -92,11 +100,16 @@ export const getTagDataAsArray = (parsedTagData: any) => {
     return tagDataAsArray;
 }
 
-export const getKeywordCountsAsArray = (jobs: {
+/**
+ * Counts the number of times tags are used across jobs
+ * @param jobs - list of jobs
+ * @returns 
+ */
+export const getKeywordCountsAsArray = (jobTags: {
         tags: string | any[];
         date_posted: string;
     }[]) => {
-        const keywordCounts: any = parseTags(jobs as any);
+        const keywordCounts: any = parseTags(jobTags as any);
         const keywordCountsAsArray: any = {}
         for (let type in keywordCounts) {
             keywordCountsAsArray[type] = childrenToArray(keywordCounts[type]);
@@ -126,10 +139,6 @@ export type KeywordsProps = {
  */
 const Keywords = (props: KeywordsProps) => {
     const { jobs, filter, tagColors, parsedTagData, activeTab, setActiveTab } = props;
-    // const {
-    //     tagData,
-    //     tagGroupData
-    // } = useTagList(jobs, parsedTagData, setTagList);
     const [ tagData, setTagData ] = useState({});
     const [ tagGroupData, setTagGroupData ] = useState();
 
