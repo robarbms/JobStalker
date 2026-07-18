@@ -1,0 +1,33 @@
+.admin-panel {
+    position: fixed;
+    width: 400px;
+    top: 0;
+    bottom: 0;
+    right: -400px;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: all .5s ease-out;
+    opacity: 0;
+    background: rgba(20, 20, 20, 1);
+}
+
+.admin-panel.show {
+    right: 0;
+    opacity: 1;
+}
+
+.admin-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-panel-close {
+    padding: 4px 20px 10px;
+    font-size: x-large;
+    cursor: pointer;
+}
+
+.admin-panel-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}

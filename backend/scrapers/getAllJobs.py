@@ -15,11 +15,9 @@ from .expedia import getExpediaJobs
 from .airbnb import getAirbnbJobs
 from .blizzard import getBlizzardJobs
 
-def getAllJobs(job_ids):
-    log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", None)
-    log(f"Starting job search")
+def getAllJobs(job_ids, queries):
     jobs = []
-    count = 0
+    found_count = 0
 
     def getJobIds(company):
         if company in job_ids:
@@ -34,7 +32,7 @@ def getAllJobs(job_ids):
         'Netflix': getNetflixJobs,
         'Nvidia': getNvidiaJobs,
         # 'Salesforce': getSalesforceJobs,
-        'Zillow': getZillowJobs,
+        # 'Zillow': getZillowJobs,
         # 'Atlassian': getAtlassianJobs,
         # 'Expedia': getExpediaJobs,
         'Airbnb': getAirbnbJobs,
@@ -50,15 +48,14 @@ def getAllJobs(job_ids):
 
     num_scrapers = len(jobScrapers)
 
+    print(f">>>>>> Scraping {len(jobScrapers)} companies for the query: '{queries[0]}'")
     for company, scraper in jobScrapers.items():
-        count += 1
-        print(f">>>>>> {company} scraping {count}/{num_scrapers}")
         ids = getJobIds(company)
-        new_jobs = scraper(ids)
-        print(f">>>>>> Found {len(new_jobs)} new jobs for {company}")
+        new_jobs, found = scraper(ids, queries)
+        found_count += found
         jobs += new_jobs
+        log(f"{len(new_jobs)}/{found}", None)
 
-    log(f">>>>>> Found a total of {len(jobs)} unique jobs in {count} companies")
-    log("Finished job search")
+    log(f">>>>>> Found a total of {len(jobs)}/{found_count} jobs in {len(jobScrapers)} companies")
 
-    return jobs
+    return jobs, found_count

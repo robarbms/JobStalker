@@ -53,6 +53,14 @@ def createTables(cur, conn):
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             phone VARCHAR(20)
         )
+        """,
+        """
+        CREATE TABLE IF NOT EXISTS queries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            query VARCHAR(255) NOT NULL UNIQUE,
+            companies VARCHAR(255),
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
         """
     )
 
@@ -187,11 +195,41 @@ def addCompany(cur, conn, company_info):
     cur.execute(insert_query)
     conn.commit()
 
+default_queries = [
+    {"query": "engineer"},
+    {"query": "developer"},
+    {"query": "full stack"},
+    {"query": ".net"},
+    {"query": "software"},
+    {"query": "application"},
+    {"query": "backend"},
+    {"query": "game"},
+    {"query": "development"},
+    {"query": "c++"}
+]
+
+def addQueries(cur, conn, queries):
+    print("Adding default queries")
+    for query in queries:
+        addQuery(cur, conn, query)
+
+def addQuery(cur, conn, query_info):
+    check_query_str = f"SELECT id, query FROM queries WHERE query='{query_info['query']}'"
+    cur.execute(check_query_str)
+    query_found = cur.fetchall()
+    if query_found and len(query_found) > 0:
+        return
+    
+    insert_query = f"INSERT INTO queries (query) VALUES('{query_info['query']}')"
+    cur.execute(insert_query)
+    conn.commit()
+
 # Creates the db tables and adds the companies
 def setupDB():
     cur, conn = connect_to_db()
     createTables(cur, conn)
     addCompanies(cur, conn, companies)
+    addQueries(cur, conn, default_queries)
     # Checking companies
     company_query = "SELECT * FROM companies"
     cur.execute(company_query)

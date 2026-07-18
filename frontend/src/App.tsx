@@ -16,6 +16,7 @@ import TagFilters from './components/search/tagFilters';
 import { parseTags } from './utils/data';
 import TextSearch from './components/search/textSearch';
 import { getTagDataAsArray } from './components/charts/keywords';
+import AdminPanel from './components/admin_panel/admin_panel';
 
 export type Filter = {
   title: string;
@@ -64,6 +65,7 @@ function App() {
   const [ lastScraped, setLastScraped ] = useState<Date|null>(null);
   const [ tagList, setTagList ] = useState({});
   const [ activeTab, setActiveTab ] = useState<KeywordGroupName>('Developer');
+  const [ adminOpen, setAdminOpen ] = useState<boolean>(false);
 
   const value: IContext = { 
     allJobs,
@@ -294,6 +296,7 @@ function App() {
             <label>Jobs found today:</label><span className="jobs_today">{jobsToday.length}</span>
             <label>Last scraped: </label><span className={`last_scraped ${getStatus(lastScraped)}`}>{lastScraped && lastScraped.toLocaleString()}</span>
           </h1>
+          <div className="app-settings" onClick={() => setAdminOpen(true)}>⚙</div>
         </header>
         <div className="col-layout">
           <div className="job-lists">
@@ -334,6 +337,7 @@ function App() {
             <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
             <TagFilters tagData={(tagList as any)['Developer']} filter={filter} filterTags={filterTags} />
           </div>
+          <AdminPanel open={adminOpen} setAdminPanel={setAdminOpen} />
         </div>
         <div className="App-footer"></div>
       </div>

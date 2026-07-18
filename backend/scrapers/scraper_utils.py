@@ -46,7 +46,7 @@ class Extractor:
                 log("Missing required field '{0}' for company {1} and job id {2}".format(selector, self.company, self.job_id), level="error")
             return ""
 
-def log(message: str, level="info"):
+def log(message: str, level="info", no_end=False):
     ct = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     fd = datetime.now().strftime("%Y-%m-%d")
     log_file = "logs/{0}.log".format(fd)
@@ -61,9 +61,14 @@ def log(message: str, level="info"):
 
     if level == "error":
         with open(error_file, "a") as f:
-            f.write(log_msg + "\n")
-        
-    print(log_msg)
+            f.write(log_msg)
+            if no_end == False:
+                f.write("\n")
+    
+    if no_end:
+        print(log_msg, end="")
+    else:
+        print(log_msg)
 
 def get_queries():
     config = configparser.ConfigParser()

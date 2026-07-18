@@ -10,8 +10,10 @@ def get_config():
     config_path = root_path + "\\config.ini"
     config.read(config_path)
     scenario = config.get('app', 'scenario')
+    db_name = config.get('app', 'db_name')
     return {
-        'scenario': scenario
+        'scenario': scenario,
+        'db_name': db_name
     }
 
 """
@@ -20,7 +22,7 @@ Function for creating a connection to the database
 def connect_to_db():
     try:
         config = get_config()
-        db_name = f"{config['scenario']}_jobs.db"
+        db_name = f"{config['db_name']}.db"
         api_path = os.path.realpath(os.path.dirname(__file__))
         backend_path = re.sub('api', '', api_path)
         database_path = backend_path + f"/database/{db_name}"

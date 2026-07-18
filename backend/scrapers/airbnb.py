@@ -121,12 +121,13 @@ def getJobs(query: str, job_map: dict):
 
     return job_links, jobs_found, job_map
 
-def getAirbnbJobs(job_ids: list[int]):
-    log("Fetching jobs for Airbnb...")
+def getAirbnbJobs(job_ids: list[int], queries):
+    log("Fetching jobs for Airbnb...", "info", no_end=True)
     jobs = []
     job_links = []
     total_jobs = 0
-    queries = get_queries()
+    if queries == None:
+        queries = get_queries()
     job_map = {}
     for id in job_ids:
         job_map[id] = True
@@ -136,11 +137,8 @@ def getAirbnbJobs(job_ids: list[int]):
         total_jobs += jobs_found
         job_links += new_jobs
 
-        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(new_jobs), jobs_found=jobs_found))
-
     for link in job_links:
         jobDetails = getJobDetails(link)
         jobs.append(jobDetails)
 
-    log("Total number of new positions found for Airbnb: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
-    return jobs
+    return jobs, jobs_found

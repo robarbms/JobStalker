@@ -90,16 +90,16 @@ def getJobs(query, job_ids):
     return jobs, jobs_found
 
 
-def getAppleJobs(job_ids):
-    log("Fetching jobs for Apple...")
+def getAppleJobs(job_ids, queries):
+    log("Fetching jobs for Apple...", "info", no_end=True)
     jobs = []
     total_found = 0
-    queries = get_queries()
+    if queries == None:
+        queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
         total_found += jobs_found
-        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -113,8 +113,7 @@ def getAppleJobs(job_ids):
                 if found == False:
                     jobs.append(job)
 
-    log("Total number of new positions found for Apple: {count}/{total_found}".format(count=len(jobs), total_found=total_found))
-    return jobs
+    return jobs, total_found
 
 if __name__ == "__main__": 
     getAppleJobs([])

@@ -98,16 +98,16 @@ def getJobs(query, job_ids):
 
     return jobs, jobs_found
 
-def getMicrosoftJobs(job_ids):
-    log("Fetching jobs for Microsoft...")
+def getMicrosoftJobs(job_ids, queries):
+    log("Fetching jobs for Microsoft...", "info", no_end=True)
     jobs = []
     total_jobs = 0
-    queries = get_queries()
+    if queries == None:
+        queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
         total_jobs += jobs_found
-        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -122,6 +122,4 @@ def getMicrosoftJobs(job_ids):
                     jobs.append(job)
 
         time.sleep(1)
-
-    log("Total number of new positions found for Microsoft: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
-    return jobs
+    return jobs, jobs_found

@@ -139,21 +139,19 @@ def getJobs(query: str, job_ids: list[str]):
     Args:
     - job_ids: List of job IDs already in the database
 """
-def getNvidiaJobs(job_ids: list[str]):
-    log("Fetching jobs for Nvidia...")
+def getNvidiaJobs(job_ids: list[str], queries):
+    log("Fetching jobs for Nvidia...", "info", no_end=True)
     jobs = []
     total_jobs = 0
-    queries = get_queries()
+    if queries == None:
+        queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
         total_jobs += jobs_found
 
-        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
         job_ids += [job['job_id'] for job in job_results]
         jobs += job_results
 
         time.sleep(3)
-
-    log("Total number of new positions found for Nvidia: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
-    return jobs
+    return jobs, total_jobs

@@ -113,18 +113,17 @@ def getJobs(query, job_ids):
 """
 Collects job postings from Netflix's careers page for a list of queries
 """
-def getNetflixJobs(job_ids):
-    log("Fetching jobs for Netflix...")
+def getNetflixJobs(job_ids, queries):
+    log("Fetching jobs for Netflix...", "info", no_end=True)
     base_url = "https://jobs.netflix.com/"
     jobs = []
     total_jobs = 0
-    queries = get_queries()
+    if queries == None:
+        queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
         total_jobs += jobs_found
-
-        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -137,6 +136,4 @@ def getNetflixJobs(job_ids):
                         break
                 if (not found):
                     jobs.append(job)
-
-    log("Total number of new positions found for Netflix: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
-    return jobs
+    return jobs, jobs_found

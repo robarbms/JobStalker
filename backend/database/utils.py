@@ -9,6 +9,8 @@ def get_config():
     config_path = root_path + "\\config.ini"
     config.read(config_path)
     scenario = config.get('app', 'scenario')
+    db_name = config.get('app', 'db_name')
     return {
-        'scenario': scenario
+        'scenario': scenario,
+        'db_name': db_name
     }

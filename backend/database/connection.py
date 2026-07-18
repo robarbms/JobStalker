@@ -13,7 +13,7 @@ Function for creating a connection to the database
 def connect_to_db():
     try:
         config = get_config()
-        db_name = f'{config['scenario']}_jobs.db'
+        db_name = f'{config['db_name']}.db'
         db_path = os.path.realpath(os.path.dirname(__file__)) + '\\' + db_name
         conn = sqlite3.connect(db_path)
         cur = conn.cursor()

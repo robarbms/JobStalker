@@ -37,7 +37,7 @@ if %errorlevel%==0 (
 
             echo Installing Node packages...
             pushd /frontend
-            npm install 
+            call npm install 
             popd
 
             echo Starting services...

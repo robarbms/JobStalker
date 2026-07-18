@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright, Page, Locator
-from .scraper_utils import log, stringToDateStamp, get_queries
+from .scraper_utils import log, stringToDateStamp
 import time
 from datetime import datetime
 import re
@@ -119,7 +119,7 @@ def getJobs(job_ids: list[int]) -> list[dict]:
             browser.close()
 
 def getZillowJobs(job_ids: list[int]):
-    log("Fetching jobs for Zillow...")
+    log("Fetching jobs for Zillow...", "info", no_end=True)
 
     jobs, total_jobs = getJobs(job_ids)
     log("Total number of new positions found for Zillow: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
