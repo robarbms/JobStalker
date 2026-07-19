@@ -36,7 +36,7 @@ export let getJobsByDate = (jobs: JobDetails[], addEmpty=true, created_date=fals
 
         return acc;
     }, [])
-    .sort((a: any, b: any) => new Date(a.date).getTime() <= new Date(b.date).getTime() ? 1 : -1);
+    .sort((a: any, b: any) => new Date(a.date).getTime() <= new Date(b.date).getTime() ? -1 : 1);
     if (addEmpty) {
         job_groups = job_groups.reduce((acc: any, group: any) => {
             if (acc.length > 1) {

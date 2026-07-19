@@ -96,10 +96,10 @@ def main():
                 job_description = updated_jobs[x]['description']
                 summary = get_summary(job_description)
                 updated_jobs[x]['summary'] = summary
-
-        log(f"Adding {len(updated_jobs)} jobs to database")
-        new_job_count = insert_jobs(updated_jobs, cur, conn)
-        log(f"Successfully added {new_job_count} new job(s) to the database")
+        if len(updated_jobs) > 0:
+            log(f"Adding {len(updated_jobs)} jobs to database")
+            new_job_count = insert_jobs(updated_jobs, cur, conn)
+            log(f"Successfully added {new_job_count} new job(s) to the database")
 
     # Zillow doesn't have queries so just get them all
     # print(f">>>>>> Zillow scraping")
@@ -119,6 +119,8 @@ def main():
     # new_job_count = insert_jobs(updated_jobs, cur, conn)
     # log(f"Successfully added {new_job_count} new job(s) to the database")
     # log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", None)
+
+    log(f"Finished scraping jobs")
 
     time.sleep(60 * 60 * 2.1) # sleep for 2 hours and a bit to avoid getting banned from websites
     main()

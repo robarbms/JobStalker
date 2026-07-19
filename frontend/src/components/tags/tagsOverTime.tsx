@@ -126,6 +126,7 @@ export default function TagsOverTime (props: TagsOverTimeProps) {
     const data = [];
     for (let date_key in tag_counts) {
         const dataItem = tag_counts[date_key];
+        dataItem.fullDate = date_key;
         const date = keyToDate(date_key);
         if (date) {
             const date_str = `${date?.getMonth() + 1}/${date.getDate() + 1}`;
@@ -133,6 +134,8 @@ export default function TagsOverTime (props: TagsOverTimeProps) {
             data.unshift(dataItem);
         }
     }
+    data.sort((a, b) => a.fullDate - b.fullDate);
+    console.log(data);
 
     return (
         <div className="tags-over-time">

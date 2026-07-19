@@ -56,6 +56,6 @@ def getAllJobs(job_ids, queries):
         jobs += new_jobs
         log(f"{len(new_jobs)}/{found}", None)
 
-    log(f">>>>>> Found a total of {len(jobs)}/{found_count} jobs in {len(jobScrapers)} companies")
+    log(f">>>>>> Found a total of {len(jobs)}/{found_count} new jobs in {len(jobScrapers)} companies")
 
     return jobs, found_count
