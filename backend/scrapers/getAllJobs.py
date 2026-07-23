@@ -33,10 +33,11 @@ def getAllJobs(job_ids, queries):
         'Nvidia': getNvidiaJobs,
         # 'Salesforce': getSalesforceJobs,
         # 'Zillow': getZillowJobs,
-        # 'Atlassian': getAtlassianJobs,
-        # 'Expedia': getExpediaJobs,
+        'Atlassian': getAtlassianJobs,
+        'Expedia': getExpediaJobs,
         'Airbnb': getAirbnbJobs,
-        'Blizzard': getBlizzardJobs
+        'Blizzard': getBlizzardJobs,
+        'Adobe': getAdobeJobs
     }
 
     # Cloudflare is blocking Adobe and Meta when scraping too often

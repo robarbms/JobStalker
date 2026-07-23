@@ -56,9 +56,7 @@ def getJobDetails(url: str, id: str):
 
     return details
 
-    
-
-def getJobs(query: str, job_ids: list[int]) -> list[dict]:
+def getJobIds(query: str, job_ids: list[int]) -> list[dict]:
     """Get jobs from a given query"""
     query_url = "https://www.atlassian.com/company/careers/all-jobs?team=Engineering%2CDesign&location=United%20States&search={query}"
     url = query_url.format(query=query)
@@ -71,11 +69,14 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
 
         try:
             page.goto(url)
+            page.goto(url)
             time.sleep(2) # Wait for the page to load
 
             result_lists = page.locator(".careers table").all()
+
             for result_list in result_lists:
                 rows = result_list.locator('tr').all()
+
                 for i in range(len(rows)):
                     if i == 0:
                         continue
@@ -95,15 +96,16 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
 
     return jobs, jobs_found
 
-def getAtlassianJobs(job_ids: list[int]):
+def getAtlassianJobs(job_ids: list[int], queries):
     log("Fetching jobs for Atlassian...")
     jobs = []
     found_ids = []
     total_jobs = 0
-    queries = get_queries()
+    if queries == None:
+        queries = get_queries()
 
     for query in queries:
-        job_results, jobs_found = getJobs(query, job_ids)
+        job_results, jobs_found = getJobIds(query, job_ids)
         total_jobs += jobs_found
         found_ids += job_results
         job_ids += job_results
@@ -114,4 +116,4 @@ def getAtlassianJobs(job_ids: list[int]):
         jobs.append(jobDetails)
 
     log("Total number of new positions found for Atlassian: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
-    return jobs
+    return jobs, total_jobs

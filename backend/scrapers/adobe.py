@@ -9,10 +9,10 @@ def getJobDescription(link: str):
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
         page = browser.new_page()
+        page.set_default_timeout(6000)
         page.goto(link)
-        time.sleep(2)
         page.goto(link)
-        time.sleep(2)
+        time.sleep(1)
 
         try:
             description_elements = page.locator("div.jd-info p").all()
@@ -41,6 +41,7 @@ def getJobs(query, job_ids):
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
         page = browser.new_page()
+        page.set_default_timeout(6000)
 
         try:
             page.goto(url)
@@ -98,11 +99,12 @@ def getJobs(query, job_ids):
 
     return jobs, jobs_found
 
-def getAdobeJobs(job_ids):
+def getAdobeJobs(job_ids, queries):
     log("Fetching jobs for Adobe...")
     jobs = []
     total_found = 0
-    queries = get_queries()
+    if queries == None:
+        queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
@@ -122,4 +124,4 @@ def getAdobeJobs(job_ids):
                     jobs.append(job)
 
     log("Total number of new positions found: {count}/{total_found}".format(count=len(jobs), total_found=total_found), "info" )
-    return jobs
+    return jobs, total_found

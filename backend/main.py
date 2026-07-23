@@ -75,7 +75,8 @@ def main():
     job_ids = get_job_ids(cur, conn)
     log(f"Fetched job_ids: {len(job_ids)}")
     job_found_count = 0
-    unique_job_count = 0
+    total_found = 0
+    added_to_db = 0
     queries = get_queries()
     query_index = 0
     for query in queries:
@@ -83,7 +84,7 @@ def main():
         print(f"=======QUERY: '{query}': {query_index}/{len(queries)}========")
         jobs, found = getAllJobs(job_ids, [query])
         job_found_count += len(jobs)
-        unique_job_count += found
+        total_found += found
 
 
         updated_jobs = processJobs(jobs)
@@ -99,6 +100,7 @@ def main():
         if len(updated_jobs) > 0:
             log(f"Adding {len(updated_jobs)} jobs to database")
             new_job_count = insert_jobs(updated_jobs, cur, conn)
+            added_to_db += new_job_count
             log(f"Successfully added {new_job_count} new job(s) to the database")
 
     # Zillow doesn't have queries so just get them all
@@ -120,6 +122,7 @@ def main():
     # log(f"Successfully added {new_job_count} new job(s) to the database")
     # log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", None)
 
+    log(f"Inserted {added_to_db} jobs for {job_found_count}/{total_found} jobs found.")
     log(f"Finished scraping jobs")
 
     time.sleep(60 * 60 * 2.1) # sleep for 2 hours and a bit to avoid getting banned from websites

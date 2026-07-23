@@ -5,6 +5,7 @@ from datetime import datetime
 import re
 
 def getJobDetails(url: str):
+    url = "https://careers.expediagroup.com" + url
     """Get job details from a given URL"""
     details = {
         'company': 'Expedia',
@@ -20,12 +21,12 @@ def getJobDetails(url: str):
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
         page = browser.new_page()
+        page.set_default_timeout(6000)
 
         try:
             page.goto(url)
-            time.sleep(2) # Wait for the page to load
 
-            title = page.locator('h4.Desc__title').text_content().strip()
+            title = page.locator('h1.Desc__title').text_content().strip()
 
             if title:
                 details['title'] = title
@@ -64,7 +65,7 @@ def getJobs(query: str, job_ids: list[int], job_links: list[str]) -> list[dict]:
 
         try:
             page.goto(url)
-            time.sleep(2) # Wait for the page to load
+            time.sleep(1) # Wait for the page to load
 
             result_list = page.locator(".Results__list__content a").all()
             jobs_found += len(result_list)
@@ -86,12 +87,13 @@ def getJobs(query: str, job_ids: list[int], job_links: list[str]) -> list[dict]:
 
     return jobs, jobs_found
 
-def getExpediaJobs(job_ids: list[int]):
+def getExpediaJobs(job_ids: list[int], queries):
     log("Fetching jobs for Expedia...")
     jobs = []
     job_links = []
     total_jobs = 0
-    queries = get_queries()
+    if queries == None:
+        queries = get_queries()
 
     for query in queries:
         new_jobs, jobs_found = getJobs(query, job_ids, job_links)
@@ -105,4 +107,4 @@ def getExpediaJobs(job_ids: list[int]):
         jobs.append(jobDetails)
 
     log("Total number of new positions found for Expedia: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
-    return jobs
+    return jobs, total_jobs
