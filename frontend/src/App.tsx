@@ -99,7 +99,16 @@ function App() {
       const api_url = window.location.protocol + "//" + window.location.hostname + ":5000/api";
       const response = await fetch(api_url);
       let data = await response.json();
-      data.sort((a: any, b: any) => new Date(b.date_posted).getTime() - new Date(a.date_posted).getTime())
+      data.sort((a: any, b: any) => {
+        const aTime = new Date(a.date_posted);
+        const bTime = new Date(b.date_posted);
+        if (aTime > bTime) return -1;
+        if (bTime > aTime) return 1;
+        const aScraped = new Date(a.created_at);
+        const bScraped = new Date(b.created_at);
+        if (aScraped > bScraped) return -1;
+        return 1;
+      });
       data = data.map((job: JobDetails) => {
           job.tags = JSON.parse(job.tags as string) as any[];
           return job;
@@ -117,15 +126,11 @@ function App() {
       const today = new Date();
       today.setHours(0, 0, 0, 0); // Set to midnight of the current day
       setJobsToday(data.filter((job: JobDetails) => new Date(job.created_at).getTime() >= today.getTime()));
-      let mostRecentScraped = 0;
-      data.forEach((job: JobDetails) => {
-        mostRecentScraped = Math.max(new Date(job.created_at).getTime(), mostRecentScraped);
-      });
-      setLastScraped(new Date(mostRecentScraped));
+      setLastScraped(new Date(data[0].created_at));
       if (jobHandler.current !== null) {
         clearTimeout(jobHandler.current);
       }
-      jobHandler.current = setTimeout(getJobs, 1000 * 60 * 60 * 2);
+      jobHandler.current = setTimeout(getJobs, 1000 * 60 * 5);
     }
     catch (err) {
       // No response from the API
