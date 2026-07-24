@@ -43,6 +43,16 @@ const DateFilters = (props: DateFiltersProps) => {
         if (!!e.code && e.code.toLowerCase() === "enter") props.filterChanged(e);
     }
 
+    const changeDate = (dates: any) => {
+        if (dateStart.current && dates.dateStart) {
+            dateStart.current.value = dates.dateStart;
+        }
+        if (dateEnd.current) {
+            dateEnd.current.value = dates.dateEnd || new Date();
+        }
+        props.filterChanged(dates);
+    }
+
     const today = new Date();
     today.setHours(0, 0, 0);
     const weekday = today.getDay();
@@ -108,7 +118,7 @@ const DateFilters = (props: DateFiltersProps) => {
     return (
         <div className="date-filters">
             <h2>Date Filters</h2>
-            {filters.map((data, index) => <DateFilterButton {...data} key={index} changeDates={props.filterChanged} />)}
+            {filters.map((data, index) => <DateFilterButton {...data} key={index} changeDates={changeDate} />)}
             <form onBlur={props.filterChanged} id="date-search-form">
                 <label>Custom date range:</label>
                 <input className="filter-date" type="date" name="dateStart" ref={dateStart} onInput={keyup} /> <span className="date-separate">to</span> <input className="filter-date" type="date" name="dateEnd" ref={dateEnd} onChange={keyup} />
