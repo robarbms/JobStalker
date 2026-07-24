@@ -27,6 +27,11 @@ const TextSearch = (props: TextSearchProps) => {
     return (
         <div className="text-search">
             <h2>Text Search</h2>
+            <p>
+                Space separated words will only return searches with all words.
+                You can use a pipe symbol | to return results that contain 1 of the words.
+                You can remove results with specific words by prefixing them with an exclamation.
+            </p>
             <form onBlur={props.filterChanged} onSubmit={props.filterChanged} id="job-search-form">
                 <div className="text-search-item">
                     <label>Title</label>

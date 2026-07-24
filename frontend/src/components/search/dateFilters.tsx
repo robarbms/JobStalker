@@ -51,6 +51,10 @@ const DateFilters = (props: DateFiltersProps) => {
 
     const filters = [
         {
+            text: 'Today',
+            start: new Date()
+        },
+        {
             text: '1 week',
             start: new Date(today.getTime() - day * 6)
         },

@@ -164,14 +164,21 @@ function App() {
       filteredJobs = filteredJobs.filter(job => textSearch(job.summary, filter.summary));
      }
      if (filter.dateStart) {
-      const ds = new Date(filter.dateStart).getTime();
-      const dateEnd = new Date(filter.dateEnd + "T01:00:00");
+      const dateStart = new Date(filter.dateStart + "T01:00:00");
+      dateStart.setHours(0, 0, 1)
+      const ds = dateStart.getTime();
+      const dateEnd = filter.dateEnd ? new Date(filter.dateEnd + "T01:00:00") : new Date();
       dateEnd.setHours(23, 59, 59);
-      const de = filter.dateEnd ? dateEnd.getTime() : new Date().getTime();
+      const de = dateEnd.getTime();
       const diff = Math.abs(de - ds);
       const prevFilteredJobs = filteredJobs.filter(job => new Date(job.date_posted).getTime() < ds && new Date(job.date_posted).getTime() >= ds - diff);
       setPrevJobs(prevFilteredJobs);
-      filteredJobs = filteredJobs.filter(job => new Date(job.date_posted).getTime() >= ds && new Date(job.date_posted).getTime() <= de);
+      filteredJobs = filteredJobs.filter(job => {
+        const posted = new Date(job.date_posted);
+        posted.setHours(1, 0, 0);
+        const posted_time = posted.getTime();
+        return posted_time >= ds && posted_time <= de;
+     });
     }
     const parsedTags = parseTags(filteredJobs);
     setTagData(parsedTags);
@@ -193,7 +200,6 @@ function App() {
     else {
       data = e;
     }
-    console.log(data);
     setFilter({...filter, ...data});
   }
 
