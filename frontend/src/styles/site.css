@@ -168,6 +168,13 @@ td {
     margin: 0 5px 0 0;
 }
 
+.company-filter .expedia-icon {
+    width: 30px;
+    height: 30px;
+    transform: scale(0.5);
+    margin-bottom: -10px;
+}
+
 .show-more {
     padding: 10px;
     margin: 20px 0;

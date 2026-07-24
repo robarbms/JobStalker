@@ -88,7 +88,7 @@ def getJobs(query: str, job_ids: list[int], job_links: list[str]) -> list[dict]:
     return jobs, jobs_found
 
 def getExpediaJobs(job_ids: list[int], queries):
-    log("Fetching jobs for Expedia...")
+    log("Fetching jobs for Expedia...", "info", no_end=True)
     jobs = []
     job_links = []
     total_jobs = 0
@@ -100,11 +100,8 @@ def getExpediaJobs(job_ids: list[int], queries):
         total_jobs += jobs_found
         job_links += new_jobs
 
-        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(new_jobs), jobs_found=jobs_found))
-
     for link in job_links:
         jobDetails = getJobDetails(link)
         jobs.append(jobDetails)
 
-    log("Total number of new positions found for Expedia: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
     return jobs, total_jobs

@@ -80,7 +80,7 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
     return jobs, jobs_found
 
 def getSalesforceJobs(job_ids: list[int], queries):
-    log("Fetching jobs for Salesforce...")
+    log("Fetching jobs for Salesforce...", "info", no_end=True)
     jobs = []
     total_jobs = 0
     if queries == None:
@@ -89,7 +89,6 @@ def getSalesforceJobs(job_ids: list[int], queries):
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
         total_jobs += jobs_found
-        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -103,5 +102,4 @@ def getSalesforceJobs(job_ids: list[int], queries):
                 if (not found):
                     jobs.append(job)
 
-    log("Total number of new positions found for Salesforce: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
     return jobs, jobs_found

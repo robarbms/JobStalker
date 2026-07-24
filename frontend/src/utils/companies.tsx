@@ -47,7 +47,7 @@ export const companyData: {[key: string]: Company} = {
         color: "#67a3f6"
     },
     Expedia: {
-        icon: <ExpediaIcon className="icon" />,
+        icon: <ExpediaIcon className="icon expedia-icon" />,
         color: "#fddb32"
     },
     Google: {

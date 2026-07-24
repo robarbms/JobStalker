@@ -29,12 +29,11 @@ def getJobs(page: Page):
     - job_ids: List of job IDs already in the database
 """
 def get2kJobs(job_ids: list[str]):
-    log("Fetching jobs for 2k...")
+    log("Fetching jobs for 2k...", "info", no_end=True)
     jobs = []
     total_jobs = 0
 
     # 2k doesn't support queries so I will manually search through results
-    queries = get_queries()
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
@@ -43,15 +42,13 @@ def get2kJobs(job_ids: list[str]):
 
         job_postings = getJobs(page)
 
-    for query in queries:
-        job_results, jobs_found = getJobs(query, job_ids)
-        total_jobs += jobs_found
+    # for query in queries:
+    #     job_results, jobs_found = getJobs(query, job_ids)
+    #     total_jobs += jobs_found
 
-        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
-        job_ids += [job['job_id'] for job in job_results]
-        jobs += job_results
+    #     job_ids += [job['job_id'] for job in job_results]
+    #     jobs += job_results
 
-        time.sleep(3)
+    #     time.sleep(3)
 
-    log("Total number of new positions found for 2k: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
     return jobs

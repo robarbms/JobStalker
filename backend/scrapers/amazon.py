@@ -85,7 +85,7 @@ def getJobs(query: str, job_ids: list[str]):
     return jobs, jobs_found
 
 def getAmazonJobs(job_ids: list[str], queries):
-    log("Fetching jobs for Amazon...")
+    log("Fetching jobs for Amazon...", "info", no_end=True)
     jobs = []
     total_found = 0
     if queries == None:
@@ -94,7 +94,6 @@ def getAmazonJobs(job_ids: list[str], queries):
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
         total_found += jobs_found
-        log("Number of new positions found for \"{query}\": {count}/{jobs_found}".format(query=query, count=len(job_results), jobs_found=jobs_found))
 
         if (len(jobs) == 0):
             jobs = job_results
@@ -107,7 +106,5 @@ def getAmazonJobs(job_ids: list[str], queries):
                         break
                 if not found:
                     jobs.append(job)
-
-    log("Total number of new positions found for Amazon: {count}/{total_found}".format(count=len(jobs), total_found=total_found))
 
     return jobs, total_found
