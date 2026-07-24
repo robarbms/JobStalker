@@ -130,7 +130,7 @@ function App() {
   const textSearch = (text: string, search: string) => {
     text = text.toLowerCase().trim();
     search = search.toLowerCase().trim();
-    const joins = search.split(",").map((t: string) => t.trim());
+    const joins = search.split("|").map((t: string) => t.trim());
     return joins.reduce((contains: boolean, join_term: string) => {
       if (contains) return true;
       const unions = join_term.split(" ").map((t: string) => t.trim());
@@ -139,7 +139,9 @@ function App() {
         if (contains === false) return false;
         let include = union_term.indexOf("!") !== 0;
         union_term = union_term.replace(/^!/, "").trim()
-        return include ? text.match("\\b" + union_term + "\\b") !== null : text.match("\\b" + union_term + "\\b") === null;
+        let match = (!union_term.match(/^\*/) ? "\\b" : "") + union_term + (!union_term.match(/\*$/) ? "\\b" : "");
+        match = match.replace("\*", ".*")
+        return include ? text.match(match) !== null : text.match("\\b" + union_term + "\\b") === null;
       }, true);
     }, false);
   }
