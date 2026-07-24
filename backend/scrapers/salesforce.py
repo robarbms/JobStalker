@@ -40,7 +40,7 @@ def getJobDetails(job_id: str, link: Locator, page: Page):
         log("Error getting job details: {e}".format(e=e), "error")
 
 def getJobs(query: str, job_ids: list[int]) -> list[dict]:
-    query_url = f"https://careers.salesforce.com/en/jobs/?search={query}&country=United+States+of+America&region=Washington&type=Full+time&jobtype=Regular&pagesize=50#results"
+    query_url = f"https://www.salesforce.com/company/careers/jobs/?search={query}&contractTypes=Full+time&country=United+States+of+America&page=1"
     url = query_url.format(query=query)
     jobs = []
     jobs_found = 0
@@ -53,7 +53,8 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
             page.goto(url)
             time.sleep(1) # Wait for the page to load
 
-            result_list = page.locator("div.card-job h3 a").all()
+            result_list = page.locator("div.card-job").all()
+            print(f"Found {len(result_list)}")
             if len(result_list) == 0:
                 log("Unable to connect to Salesforce.", "error")
 
@@ -78,11 +79,12 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
 
     return jobs, jobs_found
 
-def getSalesforceJobs(job_ids: list[int]):
+def getSalesforceJobs(job_ids: list[int], queries):
     log("Fetching jobs for Salesforce...")
     jobs = []
     total_jobs = 0
-    queries = get_queries()
+    if queries == None:
+        queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
@@ -102,4 +104,4 @@ def getSalesforceJobs(job_ids: list[int]):
                     jobs.append(job)
 
     log("Total number of new positions found for Salesforce: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
-    return jobs
+    return jobs, jobs_found

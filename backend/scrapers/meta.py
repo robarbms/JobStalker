@@ -49,7 +49,8 @@ def getJobDetails(link: Locator, page: Page):
 
 def getJobs(query: str, job_ids: list[int]) -> list[dict]:
     """Get jobs from a given query"""
-    query_url = "https://www.metacareers.com/jobs?offices[0]=Bellevue%2C%20WA&offices[1]=Seattle%2C%20WA&offices[2]=Redmond%2C%20WA&q={query}&sort_by_new=true"
+    # query_url = "https://www.metacareers.com/jobs?offices[0]=Bellevue%2C%20WA&offices[1]=Seattle%2C%20WA&offices[2]=Redmond%2C%20WA&q={query}&sort_by_new=true"
+    query_url = "https://www.metacareers.com/jobs?q={query}&sort_by_new=true"
     url = query_url.format(query=query)
     jobs = []
     jobs_found = 0
@@ -62,7 +63,7 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
             page.goto(url)
             time.sleep(5) # Wait for the page to load
 
-            result_list = page.locator("div[role=link]").all()
+            result_list = page.locator("a[role=link]").all()
             if len(result_list) == 0:
                 log("Unable to connect to Meta.", "error")
 
@@ -82,11 +83,12 @@ def getJobs(query: str, job_ids: list[int]) -> list[dict]:
 
     return jobs, jobs_found
 
-def getMetaJobs(job_ids: list[int]):
+def getMetaJobs(job_ids: list[int], queries):
     log("Fetching jobs for Meta...")
     jobs = []
     total_jobs = 0
-    queries = get_queries()
+    if queries == None:
+        queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
@@ -106,4 +108,4 @@ def getMetaJobs(job_ids: list[int]):
                     jobs.append(job)
 
     log("Total number of new positions found for Meta: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
-    return jobs
+    return jobs, total_jobs

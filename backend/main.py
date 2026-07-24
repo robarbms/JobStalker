@@ -104,23 +104,24 @@ def main():
             log(f"Successfully added {new_job_count} new job(s) to the database")
 
     # Zillow doesn't have queries so just get them all
-    # print(f">>>>>> Zillow scraping")
-    # ids = []
-    # if 'Zillow' in job_ids:
-    #     ids = job_ids['Zillow']
-    # jobs_found = getJobs(ids)
-    # print(f">>>>>> Found {len(jobs_found)} new jobs for Zillow")
-    # updated_zillow_jobs = processJobs(jobs_found)
-    # for x in range(len(updated_zillow_jobs)):
-    #     if len(updated_zillow_jobs) > x and 'description' in updated_zillow_jobs[x]:
-    #         job_description = updated_zillow_jobs[x]['description']
-    #         summary = get_summary(job_description)
-    #         updated_zillow_jobs[x]['summary'] = summary
+    print(f">>>>>> Scraping Zillow")
+    ids = []
+    if 'Zillow' in job_ids:
+        ids = job_ids['Zillow']
+    zillow_jobs, zillow_count = getJobs(ids)
+    total_found += zillow_count
+    print(f">>>>>> Found {len(zillow_jobs)}/{zillow_count} new jobs for Zillow")
+    updated_zillow_jobs = processJobs(zillow_jobs)
+    for x in range(len(updated_zillow_jobs)):
+        if len(updated_zillow_jobs) > x and 'description' in updated_zillow_jobs[x]:
+            job_description = updated_zillow_jobs[x]['description']
+            summary = get_summary(job_description)
+            updated_zillow_jobs[x]['summary'] = summary
 
-    # log(f"Adding {len(updated_jobs)} jobs to database")
-    # new_job_count = insert_jobs(updated_jobs, cur, conn)
-    # log(f"Successfully added {new_job_count} new job(s) to the database")
-    # log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", None)
+    log(f"Adding {len(updated_zillow_jobs)} jobs to database")
+    new_job_count = insert_jobs(updated_zillow_jobs, cur, conn)
+    job_found_count += new_job_count
+    log(f"Successfully added {new_job_count} new job(s) to the database")
 
     log(f"Inserted {added_to_db} jobs for {job_found_count}/{total_found} jobs found.")
     log(f"Finished scraping jobs")

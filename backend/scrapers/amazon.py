@@ -34,7 +34,7 @@ def getJobDetails(url: str, browser: Browser):
 
 def getJobs(query: str, job_ids: list[str]):
     jobs = []
-    query_url = "https://www.amazon.jobs/en/search?offset=0&result_limit=10&sort=recent&distanceType=Mi&radius=24km&latitude=&longitude=&loc_group_id=&loc_query=Washington%2C%20United%20States&base_query={query}&city=&country=USA&region=Washington&county=&query_options=&"
+    query_url = "https://www.amazon.jobs/en/search?offset=0&result_limit=50&sort=recent&distanceType=Mi&radius=24km&latitude=&longitude=&loc_group_id=&base_query={query}&city=&country=USA&region=Washington&county=&query_options=&"
     url = query_url.format(query=query)
     jobs_found = 0
 
@@ -56,7 +56,7 @@ def getJobs(query: str, job_ids: list[str]):
                 link = 'https://www.amazon.jobs' + anchor.get_attribute('href')
                 job_id = re.search(r'/jobs/(\d+)/', link).group(1)
                 if job_id not in job_ids:
-                    posted = tile.locator('h2.posting-date')
+                    posted = tile.locator('span.posting-date')
                     date_posted = posted.text_content().strip().replace('Posted ', '')
                     description, location, team = getJobDetails(link, browser)
                     details = {
@@ -84,11 +84,12 @@ def getJobs(query: str, job_ids: list[str]):
 
     return jobs, jobs_found
 
-def getAmazonJobs(job_ids: list[str]):
+def getAmazonJobs(job_ids: list[str], queries):
     log("Fetching jobs for Amazon...")
     jobs = []
     total_found = 0
-    queries = get_queries()
+    if queries == None:
+        queries = get_queries()
 
     for query in queries:
         job_results, jobs_found = getJobs(query, job_ids)
@@ -109,4 +110,4 @@ def getAmazonJobs(job_ids: list[str]):
 
     log("Total number of new positions found for Amazon: {count}/{total_found}".format(count=len(jobs), total_found=total_found))
 
-    return jobs
+    return jobs, total_found

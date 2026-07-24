@@ -123,4 +123,4 @@ def getZillowJobs(job_ids: list[int]):
 
     jobs, total_jobs = getJobs(job_ids)
     log("Total number of new positions found for Zillow: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
-    return jobs
+    return jobs, total_jobs

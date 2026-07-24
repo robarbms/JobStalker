@@ -9,7 +9,6 @@ from .adobe import getAdobeJobs
 from .scraper_utils import log
 from datetime import datetime
 from .salesforce import getSalesforceJobs
-from .zillow import getZillowJobs
 from .atlassian import getAtlassianJobs
 from .expedia import getExpediaJobs
 from .airbnb import getAirbnbJobs
@@ -25,19 +24,19 @@ def getAllJobs(job_ids, queries):
         return []
     
     jobScrapers = {
-        # 'Amazon': getAmazonJobs,
+        'Amazon': getAmazonJobs,
         'Apple': getAppleJobs,
         'Google': getGoogleJobs,
         'Microsoft': getMicrosoftJobs,
         'Netflix': getNetflixJobs,
         'Nvidia': getNvidiaJobs,
         # 'Salesforce': getSalesforceJobs,
-        # 'Zillow': getZillowJobs,
         'Atlassian': getAtlassianJobs,
         'Expedia': getExpediaJobs,
         'Airbnb': getAirbnbJobs,
         'Blizzard': getBlizzardJobs,
-        'Adobe': getAdobeJobs
+        'Adobe': getAdobeJobs,
+        # 'Meta': getMetaJobs
     }
 
     # Cloudflare is blocking Adobe and Meta when scraping too often
