@@ -104,8 +104,6 @@ const DateFilters = (props: DateFiltersProps) => {
         return dateToString(today);
     }, []);
 
-    const endDate = dateToString(new Date());
-
     useEffect(() => {
         if (dateStart.current) {
             dateStart.current.value = getStartDate();

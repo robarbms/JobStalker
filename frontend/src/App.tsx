@@ -72,6 +72,17 @@ function App() {
     localStorage.setItem('filters', JSON.stringify(filt));
   }
 
+  const hasFilter = () => {
+    const differences = Object.entries(filter).filter(([key, value] : [key: any, value: any]) => {
+      const defaultValue = defaultFilter[key as keyof Filter];
+      if (Array.isArray(defaultValue)) {
+        return value.length !== defaultValue.length;
+      }
+      return value !== defaultValue;
+    });
+    return differences.length > 0;
+  }
+
   const value: IContext = { 
     allJobs,
     jobs,
@@ -276,7 +287,7 @@ function App() {
   }, [filter, allJobs, applyFilters]);
 
   const clearFilters = () => {
-    setFilterInternal(defaultFilter);
+    setFilter(defaultFilter);
     localStorage.removeItem('filters');
   }
 
@@ -354,9 +365,9 @@ function App() {
           <div className="job-charts">
             <div className="search-header">
               <h2>Search and Filtering</h2>
-              <div className={`button`} onClick={clearFilters}>Clear all</div> 
+              <div className={`button ${!hasFilter() ? 'button-inactive' : ''}`} onClick={clearFilters}>Clear all</div> 
             </div>
-            <TextSearch filterChanged={filterChanged} />
+            <TextSearch text={filter.title} summary={filter.description} filterChanged={filterChanged} />
             <DateFilters filterChanged={filterChanged} />
             <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
             <TagFilters tagData={(tagList as any)['Developer']} filter={filter} filterTags={filterTags} />

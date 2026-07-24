@@ -3,6 +3,8 @@ import '../../styles/text_search.css';
 
 type TextSearchProps = {
     filterChanged: (event: React.ChangeEvent<HTMLFormElement>) => void;
+    text: string;
+    summary: string;
 }
 
 const TextSearch = (props: TextSearchProps) => {
@@ -24,6 +26,19 @@ const TextSearch = (props: TextSearchProps) => {
         }
     }, []);
 
+    useEffect(() => {
+        if (titleRef.current) {
+            if (titleRef.current.value !== props.text) {
+                titleRef.current.value = props.text;
+            }
+        }
+        if (summaryRef.current) {
+            if (summaryRef.current.value !== props.summary) {
+                summaryRef.current.value = props.summary;
+            }
+        }
+    }, [props.text, props.summary]);
+
     return (
         <div className="text-search">
             <h2>Text Search</h2>
@@ -35,11 +50,11 @@ const TextSearch = (props: TextSearchProps) => {
             <form onBlur={props.filterChanged} onSubmit={props.filterChanged} id="job-search-form">
                 <div className="text-search-item">
                     <label>Title</label>
-                    <input ref={titleRef} name="title" type="text" onKeyUp={keyup} placeholder='Keywords to search job titles'/>
+                    <input ref={titleRef} defaultValue={props.text} name="title" type="text" onKeyUp={keyup} placeholder='Keywords to search job titles'/>
                 </div>
                 <div className="text-search-item">
                     <label>Summary</label>
-                    <input ref={summaryRef} name="summary" type="text" onKeyUp={keyup} placeholder='Keywords to search job summaries' />
+                    <input ref={summaryRef} defaultValue={props.summary} name="summary" type="text" onKeyUp={keyup} placeholder='Keywords to search job summaries' />
                 </div>
             </form>
         </div>
