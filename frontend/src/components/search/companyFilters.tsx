@@ -41,8 +41,8 @@ type CompanyFiltersProps = {
 
 const CompanyFilters = (props: CompanyFiltersProps) => {
     const { companies, filter } = useContext(JobContext);
-    const isEnabled = (company: string) => filter.companies.includes(company) || filter.companies.length === 0;
-    const allOn = () => props.setFilter({...filter, companies});
+    const isEnabled = (company: string) => !filter.companies.includes(company) || filter.companies.length === 0;
+    const allOn = () => props.setFilter({...filter, companies: []});
     const clearFocus = () => props.setFilter({...filter, focusedCompany: null});
     const hasFilter = filter.companies.length > 0 && filter.companies.length < companies.length; 
 

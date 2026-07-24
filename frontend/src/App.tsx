@@ -49,23 +49,28 @@ function App() {
   const [ companies, setCompanies] = useState<string[]>([]);
   const [ lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [ tagData, setTagData] = useState<any>({});
-  const [ filter, setFilter ] = useState<Filter>({
+  const defaultFilter: Filter = {
     title: "",
     description: "",
     summary: "",
-    companies: companies,
+    companies: [],
     dateStart: dateToString(dateOffset({days: -6})),
     dateEnd: dateToString(new Date()),
     focusedCompany: null,
     tagsInclude: [],
     tagsExclude: []
-  } as Filter);
+  };
+  const [ filter, setFilterInternal ] = useState<Filter>(defaultFilter);
   const jobHandler = useRef<NodeJS.Timeout|null>();
   const [jobsToday, setJobsToday] = useState<JobDetails[]>([]);
   const [ lastScraped, setLastScraped ] = useState<Date|null>(null);
   const [ tagList, setTagList ] = useState({});
   const [ activeTab, setActiveTab ] = useState<KeywordGroupName>('Developer');
   const [ adminOpen, setAdminOpen ] = useState<boolean>(false);
+  const setFilter: any = (filt: Filter) => {
+    setFilterInternal(filt);
+    localStorage.setItem('filters', JSON.stringify(filt));
+  }
 
   const value: IContext = { 
     allJobs,
@@ -96,7 +101,6 @@ function App() {
           return c;
       }, []).sort();
       setCompanies(companies);
-      setFilter({...filter, companies});
       setAllJobs(data);
       setLastUpdated(new Date());
       const today = new Date();
@@ -146,7 +150,7 @@ function App() {
         filteredJobs = filteredJobs.filter(job => job.company === filter.focusedCompany);
      }
      else if (filter.companies.length > 0) {
-      filteredJobs = filteredJobs.filter(job => filter.companies.includes(job.company));
+      filteredJobs = filteredJobs.filter(job => !filter.companies.includes(job.company));
      }
      if(filter.title) {
         filteredJobs = filteredJobs.filter(job => textSearch(job.title, filter.title)); 
@@ -193,9 +197,6 @@ function App() {
 
   const toggleCompany = (company: string) => () => {
     let filter_companies = filter.companies.includes(company) ? filter.companies.filter(c => c !== company) : [...filter.companies, company];
-    if (filter_companies.length === 0) {
-      filter_companies = companies;
-    }
     const updatedFilter = {...filter, companies: filter_companies};
     setFilter(updatedFilter);
   }
@@ -249,6 +250,12 @@ function App() {
 
   useEffect(() => {
     getJobs();
+    const filtersString = localStorage.getItem('filters');
+    if (filtersString) {
+      const filterObj = JSON.parse(filtersString);
+
+      setFilter({...filterObj, dateStart: filter.dateStart, dateEnd: filter.dateEnd});
+    }
     return () => {
       if (jobHandler.current) {
         clearTimeout(jobHandler.current);
@@ -259,6 +266,11 @@ function App() {
   useEffect(() => {
     applyFilters();
   }, [filter, allJobs, applyFilters]);
+
+  const clearFilters = () => {
+    setFilterInternal(defaultFilter);
+    localStorage.removeItem('filters');
+  }
 
   const getStatus = (time: Date | null, scale: number = 1000 * 60 * 60 * 2.2, map: any = {
     success: 12,
@@ -332,6 +344,10 @@ function App() {
             </div>
           </div>
           <div className="job-charts">
+            <div className="search-header">
+              <h2>Search and Filtering</h2>
+              <div className={`button`} onClick={clearFilters}>Clear all</div> 
+            </div>
             <TextSearch filterChanged={filterChanged} />
             <DateFilters filterChanged={filterChanged} />
             <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />

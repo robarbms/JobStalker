@@ -127,6 +127,16 @@ h1 label {
     margin: 0 0 5px;
 }
 
+.search-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-header h2 {
+    color: #fff;
+}
+
 .job-count {
 }
 
