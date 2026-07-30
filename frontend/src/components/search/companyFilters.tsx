@@ -20,7 +20,7 @@ const CompanyFilter = (props: CompanyFilterProps) => {
     return (
         <div className="company-filter">
             {company in companyData && companyData[company].icon}
-            <div className="company-title">{company} ({count})</div>
+            <div className="company-title">{company} ({count ?? 0})</div>
             <div className="company-controls">
                 <div className="company-toggle" onClick={toggle}>
                     Enable
