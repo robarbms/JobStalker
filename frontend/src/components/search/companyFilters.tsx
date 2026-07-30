@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { JobContext } from '../../App';
 import { companyData } from '../../utils/companies';
 import Toggle from './toggle';
+import { JobDetails } from '../job';
 import '../../styles/company_search.css';
 
 type CompanyFilterProps = {
@@ -10,15 +11,16 @@ type CompanyFilterProps = {
     setFocus: any;
     enabled: boolean;
     focused: boolean;
+    count: number;
 }
 
 const CompanyFilter = (props: CompanyFilterProps) => {
-    const { company, enabled, toggle, setFocus, focused} = props;
+    const { company, enabled, toggle, setFocus, focused, count} = props;
 
     return (
         <div className="company-filter">
             {company in companyData && companyData[company].icon}
-            <div className="company-title">{company}</div>
+            <div className="company-title">{company} ({count})</div>
             <div className="company-controls">
                 <div className="company-toggle" onClick={toggle}>
                     Enable
@@ -37,6 +39,7 @@ type CompanyFiltersProps = {
     toggleCompany: Function;
     focusCompany: Function;
     setFilter: any;
+    jobs: JobDetails[];
 }
 
 const CompanyFilters = (props: CompanyFiltersProps) => {
@@ -45,6 +48,15 @@ const CompanyFilters = (props: CompanyFiltersProps) => {
     const allOn = () => props.setFilter({...filter, companies: []});
     const clearFocus = () => props.setFilter({...filter, focusedCompany: null});
     const hasFilter = filter.companies.length > 0 && filter.companies.length < companies.length; 
+    const companyCounts = props.jobs.reduce((counts, job) => {
+        if (job.company in counts) {
+            counts[job.company] += 1;
+        }
+        else {
+            counts[job.company] = 1;
+        }
+        return counts;
+    }, {} as any);
 
     return (
     <div className="company-filter-container">
@@ -54,7 +66,7 @@ const CompanyFilters = (props: CompanyFiltersProps) => {
             <div className={`button ${filter.focusedCompany ? '' : 'button-inactive'}`} onClick={clearFocus}>Clear focus</div>
         </h2>
         <div className="company-filters">
-            {companies.map((company, index) => <CompanyFilter key={index} company={company} focused={filter.focusedCompany === company} enabled={isEnabled(company)} toggle={props.toggleCompany(company)} setFocus={props.focusCompany(company)} />)}
+            {companies.map((company, index) => <CompanyFilter key={index} company={company} count={companyCounts[company]} focused={filter.focusedCompany === company} enabled={isEnabled(company)} toggle={props.toggleCompany(company)} setFocus={props.focusCompany(company)} />)}
         </div>
     </div>);
 };

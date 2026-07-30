@@ -374,7 +374,7 @@ function App() {
             </div>
             <TextSearch text={filter.title} summary={filter.description} filterChanged={filterChanged} />
             <DateFilters filterChanged={filterChanged} />
-            <CompanyFilters toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
+            <CompanyFilters jobs={jobs} toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
             <TagFilters tagData={(tagList as any)['Developer']} filter={filter} filterTags={filterTags} />
           </div>
           <AdminPanel open={adminOpen} setAdminPanel={setAdminOpen} />

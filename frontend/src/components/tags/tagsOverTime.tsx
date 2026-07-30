@@ -135,7 +135,6 @@ export default function TagsOverTime (props: TagsOverTimeProps) {
         }
     }
     data.sort((a, b) => a.fullDate - b.fullDate);
-    console.log(data);
 
     return (
         <div className="tags-over-time">
