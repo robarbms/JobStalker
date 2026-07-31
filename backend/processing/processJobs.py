@@ -58,8 +58,7 @@ def processJobs(jobs):
             
             jobs[index] = job
         else:
-            print(f"Error: Missing property for getting properties. has title: {'title' in job}; has description: {'description' in job}")
-            print(f">>> company: {job['company']}")
+            print(f"Error: Missing property for getting properties. has title: {'title' in job}; has description: {'description' in job}")\
 
     return jobs
 
