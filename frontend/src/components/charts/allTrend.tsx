@@ -56,7 +56,7 @@ const AllTrendChart = (props: AllTrendChartProps) => {
                 <YAxis />
                 <Tooltip />
                 {companies.map((company: string, idx: number) => <Bar key={idx} stackId="a" dataKey={company} fill={companyData[company].color} />)}
-                <Line dataKey="Total" stroke="yellow" dot={false} strokeDasharray={4} />
+                <Line dataKey="Total" stroke="green" dot={false} strokeDasharray={4} />
                 <Line dataKey="Scraped" stroke="magenta" dot={false} strokeDasharray={4} />
                 <Legend />
             </ComposedChart>

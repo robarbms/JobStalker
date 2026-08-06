@@ -61,7 +61,7 @@ def getJobDetails(position: BeautifulSoup):
 This function is used to get the job details for a given query
 """
 def getJobs(query, job_ids):
-    query_url = "https://explore.jobs.netflix.net/careers?query={query}&location=Seattle%2C%20WA%2C%20United%20States&sort_by=new"
+    query_url = "https://explore.jobs.netflix.net/careers?query={query}&location=Remote%2C%20United%20States&sort_by=new"
     url = query_url.format(query=query)
     jobs = []
     jobs_found = 0
@@ -98,7 +98,7 @@ def getJobs(query, job_ids):
                             details['link'] = pid['canonicalPositionUrl']
                             break
 
-                    if 'job_id' in details and details['job_id'] not in job_ids:
+                    if 'job_id' in details and details['job_id'] not in job_ids and 'date_posted' in details:
                         jobs.append(details)
 
         except Exception as e:

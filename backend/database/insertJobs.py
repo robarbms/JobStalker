@@ -38,7 +38,7 @@ def insert_jobs (jobs, cur, conn):
             else:
                 print("Missing company or job_id")
         except Exception as e:
-            print("Error inserting job: ", e)
+            print("Error inserting job: ", e, " For company: ", job['company'])
     
     conn.commit()
 
@@ -58,5 +58,5 @@ def insert_job(job, cur, conn, company_id):
         cur.execute(insert_query, (job['job_id'], job['title'], job['description'], job['location'], company_id, job['salary_min'], job['salary_max'], job['date_posted'], job['link'], job['notes'], job['summary'], job['tags']))
 
     except Exception as e:
-        print("Error inserting job: ", e)
+        print("Error inserting job: ", e, " For company: ", job['company'])
         print(insert_query)
