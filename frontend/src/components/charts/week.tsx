@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, Line, ComposedChart, Area } from 'recharts';
 import {companyData} from "../../utils/companies";
 import { JobDetails } from "../job";
@@ -57,13 +57,7 @@ const WeekChart = (props: WeekChartProps) => {
 
         const dataParsed = getJobsByDate(jobs)
         .map((day: any, idx: number) => {
-                let total = 0;
                 let lastTotal = 0;
-                for (const key in day) {
-                    if (key !== "date") {
-                        total += day[key];
-                    }
-                }
                 for (const key in parsedLastWeekData[idx] as any) {
                     if (key !== "date") {
                         lastTotal += parsedLastWeekData[idx][key];
@@ -78,7 +72,7 @@ const WeekChart = (props: WeekChartProps) => {
             total: getTotalJobs(dataParsed),
             lastWeek: getTotalJobs(parsedLastWeekData)
         });
-    }, [jobs]);
+    }, [jobs, prevJobs]);
  
     return (
         <div className="week-chart">
@@ -96,8 +90,8 @@ const WeekChart = (props: WeekChartProps) => {
                 <YAxis dataKey="" />
                 <Tooltip />
                 <Area dataKey="Last week" fill="#222" stroke="#444" />
-                {companies.map((company: string, idx: number) => <Bar key={idx} dataKey={company} fill={companyData[company].color} />)}
                 <Line dataKey="Total" stroke="green" strokeDasharray={4} />
+                {companies.map((company: string, idx: number) => <Bar key={idx} dataKey={company} fill={companyData[company].color} />)}
                 <Legend />
             </ComposedChart>
 
