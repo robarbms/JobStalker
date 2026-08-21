@@ -28,58 +28,67 @@ def getJobDetails(details, page: Page):
 def get_links(page: Page, job_ids: list[str]):
     jobs_found = 0
     links = []
+    job_listings = []
 
-    job_listings = page.locator("li.jobs-list-item").all()
-    jobs_found += len(job_listings)
-
-    index = 0
-    for job_listing in job_listings:
-        index += 1
-        data = {
-            'company': 'Blizzard',
-            'salary_min': 0,
-            'salary_max': 0,
-            'notes': '',
-            'summary': '',
-            'location': ''
-        }
+    if page:
         try:
-            is_usa = False
-            location = job_listing.locator("span.job-location span").all()
-            if location and len(location) > 1:
-                location = location[1].text_content()
-                print(location)
-                if "United States" in location:
-                    is_usa = True
-                    data['location'] = location
-            else:
-                is_usa = True
-
-            if is_usa == True:
-                job_id = job_listing.locator("span.jobId span").all()
-                if len(job_id) > 1:
-                    job_id = job_id[1].text_content()
-
-                if job_id not in job_ids:
-                    data['job_id'] = job_id
-
-                    title = job_listing.locator("div.job-title span").text_content().strip()
-                    data['title'] = title
-
-                    date_posted = job_listing.locator("span.job-postdate").text_content().strip()
-                    date_posted = date_posted.replace("Posted Date", "").strip()
-                    data['date_posted'] = date_posted
-
-                    anchor = job_listing.locator('a')
-                    if anchor:
-                        link = anchor.get_attribute('href')
-                        data['link'] = link
-                        links.append(data)
-
-        except Exception as e:
+            job_listings = page.locator("li.jobs-list-item").all()
+        except:
             log(f"Could not parse job listing number {index}")
             print(e)
-    
+
+
+        jobs_found += len(job_listings)
+
+
+        index = 0
+        for job_listing in job_listings:
+            index += 1
+            data = {
+                'company': 'Blizzard',
+                'salary_min': 0,
+                'salary_max': 0,
+                'notes': '',
+                'summary': '',
+                'location': ''
+            }
+            try:
+                is_usa = False
+                location = job_listing.locator("span.job-location span").all()
+                if location and len(location) > 1:
+                    location = location[1].text_content()
+                    print(location)
+                    if "United States" in location:
+                        is_usa = True
+                        data['location'] = location
+                else:
+                    is_usa = True
+
+                if is_usa == True:
+                    job_id = job_listing.locator("span.jobId span").all()
+                    if len(job_id) > 1:
+                        job_id = job_id[1].text_content()
+
+                    if job_id not in job_ids:
+                        data['job_id'] = job_id
+
+                        title = job_listing.locator("div.job-title span").text_content().strip()
+                        data['title'] = title
+
+                        date_posted = job_listing.locator("span.job-postdate").text_content().strip()
+                        date_posted = date_posted.replace("Posted Date", "").strip()
+                        data['date_posted'] = date_posted
+
+                        anchor = job_listing.locator('a')
+                        if anchor:
+                            link = anchor.get_attribute('href')
+                            data['link'] = link
+                            links.append(data)
+
+            except Exception as e:
+                log(f"Could not parse job listing number {index}")
+                print(e)
+        
 
     return links, jobs_found
 
@@ -97,18 +106,17 @@ def getJobs(query: str, job_ids: list[str]):
         try:
             page.goto(url)
             time.sleep(3)
+            links, jobs_found = get_links(page, job_ids)
+
+            for link in links:
+                details = getJobDetails(link, page)
+                jobs.append(details)
 
 
         except Exception as e:
             log(f"Could not fetch results from Blizzard for query \"{query}\"".format(query=query), "error")
             log(str(e), "error")
 
-
-        links, jobs_found = get_links(page, job_ids)
-
-        for link in links:
-            details = getJobDetails(link, page)
-            jobs.append(details)
 
         browser.close()
 
