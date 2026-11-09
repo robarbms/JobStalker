@@ -52,24 +52,3 @@ You will need a couple things installed before you start.
 
 ### Application setup and start
 To setup and start the application, run the `start.bat` file. This will create a python virtual environment, install required libraries, set up database tables and start services. If you need to restart the app you can just rerun start.bat.
-
-## Scrapers to add
-- TikTok
-- Reddit
-- SmartSheet
-- Github
-- Linkedin
-- Uber
-- DoorDash
-- Oracle
-- SerpAPI
-- DuckDuckGo
-- Mozilla
-- Square
-- Shopify
-- Gitlab
-- Redfin
-- Hulu
-- Zapier
-- Spotify
-- Pandora

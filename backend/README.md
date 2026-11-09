@@ -19,3 +19,24 @@ Meta data is extracted about each job and stored in a PostgreSQL database. It ca
 ### Database API
 Serves jobs to the frontend using Flask.
 
+
+## Scrapers to add
+- TikTok
+- Reddit
+- SmartSheet
+- Github
+- Linkedin
+- Uber
+- DoorDash
+- Oracle
+- SerpAPI
+- DuckDuckGo
+- Mozilla
+- Square
+- Shopify
+- Gitlab
+- Redfin
+- Hulu
+- Zapier
+- Spotify
+- Pandora
