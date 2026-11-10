@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, Line, ComposedChart, Area } from 'recharts';
-import {companyData} from "../../utils/companies";
+import {companyData, colorFromIndex} from "../../utils/companies";
 import { JobDetails } from "../job";
 import { getJobsByDate } from "./utils";
 import { Filter } from '../../App';
@@ -91,7 +91,7 @@ const WeekChart = (props: WeekChartProps) => {
                 <Tooltip />
                 <Area dataKey="Last week" fill="#222" stroke="#444" />
                 <Line dataKey="Total" stroke="green" strokeDasharray={4} />
-                {companies.map((company: string, idx: number) => <Bar key={idx} dataKey={company} fill={companyData[company].color} />)}
+                {companies.map((company: string, idx: number) => <Bar key={idx} dataKey={company} fill={companyData[company]?.color ?? colorFromIndex(idx)} />)}
                 <Legend />
             </ComposedChart>
 

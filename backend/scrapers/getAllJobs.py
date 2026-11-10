@@ -13,8 +13,30 @@ from .atlassian import getAtlassianJobs
 from .expedia import getExpediaJobs
 from .airbnb import getAirbnbJobs
 from .blizzard import getBlizzardJobs
+from .board_scraper import ScraperError
+from .tiktok import getTikTokJobs
+from .reddit import getRedditJobs
+from .smartsheet import getSmartsheetJobs
+from .github import getGitHubJobs
+from .linkedin import getLinkedInJobs
+from .uber import getUberJobs
+from .doordash import getDoorDashJobs
+from .oracle import getOracleJobs
+from .serpapi import getSerpAPIJobs
+from .duckduckgo import getDuckDuckGoJobs
+from .mozilla import getMozillaJobs
+from .square import getSquareJobs
+from .shopify import getShopifyJobs
+from .gitlab import getGitLabJobs
+from .redfin import getRedfinJobs
+from .hulu import getHuluJobs
+from .zapier import getZapierJobs
+from .spotify import getSpotifyJobs
+from .pandora import getPandoraJobs
 
 def getAllJobs(job_ids, queries):
+    if queries is not None and not queries:
+        return [], 0
     jobs = []
     found_count = 0
 
@@ -36,6 +58,25 @@ def getAllJobs(job_ids, queries):
         'Airbnb': getAirbnbJobs,
         'Blizzard': getBlizzardJobs,
         'Adobe': getAdobeJobs,
+        'TikTok': getTikTokJobs,
+        'Reddit': getRedditJobs,
+        'Smartsheet': getSmartsheetJobs,
+        'GitHub': getGitHubJobs,
+        'LinkedIn': getLinkedInJobs,
+        'Uber': getUberJobs,
+        'DoorDash': getDoorDashJobs,
+        'Oracle': getOracleJobs,
+        'SerpAPI': getSerpAPIJobs,
+        'DuckDuckGo': getDuckDuckGoJobs,
+        'Mozilla': getMozillaJobs,
+        'Square': getSquareJobs,
+        'Shopify': getShopifyJobs,
+        'GitLab': getGitLabJobs,
+        'Redfin': getRedfinJobs,
+        'Hulu': getHuluJobs,
+        'Zapier': getZapierJobs,
+        'Spotify': getSpotifyJobs,
+        'Pandora': getPandoraJobs,
         # 'Meta': getMetaJobs
     }
 
@@ -48,10 +89,14 @@ def getAllJobs(job_ids, queries):
 
     num_scrapers = len(jobScrapers)
 
-    print(f">>>>>> Scraping {len(jobScrapers)} companies for the query: '{queries[0]}'")
+    print(f">>>>>> Scraping {len(jobScrapers)} companies for queries: {queries}")
     for company, scraper in jobScrapers.items():
         ids = getJobIds(company)
-        new_jobs, found = scraper(ids, queries)
+        try:
+            new_jobs, found = scraper(ids, queries)
+        except ScraperError as error:
+            log(f"Error fetching jobs for {company}: {error}", "error")
+            continue
         found_count += found
         jobs += new_jobs
         log(f"{len(new_jobs)}/{found}", None)

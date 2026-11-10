@@ -171,7 +171,26 @@ companies = [
         "address": "Irvine, CA",
         "site_url": "https://www.blizzard.com",
         "stock": "MSFT"
-    }
+    },
+    {"name": "TikTok", "address": "", "site_url": "https://lifeattiktok.com", "stock": ""},
+    {"name": "Reddit", "address": "", "site_url": "https://www.reddit.com", "stock": "RDDT"},
+    {"name": "Smartsheet", "address": "", "site_url": "https://www.smartsheet.com", "stock": ""},
+    {"name": "GitHub", "address": "", "site_url": "https://github.com", "stock": "MSFT"},
+    {"name": "LinkedIn", "address": "", "site_url": "https://www.linkedin.com", "stock": "MSFT"},
+    {"name": "Uber", "address": "", "site_url": "https://www.uber.com", "stock": "UBER"},
+    {"name": "DoorDash", "address": "", "site_url": "https://www.doordash.com", "stock": "DASH"},
+    {"name": "Oracle", "address": "", "site_url": "https://www.oracle.com", "stock": "ORCL"},
+    {"name": "SerpAPI", "address": "", "site_url": "https://serpapi.com", "stock": ""},
+    {"name": "DuckDuckGo", "address": "", "site_url": "https://duckduckgo.com", "stock": ""},
+    {"name": "Mozilla", "address": "", "site_url": "https://www.mozilla.org", "stock": ""},
+    {"name": "Square", "address": "", "site_url": "https://squareup.com", "stock": "XYZ"},
+    {"name": "Shopify", "address": "", "site_url": "https://www.shopify.com", "stock": "SHOP"},
+    {"name": "GitLab", "address": "", "site_url": "https://about.gitlab.com", "stock": "GTLB"},
+    {"name": "Redfin", "address": "", "site_url": "https://www.redfin.com", "stock": "RKT"},
+    {"name": "Hulu", "address": "", "site_url": "https://www.hulu.com", "stock": "DIS"},
+    {"name": "Zapier", "address": "", "site_url": "https://zapier.com", "stock": ""},
+    {"name": "Spotify", "address": "", "site_url": "https://www.spotify.com", "stock": "SPOT"},
+    {"name": "Pandora", "address": "", "site_url": "https://www.pandora.com", "stock": "SIRI"},
 ]
 
 # Function to add companies to the DB

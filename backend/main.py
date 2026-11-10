@@ -91,7 +91,7 @@ def main():
         for x in range(len(updated_jobs)):
             # push new job ids back into the ids fetched from the database
             eval_job = updated_jobs[x]
-            job_ids[eval_job['company']].append(eval_job['job_id'])
+            job_ids.setdefault(eval_job['company'], []).append(eval_job['job_id'])
 
             if len(updated_jobs) > x and 'description' in updated_jobs[x]:
                 job_description = updated_jobs[x]['description']

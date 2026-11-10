@@ -79,3 +79,15 @@ export const companyData: {[key: string]: Company} = {
         color: "#000dff"
     }
 }
+
+export const applyCompanyColors = (companies: any[]) => 
+    companies.reduce((acc, company, index) => {
+        if (!('color' in company)) {
+            acc[company].color = colorFromIndex(index);
+        }
+        return acc;
+    }, {} as {[key: string]: string});
+
+export const colorFromIndex = (index: number) => 
+    `rgb(${index * 50 % 255}, ${index * 80 % 255}, ${index * 110 % 255})`;
+

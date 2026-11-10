@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, ComposedChart } from 'recharts';
-import {companyData} from "../../utils/companies";
+import {companyData, colorFromIndex} from "../../utils/companies";
 import { JobContext } from '../../App';
 import { JobDetails } from "../job";
 import { getJobsByDate, filterJobs } from "./utils";
@@ -55,7 +55,7 @@ const AllTrendChart = (props: AllTrendChartProps) => {
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
-                {companies.map((company: string, idx: number) => <Bar key={idx} stackId="a" dataKey={company} fill={companyData[company].color} />)}
+                {companies.map((company: string, idx: number) => <Bar key={idx} stackId="a" dataKey={company} fill={companyData[company]?.color ?? colorFromIndex(idx)} />)}
                 <Line dataKey="Total" stroke="green" dot={false} strokeDasharray={4} />
                 <Line dataKey="Scraped" stroke="magenta" dot={false} strokeDasharray={4} />
                 <Legend />
