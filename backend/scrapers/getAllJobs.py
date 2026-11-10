@@ -14,6 +14,7 @@ from .expedia import getExpediaJobs
 from .airbnb import getAirbnbJobs
 from .blizzard import getBlizzardJobs
 from .board_scraper import ScraperError
+from .company_locations import filter_company_jobs
 from .tiktok import getTikTokJobs
 from .reddit import getRedditJobs
 from .smartsheet import getSmartsheetJobs
@@ -33,6 +34,34 @@ from .hulu import getHuluJobs
 from .zapier import getZapierJobs
 from .spotify import getSpotifyJobs
 from .pandora import getPandoraJobs
+from .mathworks import getMathWorksJobs
+from .akamai import getAkamaiJobs
+from .intersystems import getInterSystemsJobs
+from .cargurus import getCarGurusJobs
+from .athenahealth import getAthenahealthJobs
+from .bose import getBoseJobs
+from .hubspot import getHubSpotJobs
+from .toast import getToastJobs
+from .klaviyo import getKlaviyoJobs
+from .datadog import getDatadogJobs
+from .rapid7 import getRapid7Jobs
+from .dropbox import getDropboxJobs
+from .grafana import getGrafanaJobs
+from .automattic import getAutomatticJobs
+from .buffer import getBufferJobs
+from .tailscale import getTailscaleJobs
+from .helpscout import getHelpScoutJobs
+from .signals37 import get37signalsJobs
+from .supabase import getSupabaseJobs
+from .ashby import getAshbyJobs
+from .close import getCloseJobs
+from .customerio import getCustomerIOJobs
+from .linear import getLinearJobs
+from .webflow import getWebflowJobs
+from .sourcegraph import getSourcegraphJobs
+from .fueled import getFueledJobs
+from .canonical import getCanonicalJobs
+from .posthog import getPostHogJobs
 
 def getAllJobs(job_ids, queries):
     if queries is not None and not queries:
@@ -77,6 +106,34 @@ def getAllJobs(job_ids, queries):
         'Zapier': getZapierJobs,
         'Spotify': getSpotifyJobs,
         'Pandora': getPandoraJobs,
+        'MathWorks': getMathWorksJobs,
+        'Akamai Technologies': getAkamaiJobs,
+        'InterSystems': getInterSystemsJobs,
+        'CarGurus': getCarGurusJobs,
+        'athenahealth': getAthenahealthJobs,
+        'Bose': getBoseJobs,
+        'HubSpot': getHubSpotJobs,
+        'Toast': getToastJobs,
+        'Klaviyo': getKlaviyoJobs,
+        'Datadog': getDatadogJobs,
+        'Rapid7': getRapid7Jobs,
+        'Dropbox': getDropboxJobs,
+        'Grafana Labs': getGrafanaJobs,
+        'Automattic': getAutomatticJobs,
+        'Buffer': getBufferJobs,
+        'Tailscale': getTailscaleJobs,
+        'Help Scout': getHelpScoutJobs,
+        '37signals': get37signalsJobs,
+        'Supabase': getSupabaseJobs,
+        'Ashby': getAshbyJobs,
+        'Close': getCloseJobs,
+        'Customer.io': getCustomerIOJobs,
+        'Linear': getLinearJobs,
+        'Webflow': getWebflowJobs,
+        'Sourcegraph': getSourcegraphJobs,
+        'Fueled': getFueledJobs,
+        'Canonical': getCanonicalJobs,
+        'PostHog': getPostHogJobs,
         # 'Meta': getMetaJobs
     }
 
@@ -97,6 +154,7 @@ def getAllJobs(job_ids, queries):
         except ScraperError as error:
             log(f"Error fetching jobs for {company}: {error}", "error")
             continue
+        new_jobs = filter_company_jobs(new_jobs, company)
         found_count += found
         jobs += new_jobs
         log(f"{len(new_jobs)}/{found}", None)

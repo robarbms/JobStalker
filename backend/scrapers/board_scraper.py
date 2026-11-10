@@ -4,12 +4,14 @@ from datetime import datetime, timezone
 from html import unescape
 import json
 import re
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import parse_qs, urljoin, urlsplit
+import xml.etree.ElementTree as ET
 
 from bs4 import BeautifulSoup
 import requests
 
 from .scraper_utils import get_queries, log
+from .company_locations import matches_company_location, matches_location, remote_mode
 
 
 class ScraperError(RuntimeError):
@@ -24,7 +26,7 @@ def matches(title, queries):
     return any(query in title.casefold() for query in queries)
 
 
-def record(job_id, title, link, description="", location="", date_posted=None):
+def record(job_id, title, link, description="", location="", date_posted=None, is_remote=None):
     if job_id is None or not str(job_id).strip():
         raise ValueError("Missing job ID")
     if not isinstance(title, str):
@@ -40,6 +42,7 @@ def record(job_id, title, link, description="", location="", date_posted=None):
         "salary_max": None,
         "notes": "",
         "summary": "",
+        "is_remote": is_remote,
     }
 
 
@@ -57,7 +60,11 @@ def scrape_jobs(company, job_ids, queries, source, **options):
             session.headers["User-Agent"] = "JobStalker/1.0 (public employer job listings)"
             for job in source(session, queries, known_ids, **options):
                 job_id = job["job_id"]
-                if job_id in found_ids or not matches(job["title"], queries):
+                if (
+                    job_id in found_ids
+                    or not matches(job["title"], queries)
+                    or not matches_company_location(job, company)
+                ):
                     continue
                 found_ids.add(job_id)
                 if job_id in known_ids:
@@ -117,9 +124,13 @@ def greenhouse_jobs(session, queries, known_ids, board, brand=None):
             ]
             if not any(brand in (value if isinstance(value, list) else [value]) for value in brands):
                 continue
+        workplace = next((
+            item["value"] for item in job.get("metadata") or []
+            if item["name"].casefold() in ("workplace type", "work model", "remote")
+        ), None)
         yield record(
             job["id"], job["title"], job["absolute_url"], job["content"],
-            job["location"]["name"], job.get("first_published"),
+            job["location"]["name"], job.get("first_published"), remote_mode(workplace),
         )
 
 
@@ -131,9 +142,13 @@ def ashby_jobs(session, queries, known_ids, board):
         locations = [job["location"]] + [
             location["location"] for location in job.get("secondaryLocations") or []
         ]
+        workplace = remote_mode(job.get("workplaceType"))
+        if workplace is None:
+            workplace = remote_mode(job.get("isRemote"))
         yield record(
             job["id"], job["title"], job["jobUrl"], job["descriptionHtml"],
             "; ".join(dict.fromkeys(locations)), job.get("publishedAt"),
+            workplace,
         )
 
 
@@ -160,7 +175,7 @@ def lever_jobs(session, queries, known_ids, board):
             posted = datetime.fromtimestamp(created / 1000, timezone.utc).isoformat() if created else None
             yield record(
                 job["id"], job["text"], job["hostedUrl"], description,
-                job["categories"].get("location", ""), posted,
+                job["categories"].get("location", ""), posted, remote_mode(job.get("workplaceType")),
             )
         if len(data) < 100:
             return
@@ -195,13 +210,14 @@ def jibe_jobs(session, queries, known_ids, base_url, employer=None):
                 job["req_id"], job["title"],
                 f"{base_url}/jobs/{job['slug']}",
                 job["description"], job.get("full_location", ""), job.get("posted_date"),
+                remote_mode((job.get("tags1") or []) + (job.get("tags6") or [])),
             )
         if len(seen) >= data["totalCount"]:
             return
         page += 1
 
 
-def oracle_jobs(session, queries, known_ids, host, site, careers_url):
+def oracle_jobs(session, queries, known_ids, host, site, careers_url, target_location=None):
     api = host + "/hcmRestApi/resources/latest"
     yielded = set()
     for query in queries:
@@ -225,6 +241,13 @@ def oracle_jobs(session, queries, known_ids, host, site, careers_url):
                 if job_id in yielded or not matches(job["Title"], queries):
                     continue
                 yielded.add(job_id)
+                candidate = record(
+                    job_id, job["Title"], f"{careers_url}/job/{job_id}",
+                    location=job.get("PrimaryLocation", ""), date_posted=job.get("PostedDate"),
+                    is_remote=remote_mode(job.get("WorkplaceType") or job.get("WorkplaceTypeCode")),
+                )
+                if target_location and not matches_location(candidate, target_location):
+                    continue
                 description = ""
                 if job_id not in known_ids:
                     details = get_json(
@@ -234,29 +257,30 @@ def oracle_jobs(session, queries, known_ids, host, site, careers_url):
                     description = "\n".join(details.get(field) or "" for field in (
                         "ExternalDescriptionStr", "ExternalResponsibilitiesStr", "ExternalQualificationsStr",
                     ))
-                yield record(
-                    job_id, job["Title"], f"{careers_url}/job/{job_id}",
-                    description, job.get("PrimaryLocation", ""), job.get("PostedDate"),
-                )
+                candidate["description"] = text(description)
+                yield candidate
             offset += len(postings)
             if offset >= data["TotalJobsCount"]:
                 break
 
 
-def workday_jobs(session, queries, known_ids, host, tenant, site, employer):
+def workday_jobs(session, queries, known_ids, host, tenant, site, employer=None):
     api = f"{host}/wday/cxs/{tenant}/{site}"
-    first = post_json(
-        session, api + "/jobs",
-        json={"limit": 20, "offset": 0, "searchText": "", "appliedFacets": {}},
-    )
-    company_facet = next(
-        (facet for facet in first["facets"] if facet["facetParameter"] == "hiringCompany"), None
-    )
-    if company_facet is None:
-        raise ScraperError("Workday company filter missing")
-    company_ids = [value["id"] for value in company_facet["values"] if value["descriptor"] == employer]
-    if not company_ids:
-        raise ScraperError(f"Workday company filter no longer contains {employer}")
+    facets = {}
+    if employer:
+        first = post_json(
+            session, api + "/jobs",
+            json={"limit": 20, "offset": 0, "searchText": "", "appliedFacets": {}},
+        )
+        company_facet = next(
+            (facet for facet in first["facets"] if facet["facetParameter"] == "hiringCompany"), None
+        )
+        if company_facet is None:
+            raise ScraperError("Workday company filter missing")
+        company_ids = [value["id"] for value in company_facet["values"] if value["descriptor"] == employer]
+        if not company_ids:
+            raise ScraperError(f"Workday company filter no longer contains {employer}")
+        facets = {"hiringCompany": company_ids}
     offset = 0
     seen = set()
     while True:
@@ -264,7 +288,7 @@ def workday_jobs(session, queries, known_ids, host, tenant, site, employer):
             session, api + "/jobs",
             json={
                 "limit": 20, "offset": offset, "searchText": "",
-                "appliedFacets": {"hiringCompany": company_ids},
+                "appliedFacets": facets,
             },
         )
         postings = data["jobPostings"]
@@ -276,12 +300,16 @@ def workday_jobs(session, queries, known_ids, host, tenant, site, employer):
                 continue
             job_id = str(job["bulletFields"][0])
             details = {}
-            if job_id not in known_ids:
+            multiple_locations = bool(re.search(r"\b\d+ locations\b", job.get("locationsText", ""), re.I))
+            if job_id not in known_ids or multiple_locations:
                 details = get_json(session, api + job["externalPath"])["jobPostingInfo"]
+            locations = [details.get("location") or job.get("locationsText", "")]
+            locations.extend(details.get("additionalLocations") or [])
             yield record(
                 job_id, job["title"], f"{host}/{site}{job['externalPath']}",
-                details.get("jobDescription", ""), job.get("locationsText", ""),
+                details.get("jobDescription", ""), "; ".join(dict.fromkeys(locations)),
                 details.get("startDate"),
+                remote_mode(details.get("remoteType")),
             )
         offset += len(postings)
         if offset >= data["total"]:
@@ -400,9 +428,6 @@ def website_jobs(session, queries, known_ids, url, link_pattern, description_sel
     for job_id, (link, title) in links.items():
         if not matches(title, queries):
             continue
-        if job_id in known_ids:
-            yield record(job_id, title, link)
-            continue
         details = get_soup(session, link)
         schema = next(job_postings(details), {})
         heading = details.select_one("h1")
@@ -414,6 +439,7 @@ def website_jobs(session, queries, known_ids, url, link_pattern, description_sel
             job_id, heading.get_text(" ", strip=True), link, str(description),
             location.get_text(" ", strip=True) if location else "",
             schema.get("datePosted"),
+            remote_mode(schema.get("jobLocationType")),
         )
 
 
@@ -460,3 +486,110 @@ def hulu_jobs(session, queries, known_ids):
             )
         next_page = soup.select_one(".pagination a.next:not(.disabled)")
         url = urljoin(url, next_page["href"]) if next_page else None
+
+
+def get_xml(session, url):
+    response = session.get(url, timeout=30)
+    response.raise_for_status()
+    try:
+        return ET.fromstring(response.content)
+    except ET.ParseError as error:
+        raise ScraperError(f"Invalid XML feed from {url}: {error}") from error
+
+
+def mathworks_jobs(session, queries, known_ids):
+    root = get_xml(session, "https://www.mathworks.com/company/jobs/opportunities/rss.xml")
+    channel = root.find("channel")
+    if root.tag != "rss" or channel is None:
+        raise ScraperError("MathWorks RSS channel missing")
+    for item in channel.findall("item"):
+        job_id = item.findtext("id")
+        title = item.findtext("title_raw")
+        link = item.findtext("link")
+        if not link or not title:
+            raise ScraperError("MathWorks job title or link missing")
+        description = "\n".join(item.findtext(field) or "" for field in (
+            "summary", "responsibilities", "qualifications", "required_qualifications",
+        ))
+        yield record(
+            job_id, title, link, description,
+            item.findtext("location/locationName", "").strip(),
+        )
+
+
+def signals_jobs(session, queries, known_ids):
+    root = get_xml(session, "https://37signals.com/feed/jobs.xml")
+    ns = "{http://www.w3.org/2005/Atom}"
+    if root.tag != ns + "feed":
+        raise ScraperError("37signals Atom feed missing")
+    for item in root.findall(ns + "entry"):
+        links = item.findall(ns + "link")
+        link = next((
+            element.get("href") for element in links
+            if element.get("rel", "alternate") == "alternate"
+        ), None)
+        if not link:
+            raise ScraperError("37signals job link missing")
+        element = item.find(ns + "content")
+        content = None if element is None else (
+            "".join(ET.tostring(child, encoding="unicode") for child in element)
+            if len(element) else element.text
+        )
+        if not content:
+            raise ScraperError(f"37signals job content missing for {link}")
+        yield record(
+            item.findtext(ns + "id"), item.findtext(ns + "title"), link, content,
+            "Remote", item.findtext(ns + "published"), True,
+        )
+
+
+def rapid7_jobs(session, queries, known_ids):
+    url = "https://careers.rapid7.com/jobs/search"
+    seen = set()
+    page_number = 1
+    while url:
+        soup = get_soup(session, url)
+        table = soup.select_one("table tbody")
+        if table is None:
+            raise ScraperError("Rapid7 job table missing; the site may be blocking requests")
+        rows = table.select("tr")
+        page_links = []
+        for row in rows:
+            cells = row.find_all("td")
+            if len(cells) < 5:
+                raise ScraperError("Rapid7 job columns changed")
+            anchor = cells[0].select_one("a[href]")
+            if anchor is None:
+                raise ScraperError("Rapid7 job link missing")
+            job_id = cells[1].get_text(strip=True)
+            if not job_id:
+                raise ScraperError("Rapid7 requisition identifier missing")
+            page_links.append(anchor["href"])
+            title = anchor.get_text(" ", strip=True)
+            location_items = cells[3].select("li")
+            location = "; ".join(
+                item.get_text(" ", strip=True) for item in location_items
+            ) if location_items else cells[3].get_text(" ", strip=True)
+            if not matches(title, queries) or not matches_location({"location": location}, "Boston"):
+                continue
+            link = urljoin(url, anchor["href"])
+            description = ""
+            posted = None
+            if job_id not in known_ids:
+                schema = next(job_postings(get_soup(session, link)), None)
+                if schema is None:
+                    raise ScraperError(f"Rapid7 JobPosting metadata missing for {job_id}")
+                description = schema["description"]
+                posted = schema.get("datePosted")
+            yield record(
+                job_id, title, link, description, location, posted,
+                remote_mode(cells[4].get_text(strip=True)),
+            )
+        if rows:
+            check_progress(page_links, seen)
+        next_page = next((
+            anchor for anchor in soup.select(".pagination a[href]")
+            if parse_qs(urlsplit(anchor["href"]).query).get("page") == [str(page_number + 1)]
+        ), None)
+        url = urljoin(url, next_page["href"]) if next_page else None
+        page_number += 1

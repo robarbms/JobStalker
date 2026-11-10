@@ -7,6 +7,7 @@ import unittest
 from unittest.mock import Mock, patch
 
 from backend.scrapers.board_scraper import ScraperError
+from backend.scrapers.company_locations import get_company_location
 from backend.tests.test_new_scrapers import SCRAPERS
 
 
@@ -26,7 +27,11 @@ class ScraperIntegrationTests(unittest.TestCase):
             scrapers = self.mock_scrapers(stack)
             stack.enter_context(patch.object(self.module, "log"))
             for company, function in SCRAPERS.values():
-                scrapers[function].return_value = ([{"company": company, "job_id": "new"}], 2)
+                target = get_company_location(company)
+                location = "Boston, MA" if target == "Boston" else "Remote"
+                scrapers[function].return_value = (
+                    [{"company": company, "job_id": "new", "location": location}], 2,
+                )
             ids = {"Reddit": ["known"]}
             jobs, count = self.module.getAllJobs(ids, ["engineer"])
         self.assertEqual(len(jobs), len(SCRAPERS))
@@ -40,8 +45,9 @@ class ScraperIntegrationTests(unittest.TestCase):
             scrapers = self.mock_scrapers(stack)
             logger = stack.enter_context(patch.object(self.module, "log"))
             scrapers["getTikTokJobs"].side_effect = ScraperError("TikTok unavailable")
-            scrapers["getPandoraJobs"].return_value = ([{"job_id": "last"}], 1)
-            self.assertEqual(self.module.getAllJobs({}, ["engineer"]), ([{"job_id": "last"}], 1))
+            last_job = {"job_id": "last", "location": "Remote"}
+            scrapers["getPandoraJobs"].return_value = ([last_job], 1)
+            self.assertEqual(self.module.getAllJobs({}, ["engineer"]), ([last_job], 1))
         logger.assert_any_call("Error fetching jobs for TikTok: TikTok unavailable", "error")
         scrapers["getPandoraJobs"].assert_called_once()
 
@@ -52,6 +58,20 @@ class ScraperIntegrationTests(unittest.TestCase):
             self.assertEqual(self.module.getAllJobs({}, []), ([], 0))
         for scraper in scrapers.values():
             scraper.assert_not_called()
+
+    def test_collection_applies_location_filters_to_legacy_scrapers(self):
+        seattle = {"job_id": "seattle", "location": "Seattle, WA"}
+        redmond = {"job_id": "redmond", "location": "Redmond, WA"}
+        spokane = {"job_id": "spokane", "location": "Spokane, WA"}
+        remote = {"job_id": "remote", "location": "US, Remote"}
+        with ExitStack() as stack:
+            scrapers = self.mock_scrapers(stack)
+            stack.enter_context(patch.object(self.module, "log"))
+            scrapers["getAmazonJobs"].return_value = ([seattle, redmond, spokane, remote], 4)
+            scrapers["getNvidiaJobs"].return_value = ([seattle, remote], 2)
+            jobs, count = self.module.getAllJobs({}, ["engineer"])
+        self.assertEqual(jobs, [seattle, redmond, remote])
+        self.assertEqual(count, 6)
 
     def test_database_setup_registers_every_scraper_company_idempotently(self):
         path = Path(__file__).resolve().parents[1] / "database" / "createTables.py"

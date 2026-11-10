@@ -14,7 +14,7 @@ def getJobDetails(url: str, id: str):
         'salary_max': 0,
         'notes': '',
         'summary': '',
-        'location': 'Seattle, WA',
+        'location': '',
         'date_posted': datetime.now().strftime("%Y-%m-%d")
     }
 

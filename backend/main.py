@@ -4,7 +4,7 @@ import time
 from processing import processJobs
 from ai import get_summary
 from scrapers.scraper_utils import get_queries
-from scrapers.zillow import getJobs
+from scrapers.zillow import getZillowJobs
 
 def updateTagsAndSalary(curr, conn):
     allJobs = get_jobs(curr, conn)
@@ -108,7 +108,7 @@ def main():
     ids = []
     if 'Zillow' in job_ids:
         ids = job_ids['Zillow']
-    zillow_jobs, zillow_count = getJobs(ids)
+    zillow_jobs, zillow_count = getZillowJobs(ids)
     total_found += zillow_count
     print(f">>>>>> Found {len(zillow_jobs)}/{zillow_count} new jobs for Zillow")
     updated_zillow_jobs = processJobs(zillow_jobs)

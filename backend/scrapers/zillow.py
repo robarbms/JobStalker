@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright, Page, Locator
 from .scraper_utils import log, stringToDateStamp
+from .company_locations import filter_company_jobs
 import time
 from datetime import datetime
 import re
@@ -43,7 +44,7 @@ def getJobs(job_ids: list[int]) -> list[dict]:
                                         'salary_max': 0,
                                         'notes': '',
                                         'summary': '',
-                                        'location': 'Seattle, WA',
+                                        'location': '',
                                     }
 
                                     try:
@@ -78,6 +79,13 @@ def getJobs(job_ids: list[int]) -> list[dict]:
                                             if description:
                                                 description = description.text_content()
                                                 details['description'] = description
+                                            for field in page.locator("dl").all():
+                                                labels = field.locator("dt").all()
+                                                if labels and labels[0].text_content().strip().casefold() == "locations":
+                                                    details["location"] = "; ".join(
+                                                        value.text_content().strip()
+                                                        for value in field.locator("dd").all()
+                                                    )
                                         except Exception as e:
                                             log(f"Error parsing job description: {e}", "error")
 
@@ -122,5 +130,6 @@ def getZillowJobs(job_ids: list[int]):
     log("Fetching jobs for Zillow...", "info", no_end=True)
 
     jobs, total_jobs = getJobs(job_ids)
+    jobs = filter_company_jobs(jobs, "Zillow")
     log("Total number of new positions found for Zillow: {count}/{total_jobs}".format(count=len(jobs), total_jobs=total_jobs))
     return jobs, total_jobs

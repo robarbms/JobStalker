@@ -28,21 +28,59 @@ SCRAPERS = {
     "zapier": ("Zapier", "getZapierJobs"),
     "spotify": ("Spotify", "getSpotifyJobs"),
     "pandora": ("Pandora", "getPandoraJobs"),
+    "mathworks": ("MathWorks", "getMathWorksJobs"),
+    "akamai": ("Akamai Technologies", "getAkamaiJobs"),
+    "intersystems": ("InterSystems", "getInterSystemsJobs"),
+    "cargurus": ("CarGurus", "getCarGurusJobs"),
+    "athenahealth": ("athenahealth", "getAthenahealthJobs"),
+    "bose": ("Bose", "getBoseJobs"),
+    "hubspot": ("HubSpot", "getHubSpotJobs"),
+    "toast": ("Toast", "getToastJobs"),
+    "klaviyo": ("Klaviyo", "getKlaviyoJobs"),
+    "datadog": ("Datadog", "getDatadogJobs"),
+    "rapid7": ("Rapid7", "getRapid7Jobs"),
+    "dropbox": ("Dropbox", "getDropboxJobs"),
+    "grafana": ("Grafana Labs", "getGrafanaJobs"),
+    "automattic": ("Automattic", "getAutomatticJobs"),
+    "buffer": ("Buffer", "getBufferJobs"),
+    "tailscale": ("Tailscale", "getTailscaleJobs"),
+    "helpscout": ("Help Scout", "getHelpScoutJobs"),
+    "signals37": ("37signals", "get37signalsJobs"),
+    "supabase": ("Supabase", "getSupabaseJobs"),
+    "ashby": ("Ashby", "getAshbyJobs"),
+    "close": ("Close", "getCloseJobs"),
+    "customerio": ("Customer.io", "getCustomerIOJobs"),
+    "linear": ("Linear", "getLinearJobs"),
+    "webflow": ("Webflow", "getWebflowJobs"),
+    "sourcegraph": ("Sourcegraph", "getSourcegraphJobs"),
+    "fueled": ("Fueled", "getFueledJobs"),
+    "canonical": ("Canonical", "getCanonicalJobs"),
+    "posthog": ("PostHog", "getPostHogJobs"),
 }
+
+BOSTON_GREENHOUSE = ("intersystems", "cargurus", "hubspot", "toast", "klaviyo", "datadog")
+REMOTE_GREENHOUSE = (
+    "reddit", "smartsheet", "doordash", "mozilla", "gitlab", "square", "dropbox",
+    "grafana", "automattic", "tailscale", "customerio", "sourcegraph", "fueled", "canonical",
+)
+ASHBY = (
+    "duckduckgo", "zapier", "buffer", "helpscout", "supabase", "ashby", "close",
+    "linear", "webflow", "posthog",
+)
 
 
 def response(data=None, html=""):
-    result = Mock(text=html)
+    result = Mock(text=html, content=html.encode())
     result.json.return_value = data
     return result
 
 
-def greenhouse(job_id, title="Software Engineer", brand="Square"):
+def greenhouse(job_id, title="Software Engineer", brand="Square", location="Remote"):
     return {
         "id": job_id, "title": title,
         "absolute_url": f"https://example.com/jobs/{job_id}",
         "content": "&lt;p&gt;Build &amp; maintain services.&lt;/p&gt;",
-        "location": {"name": "Seattle, WA"},
+        "location": {"name": location},
         "first_published": "2026-10-25T10:00:00Z",
         "updated_at": "2026-11-09T10:00:00Z",
         "metadata": [{"name": "Brands", "value": brand}],
@@ -65,6 +103,7 @@ def lever(job_id):
         "lists": [{"text": "Requirements", "content": "<ul><li>Python</li></ul>"}],
         "additional": "<p>Salary and benefits.</p>", "createdAt": 1792886400000,
         "categories": {"location": "New York, NY"},
+        "workplaceType": "remote",
     }
 
 
@@ -73,6 +112,7 @@ def jibe(job_id, description="<p>Build services for Pandora.</p>"):
         "req_id": job_id, "slug": str(job_id), "title": "Software Engineer",
         "description": description, "full_location": "Oakland, CA",
         "posted_date": "2026-10-25T10:00:00+0000",
+        "tags6": ["Remote"],
     }}
 
 
@@ -80,6 +120,7 @@ def oracle_listing(job_id):
     return {
         "Id": job_id, "Title": "Software Engineer", "PrimaryLocation": "Seattle, WA",
         "PostedDate": "2026-10-25",
+        "WorkplaceType": "Remote",
     }
 
 
@@ -91,7 +132,7 @@ def tiktok(job_id):
     return {
         "id": job_id, "title": "Software Engineer", "description": "Build services.",
         "requirement": "Experience with Python.",
-        "city_info": {"en_name": "Seattle", "parent": {"en_name": "United States", "parent": None}},
+        "city_info": {"en_name": "Remote", "parent": {"en_name": "United States", "parent": None}},
     }
 
 
@@ -103,7 +144,7 @@ def linkedin_card(job_id):
     return f"""
         <li><div data-entity-urn="urn:li:jobPosting:{job_id}">
         <h3 class="base-search-card__title">Software Engineer</h3>
-        <span class="job-search-card__location">Sunnyvale, CA</span>
+        <span class="job-search-card__location">Remote, United States</span>
         <time datetime="2026-10-25"></time></div></li>
     """
 
@@ -111,7 +152,7 @@ def linkedin_card(job_id):
 def hulu_card(job_id):
     return f"""
         <a data-job-id="{job_id}" href="/en/job/seattle/engineer/391/{job_id}">
-        <h2>Software Engineer</h2><span class="job-location">Seattle, Washington</span>
+        <h2>Software Engineer</h2><span class="job-location">Remote, United States</span>
         <span class="job-date-posted">Oct. 25, 2026</span></a>
     """
 
@@ -144,11 +185,13 @@ class NewScraperTests(unittest.TestCase):
             self.assertIn(field, job)
 
     def test_all_greenhouse_employers_parse_filter_and_deduplicate(self):
-        for module in ("reddit", "smartsheet", "doordash", "mozilla", "gitlab", "square"):
+        for module in REMOTE_GREENHOUSE + BOSTON_GREENHOUSE:
             with self.subTest(scraper=module):
+                location = "Cambridge, MA" if module in BOSTON_GREENHOUSE else "Remote"
                 self.session.get.return_value = response({"jobs": [
-                    greenhouse(1), greenhouse(2), greenhouse(2), greenhouse(3, "Accountant"),
-                    greenhouse(4, brand="Cash App"),
+                    greenhouse(1, location=location), greenhouse(2, location=location),
+                    greenhouse(2, location=location), greenhouse(3, "Accountant", location=location),
+                    greenhouse(4, brand="Cash App", location=location),
                 ]})
                 ids = [1]
                 jobs, count = self.scrape(module, ids, [" ENGINEER ", "software"])
@@ -162,7 +205,7 @@ class NewScraperTests(unittest.TestCase):
                 self.assertEqual(self.session.get.call_args.kwargs["params"], {"content": "true"})
 
     def test_ashby_employers_exclude_unlisted_jobs(self):
-        for module in ("duckduckgo", "zapier"):
+        for module in ASHBY:
             with self.subTest(scraper=module):
                 self.session.get.return_value = response({"jobs": [
                     ashby("known"), ashby("new"), ashby("new"), ashby("private", listed=False),
@@ -249,7 +292,7 @@ class NewScraperTests(unittest.TestCase):
         }]})
         posting = {
             "title": "Software Engineer", "externalPath": "/job/Seattle/Engineer_R-2",
-            "bulletFields": ["R-2"], "locationsText": "Seattle, WA",
+            "bulletFields": ["R-2"], "locationsText": "US, Remote",
         }
         self.session.post.side_effect = [
             first, response({"jobPostings": [posting], "total": 2}),
@@ -276,7 +319,7 @@ class NewScraperTests(unittest.TestCase):
         self.assertEqual((len(jobs), count), (1, 2))
         self.assert_job(jobs[0], "TikTok", 2)
         self.assertIn("Experience with Python.", jobs[0]["description"])
-        self.assertEqual(jobs[0]["location"], "Seattle, United States")
+        self.assertEqual(jobs[0]["location"], "Remote, United States")
         self.assertIsNone(jobs[0]["date_posted"])
         self.assertEqual(self.session.post.call_args_list[1].kwargs["json"]["offset"], 1)
         self.assertEqual(self.session.post.call_args.kwargs["headers"]["website-path"], "tiktok")
@@ -328,12 +371,14 @@ class NewScraperTests(unittest.TestCase):
                 self.assertTrue(jobs[0]["location"].startswith("Remote"))
                 self.assertEqual(jobs[0]["date_posted"], "2026-10-25")
 
-    def test_website_skips_known_details(self):
-        self.session.get.return_value = response(
-            html='<a href="/careers/software-engineer">Software Engineer</a>',
-        )
+    def test_website_checks_known_job_location_before_counting(self):
+        self.session.get.side_effect = [
+            response(html='<a href="/careers/software-engineer">Software Engineer</a>'),
+            response(html='<h1>Software Engineer</h1><section class="about-career">Build services.</section>'
+                     '<ul class="summary"><li>Remote-first</li></ul>'),
+        ]
         self.assertEqual(self.scrape("serpapi", ["software-engineer"]), ([], 1))
-        self.assertEqual(self.session.get.call_count, 1)
+        self.assertEqual(self.session.get.call_count, 2)
 
     def test_hulu_parses_dates_and_follows_pagination(self):
         self.session.get.side_effect = [
@@ -346,7 +391,7 @@ class NewScraperTests(unittest.TestCase):
         self.assertEqual((len(jobs), count), (1, 2))
         self.assert_job(jobs[0], "Hulu", 2)
         self.assertEqual(jobs[0]["date_posted"], "2026-10-25")
-        self.assertEqual(jobs[0]["location"], "Seattle, Washington")
+        self.assertEqual(jobs[0]["location"], "Remote, United States")
         self.assertTrue(self.session.get.call_args_list[1].args[0].endswith("?p=2"))
 
     def test_all_new_scrapers_accept_empty_queries_without_network(self):
@@ -453,6 +498,204 @@ class NewScraperTests(unittest.TestCase):
         self.session.get.return_value = response(html="<h1>Access denied</h1>")
         with self.assertRaisesRegex(boards.ScraperError, "results missing"):
             self.scrape("hulu")
+
+    def test_boston_greenhouse_employers_exclude_other_offices(self):
+        for module in BOSTON_GREENHOUSE:
+            with self.subTest(scraper=module):
+                self.session.get.return_value = response({"jobs": [
+                    greenhouse("boston", location="Boston, Massachusetts"),
+                    greenhouse("uk", location="Cambridge, United Kingdom"),
+                    greenhouse("remote", location="Remote"),
+                    greenhouse("seattle", location="Seattle, WA"),
+                ]})
+                jobs, count = self.scrape(module)
+                self.assertEqual(([job["job_id"] for job in jobs], count), (["boston"], 1))
+                self.assertEqual(jobs[0]["location"], "Boston, Massachusetts")
+
+    def test_remote_greenhouse_employers_exclude_hybrid_and_office_roles(self):
+        for module in REMOTE_GREENHOUSE:
+            with self.subTest(scraper=module):
+                self.session.get.return_value = response({"jobs": [
+                    greenhouse("home", location="Home based - EMEA"),
+                    greenhouse("office", location="Boston, MA"),
+                    greenhouse("hybrid", location="Remote / Hybrid"),
+                ]})
+                jobs, count = self.scrape(module)
+                self.assertEqual(([job["job_id"] for job in jobs], count), (["home"], 1))
+                self.assertEqual(jobs[0]["location"], "Home based - EMEA")
+
+    def test_ashby_remote_flags_preserve_country_without_guessing_a_city(self):
+        for module in ASHBY:
+            with self.subTest(scraper=module):
+                remote = {**ashby("remote"), "location": "United States", "secondaryLocations": [],
+                          "isRemote": True, "workplaceType": "Remote"}
+                hybrid = {**remote, "id": "hybrid", "workplaceType": "Hybrid"}
+                onsite = {**remote, "id": "onsite", "isRemote": False, "workplaceType": "OnSite"}
+                self.session.get.return_value = response({"jobs": [remote, hybrid, onsite]})
+                jobs, count = self.scrape(module)
+                self.assertEqual(([job["job_id"] for job in jobs], count), (["remote"], 1))
+                self.assertEqual(jobs[0]["location"], "United States")
+
+    def test_greenhouse_work_model_metadata_can_mark_a_city_as_remote(self):
+        remote = greenhouse("remote", location="United States")
+        remote["metadata"] = [{"name": "Work Model", "value": ["Remote"]}]
+        onsite = greenhouse("onsite", location="Remote, United States")
+        onsite["metadata"] = [{"name": "Workplace Type", "value": "On-site"}]
+        self.session.get.return_value = response({"jobs": [remote, onsite]})
+        jobs, count = self.scrape("reddit")
+        self.assertEqual(([job["job_id"] for job in jobs], count), (["remote"], 1))
+
+    def test_akamai_filters_before_fetching_full_descriptions(self):
+        boston = {**oracle_listing("boston"), "PrimaryLocation": "Cambridge, MA",
+                  "WorkplaceType": "Hybrid"}
+        remote = {**oracle_listing("remote"), "PrimaryLocation": "United States"}
+        self.session.get.side_effect = [
+            oracle_page([boston, remote], 2),
+            response({"items": [{"ExternalDescriptionStr": "<p>Build services.</p>"}]}),
+        ]
+        jobs, count = self.scrape("akamai")
+        self.assertEqual(([job["job_id"] for job in jobs], count), (["boston"], 1))
+        self.assert_job(jobs[0], "Akamai Technologies", "boston")
+        self.assertEqual(self.session.get.call_count, 2)
+        self.assertIn("siteNumber=CX_1", self.session.get.call_args_list[0].kwargs["params"]["finder"])
+
+    def test_dedicated_workday_boards_keep_secondary_boston_locations(self):
+        for module in ("athenahealth", "bose"):
+            with self.subTest(scraper=module):
+                self.session.reset_mock()
+                self.session.post.side_effect = None
+                self.session.post.return_value = response({"total": 3, "jobPostings": [
+                    {"title": "Software Engineer", "externalPath": f"/job/Engineer_{job_id}",
+                     "bulletFields": [job_id], "locationsText": "2 Locations"}
+                    for job_id in ("known", "boston", "remote")
+                ]})
+                self.session.get.side_effect = [
+                    response({"jobPostingInfo": {
+                        "location": "Bangalore, India", "additionalLocations": ["Boston, MA"],
+                    }}),
+                    response({"jobPostingInfo": {
+                        "jobDescription": "<p>Build services.</p>",
+                        "location": "Bangalore, India", "additionalLocations": ["Framingham, MA"],
+                    }}),
+                    response({"jobPostingInfo": {
+                        "jobDescription": "<p>Build services.</p>",
+                        "location": "Remote - OH", "additionalLocations": ["Remote USA"],
+                    }}),
+                ]
+                jobs, count = self.scrape(module, ["known"])
+                self.assertEqual(([job["job_id"] for job in jobs], count), (["boston"], 2))
+                self.assert_job(jobs[0], SCRAPERS[module][0], "boston")
+                self.assertEqual(jobs[0]["location"], "Bangalore, India; Framingham, MA")
+                self.assertEqual(self.session.post.call_count, 1)
+                self.assertEqual(self.session.post.call_args.kwargs["json"]["appliedFacets"], {})
+
+    def test_mathworks_rss_keeps_metro_jobs_and_combines_description_sections(self):
+        def item(job_id, location, title="Software Engineer"):
+            return f"""<item><id>{job_id}</id><title_raw>{title}</title_raw>
+                <link>https://www.mathworks.com/company/jobs/opportunities/{job_id}.html</link>
+                <summary><![CDATA[<p>Build services.</p>]]></summary>
+                <responsibilities><![CDATA[<p>Operate services.</p>]]></responsibilities>
+                <qualifications><![CDATA[<p>Know Python.</p>]]></qualifications>
+                <location><locationName>{location}</locationName></location></item>"""
+        self.session.get.return_value = response(html="<rss><channel>"
+            + item("known", "US-MA-Natick") + item("new", "US-MA-Natick")
+            + item("new", "US-MA-Natick") + item("uk", "GB-Cambridge")
+            + item("other", "US-CA-Santa Clara") + item("admin", "US-MA-Natick", "Accountant")
+            + "</channel></rss>")
+        jobs, count = self.scrape("mathworks", ["known"])
+        self.assertEqual((len(jobs), count), (1, 2))
+        self.assert_job(jobs[0], "MathWorks", "new")
+        self.assertEqual(jobs[0]["location"], "US-MA-Natick")
+        self.assertIn("Operate services.", jobs[0]["description"])
+        self.assertIn("Know Python.", jobs[0]["description"])
+        self.assertIsNone(jobs[0]["date_posted"])
+
+    def test_signals_atom_parses_full_content_and_ignores_feed_self_link(self):
+        entry = """<entry><id>tag:37signals.com,2026:jobs/engineer</id><title>Software Engineer</title>
+            <link rel="self" href="https://37signals.com/feed/jobs.xml"/>
+            <link rel="alternate" href="https://37signals.com/jobs/engineer"/>
+            <content type="html">&lt;p&gt;Build services.&lt;/p&gt;</content>
+            <published>2026-10-25T10:00:00Z</published></entry>"""
+        self.session.get.return_value = response(
+            html=f'<feed xmlns="http://www.w3.org/2005/Atom">{entry}{entry}</feed>',
+        )
+        jobs, count = self.scrape("signals37")
+        self.assertEqual((len(jobs), count), (1, 1))
+        self.assert_job(jobs[0], "37signals", "tag:37signals.com,2026:jobs/engineer")
+        self.assertEqual(jobs[0]["link"], "https://37signals.com/jobs/engineer")
+        self.assertEqual(jobs[0]["description"], "Build services.")
+        self.assertEqual(jobs[0]["date_posted"], "2026-10-25")
+
+    def test_empty_xml_feeds_are_valid_but_challenge_html_is_not(self):
+        for module, html in (
+            ("signals37", '<feed xmlns="http://www.w3.org/2005/Atom"/>'),
+            ("mathworks", "<rss><channel/></rss>"),
+        ):
+            with self.subTest(scraper=module):
+                self.session.get.return_value = response(html=html)
+                self.assertEqual(self.scrape(module), ([], 0))
+                for bad_html in ("<html>Security challenge</html>", "<broken"):
+                    self.session.get.return_value = response(html=bad_html)
+                    with self.assertRaises(boards.ScraperError):
+                        self.scrape(module)
+
+    def test_signals_atom_accepts_xhtml_content(self):
+        self.session.get.return_value = response(html="""
+            <feed xmlns="http://www.w3.org/2005/Atom"><entry><id>engineer</id>
+            <title>Software Engineer</title><link href="https://37signals.com/jobs/engineer"/>
+            <content type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml">
+            <p>Build services.</p><ul><li>Know Python.</li></ul></div></content>
+            </entry></feed>""")
+        jobs, count = self.scrape("signals37")
+        self.assertEqual(count, 1)
+        self.assertEqual(jobs[0]["description"], "Build services. Know Python.")
+
+    def test_xml_jobs_with_missing_required_content_fail_explicitly(self):
+        cases = (
+            ("signals37", '<feed xmlns="http://www.w3.org/2005/Atom"><entry><id>1</id>'
+             '<title>Software Engineer</title><link href="https://37signals.com/jobs/1"/>'
+             '</entry></feed>'),
+            ("mathworks", "<rss><channel><item><id>1</id></item></channel></rss>"),
+        )
+        for module, html in cases:
+            with self.subTest(scraper=module):
+                self.session.get.return_value = response(html=html)
+                with self.assertRaises(boards.ScraperError):
+                    self.scrape(module)
+
+    def test_rapid7_uses_requisition_ids_and_paginates_without_fetching_known_details(self):
+        def listing(job_id, location="Boston, MA", pagination=""):
+            return f"""<table><thead><tr><th>Title</th><th>Requisition Identifier</th>
+                <th>Department</th><th>Location</th><th>Workplace Type</th></tr></thead><tbody>
+                <tr><td class="job-search-results-title"><a href="/jobs/engineer-{job_id}">
+                Software Engineer</a></td><td>{job_id}</td><td>Engineering</td>
+                <td>{location}</td><td>Hybrid</td></tr></tbody></table>{pagination}"""
+        self.session.get.side_effect = [
+            response(html=listing("known", pagination=
+                     '<nav class="pagination"><a href="/jobs/search?page=2">2</a></nav>')),
+            response(html=listing("new", pagination=
+                     '<nav class="pagination"><a href="/jobs/search?page=1">1</a>'
+                     '<a href="/jobs/search?page=3">3</a></nav>')),
+            response(html='<script type="application/ld+json">' + json.dumps({
+                "@type": "JobPosting", "description": "<p>Build services.</p>",
+                "datePosted": "2026-10-25",
+            }) + '</script>'),
+            response(html=listing("foreign", "Cambridge, United Kingdom")),
+        ]
+        jobs, count = self.scrape("rapid7", ["known"])
+        self.assertEqual((len(jobs), count), (1, 2))
+        self.assert_job(jobs[0], "Rapid7", "new")
+        self.assertEqual(jobs[0]["location"], "Boston, MA")
+        self.assertEqual(jobs[0]["date_posted"], "2026-10-25")
+        self.assertEqual(self.session.get.call_args_list[2].args[0],
+                         "https://careers.rapid7.com/jobs/engineer-new")
+        self.assertEqual(self.session.get.call_args_list[3].args[0],
+                         "https://careers.rapid7.com/jobs/search?page=3")
+
+    def test_rapid7_security_challenge_is_not_an_empty_success(self):
+        self.session.get.return_value = response(html="<html>AWS WAF challenge</html>")
+        with self.assertRaisesRegex(boards.ScraperError, "Rapid7 job table missing"):
+            self.scrape("rapid7")
 
 
 if __name__ == "__main__":

@@ -267,6 +267,7 @@ class ExistingScraperTests(unittest.TestCase):
         result, _ = self.run_scraper("atlassian", html, details, ["1"])
         job = self.assert_job(result, "Atlassian")
         self.assertEqual((job["salary_min"], job["salary_max"]), ("120000", "180000"))
+        self.assertEqual(job["location"], "")
 
     def test_expedia_listings_and_metadata(self):
         html = '<div class="Results__list__content">' + "".join(
@@ -373,6 +374,19 @@ class ExistingScraperTests(unittest.TestCase):
         job = self.assert_job(result, "Zillow")
         self.assertEqual(job["location"], "Seattle, WA")
         browser.close.assert_called_once()
+
+    def test_zillow_uses_detail_locations_for_multi_location_listings(self):
+        html = """
+            <ul role="list" aria-label="Page 1 of 1"><li>
+            <div><h3><a href="job/engineer/2">Software Engineer</a></h3></div>
+            <div><dd>Posted Today</dd></div><div><dd>2 Locations</dd></div>
+            <ul><li>2</li></ul></li></ul>
+            <dl><dt>locations</dt><dd>Austin, TX</dd><dd>Seattle, WA</dd></dl>
+            <div data-automation-id="jobPostingDescription">Build services</div>
+        """
+        result, _ = self.run_scraper("zillow", html, function="getZillowJobs")
+        job = self.assert_job(result, "Zillow", count=1)
+        self.assertEqual(job["location"], "Austin, TX; Seattle, WA")
 
     def test_existing_entry_points_load_configured_queries(self):
         for module_name, function in LEGACY_SCRAPERS.items():
