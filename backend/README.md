@@ -79,6 +79,53 @@ is registered once. Meta and Salesforce remain disabled in the collection runner
 ### Database API
 Serves jobs to the frontend using Flask.
 
+### Scraper administration
+
+The app's **Admin Panel** is the source of scraper configuration. Keywords are
+stored in SQLite rather than read from `config.ini` or its scenario-specific
+query lists. The database filename remains configured in `config.ini`.
+New installations start with the standard keyword list, all available companies,
+a limit of 100 new jobs per company, and automatic scheduling paused.
+
+`max_jobs` is a per-company, per-run limit across all selected keywords. Known
+jobs and duplicates do not consume it. It limits jobs processed and persisted,
+not the number of HTTP requests an employer's feed may require.
+Zillow participates in the same company selection, keyword filtering, and limit.
+Meta and Salesforce remain disabled and are not offered in the selector.
+
+Enable any combination of interval and clock-time scheduling; either can trigger
+a run, and both respect the selected weekdays in the configured IANA timezone.
+Days without an interval or explicit time run at midnight. Intervals are measured
+after the previous run finishes. The first interval run waits the longer of its
+configured interval or 30 minutes after worker startup. Later intervals may be
+as short as one minute. Clock times and **Scrape now** do not use that startup
+delay; manual runs also ignore weekday restrictions.
+
+Only one scrape may be queued or running. Manual runs snapshot the saved
+configuration. Editing settings affects future runs, not a run already underway.
+The panel reports worker availability, the next run, progress, and failures.
+Interrupted runs are marked failed on recovery rather than silently retried.
+
+Start the API and worker in separate terminals from the repository root
+(`start.bat` already starts both):
+
+```powershell
+backend\venv\Scripts\python.exe backend\api\app.py
+backend\venv\Scripts\python.exe backend\main.py
+```
+
+Settings, queue, and worker tables are created automatically in the existing
+application database. Scheduling continues while the worker is running, even
+when the browser is closed. Restarting the worker restarts the interval startup
+delay. A duplicate worker is rejected.
+
+The Admin API is local-only: use `localhost`, `127.0.0.1`, or IPv6 loopback.
+Remote clients and non-local browser origins cannot read settings or trigger
+scrapes. Normal read-only job browsing remains available over the network.
+Endpoints are `GET/PUT /api/admin/scraper`, `GET /api/admin/scraper/status`,
+and `POST /api/admin/scraper/run` with JSON. The frontend normally uses port 5000;
+`REACT_APP_API_URL` may override its full API base URL during development/build.
+
 
 ## Employer job feeds
 
@@ -117,7 +164,7 @@ could not be verified reliably.
 
 `scrapers\company_locations.py` defines company search targets separately from
 headquarters and the actual posting location. The collection runner filters
-legacy results too; Zillow's separate collection path uses the same policy.
+legacy results too, including Zillow's collection path.
 The targets above are based on existing search filters, not headquarters.
 Nvidia's existing Workday filter is US Remote, so it remains Remote.
 
@@ -150,5 +197,7 @@ Tests use mocked HTTP responses and offline DOM fixtures; they do not contact
 job boards, launch browsers, or write to the application database. They cover
 all new employer scrapers, the existing Playwright scrapers (including disabled
 Meta and Salesforce), collection integration, and company registration.
+Admin tests cover persistent settings, per-company limits, schedule combinations,
+startup delays, local-only access, manual requests, concurrency, and run failures.
 The unfinished `2k.py` is covered only for its current empty-result behavior;
 the obsolete, non-importable OpenAI prototype under `scrapers\archive` is excluded.

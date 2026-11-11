@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { JobContext } from '../App';
 import Job, { JobDetails } from './job';
 
-export default function Table () {
+export default function Table ({companyData}: {companyData: {[key: string]: {icon: React.ReactNode, color: string}}}) {
     let {jobs} = useContext(JobContext);
     const [showCount, setShowCount] = useState(100);
     const sortColumn: string = "";
@@ -45,7 +45,7 @@ export default function Table () {
                 </tr>
             </thead>
             <tbody>
-                {jobs.filter((x, idx) => showCount < 0 || idx < showCount).map((job, idx) => <Job key={idx} {...job} />)}
+                {jobs.filter((x, idx) => showCount < 0 || idx < showCount).map((job, idx) => <Job key={idx} {...job} companyData={companyData[job.company]} />)}
             </tbody>
         </table>
         {showCount < jobs.length && 

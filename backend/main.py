@@ -1,12 +1,15 @@
-from scrapers import getAllJobs, log
-from database import insert_jobs, connect_to_db, get_job_ids, get_jobs
-import time
-from processing import processJobs
-from ai import get_summary
-from scrapers.scraper_utils import get_queries
-from scrapers.zillow import getZillowJobs
+import os
+from pathlib import Path
+import sys
+
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from backend.database import get_jobs
+from backend.scrape_worker import run_forever
 
 def updateTagsAndSalary(curr, conn):
+    from backend.processing import processJobs
     allJobs = get_jobs(curr, conn)
     updated_jobs = []
 
@@ -35,6 +38,8 @@ def updateTagsAndSalary(curr, conn):
     conn.commit()
 
 def updateSummary(curr, conn):
+    import time
+    from backend.ai import get_summary
     allJobs = get_jobs(curr, conn)
     count = 0
 
@@ -71,63 +76,8 @@ def createCompanyMap(ids):
     return id_map
 
 def main():
-    cur, conn = connect_to_db()
-    job_ids = get_job_ids(cur, conn)
-    log(f"Fetched job_ids: {len(job_ids)}")
-    job_found_count = 0
-    total_found = 0
-    added_to_db = 0
-    queries = get_queries()
-    query_index = 0
-    for query in queries:
-        query_index += 1
-        print(f"=======QUERY: '{query}': {query_index}/{len(queries)}========")
-        jobs, found = getAllJobs(job_ids, [query])
-        job_found_count += len(jobs)
-        total_found += found
-
-
-        updated_jobs = processJobs(jobs)
-        for x in range(len(updated_jobs)):
-            # push new job ids back into the ids fetched from the database
-            eval_job = updated_jobs[x]
-            job_ids.setdefault(eval_job['company'], []).append(eval_job['job_id'])
-
-            if len(updated_jobs) > x and 'description' in updated_jobs[x]:
-                job_description = updated_jobs[x]['description']
-                summary = get_summary(job_description)
-                updated_jobs[x]['summary'] = summary
-        if len(updated_jobs) > 0:
-            log(f"Adding {len(updated_jobs)} jobs to database")
-            new_job_count = insert_jobs(updated_jobs, cur, conn)
-            added_to_db += new_job_count
-            log(f"Successfully added {new_job_count} new job(s) to the database")
-
-    # Zillow doesn't have queries so just get them all
-    print(f">>>>>> Scraping Zillow")
-    ids = []
-    if 'Zillow' in job_ids:
-        ids = job_ids['Zillow']
-    zillow_jobs, zillow_count = getZillowJobs(ids)
-    total_found += zillow_count
-    print(f">>>>>> Found {len(zillow_jobs)}/{zillow_count} new jobs for Zillow")
-    updated_zillow_jobs = processJobs(zillow_jobs)
-    for x in range(len(updated_zillow_jobs)):
-        if len(updated_zillow_jobs) > x and 'description' in updated_zillow_jobs[x]:
-            job_description = updated_zillow_jobs[x]['description']
-            summary = get_summary(job_description)
-            updated_zillow_jobs[x]['summary'] = summary
-
-    log(f"Adding {len(updated_zillow_jobs)} jobs to database")
-    new_job_count = insert_jobs(updated_zillow_jobs, cur, conn)
-    job_found_count += new_job_count
-    log(f"Successfully added {new_job_count} new job(s) to the database")
-
-    log(f"Inserted {added_to_db} jobs for {job_found_count}/{total_found} jobs found.")
-    log(f"Finished scraping jobs")
-
-    time.sleep(60 * 60 * 2.1) # sleep for 2 hours and a bit to avoid getting banned from websites
-    main()
+    os.chdir(Path(__file__).resolve().parent)
+    run_forever()
 
 if __name__ == "__main__": 
     main()

@@ -17,6 +17,8 @@ import { parseTags } from './utils/data';
 import TextSearch from './components/search/textSearch';
 import { getTagDataAsArray } from './components/charts/keywords';
 import AdminPanel from './components/admin_panel/admin_panel';
+import { apiUrl } from './utils/api';
+import { getCompanyData } from './utils/companies';
 
 export type Filter = {
   title: string;
@@ -96,7 +98,7 @@ function App() {
 
   const getJobs = async () => {
     try {
-      const api_url = window.location.protocol + "//" + window.location.hostname + ":5000/api";
+      const api_url = apiUrl();
       const response = await fetch(api_url);
       let data = await response.json();
       data.sort((a: any, b: any) => {
@@ -321,6 +323,8 @@ function App() {
     setTagList(tagDataAsArray);
   }, [jobs]);
 
+  const companyData = getCompanyData(companies);
+
   return (
     <JobContext.Provider value={value}>
       <div className="App">
@@ -332,7 +336,8 @@ function App() {
             <label>Jobs found today:</label><span className="jobs_today">{jobsToday.length}</span>
             <label>Last scraped: </label><span className={`last_scraped ${getStatus(lastScraped)}`}>{lastScraped && lastScraped.toLocaleString()}</span>
           </h1>
-          <div className="app-settings" onClick={() => setAdminOpen(true)}>⚙</div>
+          <button type="button" className="app-settings" aria-label="Open Admin Panel"
+            onClick={() => setAdminOpen(true)}>⚙</button>
         </header>
         <div className="col-layout">
           <div className="job-lists">
@@ -340,11 +345,11 @@ function App() {
               <Switcher title="Search Results" job_count={jobs.length} options={[
                 {
                   'tab': 'Cards',
-                  'content': <Cards jobs={jobs} tag_colors={tag_colors} filterTags={filterTags} filter={filter} />
+                  'content': <Cards jobs={jobs} tag_colors={tag_colors} filterTags={filterTags} filter={filter} companyData={companyData} />
                 },
                 {
                   'tab': 'Table',
-                  'content': <Table />
+                  'content': <Table companyData={companyData} />
                 },
                 {
                   'tab': 'Graphs',
@@ -374,7 +379,7 @@ function App() {
             </div>
             <TextSearch text={filter.title} summary={filter.description} filterChanged={filterChanged} />
             <DateFilters filterChanged={filterChanged} />
-            <CompanyFilters jobs={jobs} toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} />
+            <CompanyFilters jobs={jobs} toggleCompany={toggleCompany} focusCompany={focusCompany} setFilter={setFilter} companyData={companyData} />
             <TagFilters tagData={(tagList as any)['Developer']} filter={filter} filterTags={filterTags} />
           </div>
           <AdminPanel open={adminOpen} setAdminPanel={setAdminOpen} />

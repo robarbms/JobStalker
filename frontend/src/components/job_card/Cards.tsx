@@ -9,10 +9,11 @@ type CardsProps = {
     tag_colors: any[];
     filterTags: (tag: string | string[], action: string) => void;
     filter: Filter;
+    companyData: {[key: string]: {icon: React.ReactNode, color: string}};
 }
 
 const Cards = (props: CardsProps) => {
-    const {jobs, tag_colors, filterTags, filter} = props;
+    const {jobs, tag_colors, filterTags, filter, companyData} = props;
     const [startIndex, setStartIndex] = useState(0);
     const perPage = 36;
 
@@ -22,7 +23,7 @@ const Cards = (props: CardsProps) => {
 
     return (
         <div className="cards">
-            {props.jobs.slice(startIndex, startIndex + perPage).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} filterTags={filterTags} filter={filter} />)}
+            {props.jobs.slice(startIndex, startIndex + perPage).map((job, idx) => <Card key={idx} {...job} tag_colors={tag_colors} filterTags={filterTags} filter={filter} companyData={companyData[job.company]} />)}
             <Pagination itemCount={jobs.length} itemsPerPage={perPage} currentIndex={startIndex} setPage={setStartIndex} />
         </div>
     )

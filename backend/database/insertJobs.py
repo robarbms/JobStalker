@@ -30,15 +30,12 @@ def insert_jobs (jobs, cur, conn):
     jobs_inserted = 0
 
     for job in jobs:
-        try:
-            if 'company' in job and 'job_id' in job:
-                if job['company'] not in job_ids or job['job_id'] not in job_ids[job['company']]:
-                    insert_job(job, cur, conn, company_ids[job['company']])
-                    jobs_inserted += 1
-            else:
-                print("Missing company or job_id")
-        except Exception as e:
-            print("Error inserting job: ", e, " For company: ", job['company'])
+        if 'company' not in job or 'job_id' not in job:
+            raise ValueError("Missing company or job_id")
+        if job['company'] not in job_ids or job['job_id'] not in job_ids[job['company']]:
+            insert_job(job, cur, conn, company_ids[job['company']])
+            job_ids.setdefault(job['company'], []).append(job['job_id'])
+            jobs_inserted += 1
     
     conn.commit()
 
@@ -46,17 +43,5 @@ def insert_jobs (jobs, cur, conn):
 
 # Inserts a job into the database    
 def insert_job(job, cur, conn, company_id):
-    def escape_quote (str):
-        str = str.replace("'", r"\\'")
-
-        return str
-    description = job['description']
-    description = escape_quote(description)
-
-    try:
-        insert_query = "INSERT INTO jobs (job_id, title, description, location, company_id, salary_min, salary_max, date_posted, link, notes, summary, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        cur.execute(insert_query, (job['job_id'], job['title'], job['description'], job['location'], company_id, job['salary_min'], job['salary_max'], job['date_posted'], job['link'], job['notes'], job['summary'], job['tags']))
-
-    except Exception as e:
-        print("Error inserting job: ", e, " For company: ", job['company'])
-        print(insert_query)
+    insert_query = "INSERT INTO jobs (job_id, title, description, location, company_id, salary_min, salary_max, date_posted, link, notes, summary, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    cur.execute(insert_query, (job['job_id'], job['title'], job['description'], job['location'], company_id, job['salary_min'], job['salary_max'], job['date_posted'], job['link'], job['notes'], job['summary'], job['tags']))

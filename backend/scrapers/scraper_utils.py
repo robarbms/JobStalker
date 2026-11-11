@@ -3,8 +3,6 @@ import requests
 from playwright.sync_api import sync_playwright, Page
 from datetime import datetime, timedelta
 import re
-import configparser
-import os
 
 """
     Gets the contents of a page and returns it as a soup object
@@ -71,19 +69,9 @@ def log(message: str, level="info", no_end=False):
         print(log_msg)
 
 def get_queries():
-    config = configparser.ConfigParser()
-    cur_path = os.path.realpath(__file__)
-    root_path = re.sub(r'JobStalker.*', 'JobStalker', cur_path)
-    config_path = root_path + '\\config.ini'
-    config.read(config_path)
-    scenario = config.get('app', 'scenario')
-    queries = config.get('scrapers', 'webdev_queries')
-    if scenario:
-        scenario_queries = config.get('scrapers', f"{scenario}_queries")
-        if scenario_queries:
-            queries = scenario_queries
-    queries = queries.split(',')
-    return queries
+    from backend.scrape_control import ScrapeStore
+    settings, _ = ScrapeStore().load_settings()
+    return settings["keywords"]
 
 def stringToDateStamp(date_str: str) -> str:
     date_str = date_str.strip().lower()

@@ -1,6 +1,5 @@
 import React from 'react';
 import { months, weekDays } from '../utils/date';
-import { companyData } from '../utils/companies';
 
 export type JobDetails = {
     id: string,
@@ -16,6 +15,7 @@ export type JobDetails = {
     is_manager?: boolean,
     tags: string | any[],
     summary: string,
+    companyData?: {icon: React.ReactNode, color: string}
 }
 
 const getDateString = (date: string) => {
@@ -35,13 +35,13 @@ const getDateTime = (date: string) => {
 }
 
 export default function Job(props: JobDetails) {
-    const { company, date_posted, title, link, created_at, summary } = props;
+    const { company, date_posted, title, link, created_at, summary, companyData } = props;
 
     return(
         <tr>
             <td>
-                {company in companyData &&
-                    companyData[company.replace(/ /g, '')].icon
+                {companyData &&
+                    companyData.icon
                 }
                 {props.company}</td>
             <td>{getDateString(date_posted)}</td>

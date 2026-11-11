@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Tooltip, Legend, PieChart, Pie, Cell, Label } from 'recharts';
-import {companyData} from "../../utils/companies";
+import {companyData, colorFromIndex} from "../../utils/companies";
 import { JobContext } from '../../App';
 import { JobDetails } from "../job";
 
@@ -35,7 +35,7 @@ const CompanyChart = (props: any) => {
                 <Legend layout="vertical" verticalAlign="middle" align="left" />
                 <Tooltip />
                 <Pie data={data} dataKey="value" label innerRadius={80} paddingAngle={1}>
-                    {data.map((entry, index) => <Cell key={index} fill={companyData[entry.name]?.color || "#8884d8"} />)}
+                    {data.map((entry, index) => <Cell key={index} fill={companyData[entry.name]?.color ?? colorFromIndex(index)} />)}
                     <Label position="center" value={`Total Jobs: ${total}`} />
                 </Pie>
             </PieChart>

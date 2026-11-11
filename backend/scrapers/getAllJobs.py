@@ -6,8 +6,7 @@ from .google import getGoogleJobs
 from .amazon import getAmazonJobs
 from .meta import getMetaJobs
 from .adobe import getAdobeJobs
-from .scraper_utils import log
-from datetime import datetime
+from .scraper_utils import get_queries, log
 from .salesforce import getSalesforceJobs
 from .atlassian import getAtlassianJobs
 from .expedia import getExpediaJobs
@@ -62,19 +61,10 @@ from .sourcegraph import getSourcegraphJobs
 from .fueled import getFueledJobs
 from .canonical import getCanonicalJobs
 from .posthog import getPostHogJobs
+from .zillow import getZillowJobs
 
-def getAllJobs(job_ids, queries):
-    if queries is not None and not queries:
-        return [], 0
-    jobs = []
-    found_count = 0
-
-    def getJobIds(company):
-        if company in job_ids:
-            return job_ids[company]
-        return []
-    
-    jobScrapers = {
+def get_scrapers():
+    return {
         'Amazon': getAmazonJobs,
         'Apple': getAppleJobs,
         'Google': getGoogleJobs,
@@ -134,31 +124,54 @@ def getAllJobs(job_ids, queries):
         'Fueled': getFueledJobs,
         'Canonical': getCanonicalJobs,
         'PostHog': getPostHogJobs,
+        'Zillow': getZillowJobs,
         # 'Meta': getMetaJobs
     }
 
-    # Cloudflare is blocking Adobe and Meta when scraping too often
-    # Scraping 3 times daily ~5am, ~11am, ~5pm
-    # now = datetime.now()
-    # if (now.hour > 4 and now.hour <= 6) or (now.hour > 10 and now.hour <= 12) or (now.hour > 16 and now.hour <= 18):
-    #     jobScrapers['Adobe'] = getAdobeJobs
-    #     jobScrapers['Meta'] = getMetaJobs
+def getAllJobs(job_ids, queries, companies=None, max_jobs=None, errors=None):
+    queries = get_queries() if queries is None else queries
+    if not queries:
+        return [], 0
+    if max_jobs is not None and (type(max_jobs) is not int or max_jobs < 1):
+        raise ValueError("max_jobs must be a positive whole number.")
+    scrapers = get_scrapers()
+    selected = list(scrapers) if companies is None else companies
+    if any(company not in scrapers for company in selected):
+        raise ValueError("An unavailable company was selected.")
+    jobs = []
+    found_count = 0
 
-    num_scrapers = len(jobScrapers)
-
-    print(f">>>>>> Scraping {len(jobScrapers)} companies for queries: {queries}")
-    for company, scraper in jobScrapers.items():
-        ids = getJobIds(company)
+    print(f">>>>>> Scraping {len(selected)} companies for queries: {queries}")
+    for company in selected:
+        scraper = scrapers[company]
+        ids = list(job_ids.get(company, []))
         try:
-            new_jobs, found = scraper(ids, queries)
+            if company == "Zillow":
+                new_jobs, found = scraper(ids)
+                new_jobs = [
+                    job for job in new_jobs
+                    if any(query.strip().casefold() in job.get("title", "").casefold() for query in queries)
+                ]
+            else:
+                new_jobs, found = scraper(ids, queries)
         except ScraperError as error:
             log(f"Error fetching jobs for {company}: {error}", "error")
+            if errors is not None:
+                errors.append(f"{company}: {error}")
             continue
         new_jobs = filter_company_jobs(new_jobs, company)
+        unique_jobs = []
+        seen = {str(job_id) for job_id in job_ids.get(company, [])}
+        for job in new_jobs:
+            key = str(job["job_id"])
+            if key not in seen:
+                unique_jobs.append(job)
+                seen.add(key)
+        new_jobs = unique_jobs[:max_jobs] if max_jobs is not None else unique_jobs
         found_count += found
         jobs += new_jobs
         log(f"{len(new_jobs)}/{found}", None)
 
-    log(f">>>>>> Found a total of {len(jobs)}/{found_count} new jobs in {len(jobScrapers)} companies")
+    log(f">>>>>> Found a total of {len(jobs)}/{found_count} new jobs in {len(selected)} companies")
 
     return jobs, found_count

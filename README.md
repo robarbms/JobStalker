@@ -40,7 +40,16 @@ Each job card gives info:
 ![alt text](./assets/job_overview.png "Job Stalker job listing")
 
 ### Job listing scrapers
-The app will scrape job sites every 2 hours.
+Use the settings button to open the Admin Panel. Configure scraper keywords,
+the maximum new jobs per company, company selection, and schedules there.
+Schedules support intervals, clock times, and weekday restrictions, with an
+explicit timezone. They are paused until enabled. Interval schedules wait at
+least 30 minutes after worker startup; subsequent intervals can be shorter.
+Use **Scrape now** for an immediate manual run using saved settings.
+
+Scraper administration is available only through `localhost` on the computer
+running the backend. Both the API and scraper worker must be running; `start.bat`
+starts both. Keywords in `config.ini` are no longer used.
 
 ## Setup
 

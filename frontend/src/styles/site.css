@@ -51,6 +51,8 @@ h2 {
 }
 
 .app-settings {
+    background: transparent;
+    border: 0;
     font-size: x-large;
     color: #fff;
     padding: 10px 20px;
@@ -168,6 +170,22 @@ td {
     margin: 0 5px 0 0;
 }
 
+.job-card-temp-icon {
+    display: inline-block;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.job-list table .job-card-temp-icon,
+.company-filter .job-card-temp-icon {
+    font-size: 8px;
+    line-height: 15px;
+    font-weight: 200;
+}
+
 .company-filter .expedia-icon {
     width: 30px;
     height: 30px;
@@ -188,6 +206,16 @@ path.recharts-sector {
 .week-chart {
     display: inline-block;
     margin: 0 20px 0 0;
+}
+
+.company-chart .recharts-default-legend {
+    width: 200px;
+    column-count: 2;
+    display: block!important;
+}
+
+.company-chart .recharts-legend-item {
+    display: inline-block!important;
 }
 
 .trend-chart {

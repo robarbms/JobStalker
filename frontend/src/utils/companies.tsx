@@ -82,12 +82,58 @@ export const companyData: {[key: string]: Company} = {
 
 export const applyCompanyColors = (companies: any[]) => 
     companies.reduce((acc, company, index) => {
-        if (!('color' in company)) {
-            acc[company].color = colorFromIndex(index);
+        if (!(company in companyData) || !('color' in companyData[company])) {
+            acc[company] = {
+                color: colorFromIndex(index)
+            };
+        }
+        else {
+            acc[company] = {
+                color: companyData[company].color
+            };
         }
         return acc;
     }, {} as {[key: string]: string});
 
-export const colorFromIndex = (index: number) => 
-    `rgb(${index * 50 % 255}, ${index * 80 % 255}, ${index * 110 % 255})`;
+export const colorFromIndex = (index: number) => {
+    const r = index % 6 === 0 || index % 6 === 3 || index % 6 === 4 ? (index + 10) * 20 % 255 : 0;
+    const g = index % 6 === 1 || index % 6 === 3 || index % 6 === 5 ? (index + 10) * 20 % 255 : 0;
+    const b = index % 6 === 2 || index % 6 === 4 || index % 6 === 5 ? (index + 10) * 20 % 255 : 0;
 
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
+export const CompanyIcon = ({name, color: color}: {name: string, color: string | {color: string}}) => {
+    let letters = name.substring(0, 2);
+    if (name.trim().match(/\W/)) {
+        const matches = name.match(/\W/g);
+        if (matches) {
+            letters = matches.slice(0, 1).join("");
+        }
+    }
+    const upperCaseLetters = name.match(/[A-Z]/g)?.slice(0, 2).join(""); 
+    if (upperCaseLetters && upperCaseLetters.length > 1) {
+        letters = upperCaseLetters;
+    }
+    letters = letters.toUpperCase();
+    const iconColor = typeof color === 'string' ? color : color.color;
+    return <span className="icon job-card-temp-icon" style={{backgroundColor: iconColor}}>{letters}</span>;
+}
+
+export const getCompanyData = (companies: string[]) => {
+    const colors: {[key: string]: string} = applyCompanyColors(companies);
+    return companies.reduce((acc, company) => {
+    if (company in companyData) {
+        acc[company] = companyData[company];
+    } else {
+        acc[company] = {
+            icon: <CompanyIcon name={company} color={colors[company]} />,
+            color: colors[company]
+        };
+    }
+    return acc;
+}, {} as {[key: string]: {
+    icon: React.ReactNode;
+    color: string;
+}})
+};

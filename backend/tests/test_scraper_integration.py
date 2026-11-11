@@ -73,6 +73,35 @@ class ScraperIntegrationTests(unittest.TestCase):
         self.assertEqual(jobs, [seattle, redmond, remote])
         self.assertEqual(count, 6)
 
+    def test_selected_companies_have_independent_limits_across_keywords(self):
+        with ExitStack() as stack:
+            scrapers = self.mock_scrapers(stack)
+            stack.enter_context(patch.object(self.module, "log"))
+            for name in ("getRedditJobs", "getBufferJobs"):
+                scrapers[name].return_value = ([
+                    {"job_id": value, "location": "Remote"} for value in ("known", "1", "1", "2", "3")
+                ], 4)
+            ids = {"Reddit": ["known"]}
+            jobs, count = self.module.getAllJobs(
+                ids, ["engineer", "developer"], ["Reddit", "Buffer"], max_jobs=2,
+            )
+        self.assertEqual([job["job_id"] for job in jobs], ["1", "2", "known", "1"])
+        self.assertEqual(count, 8)
+        scrapers["getAmazonJobs"].assert_not_called()
+        self.assertEqual(ids, {"Reddit": ["known"]})
+
+    def test_zillow_is_selectable_and_uses_keywords(self):
+        with ExitStack() as stack:
+            scrapers = self.mock_scrapers(stack)
+            stack.enter_context(patch.object(self.module, "log"))
+            scrapers["getZillowJobs"].return_value = ([
+                {"job_id": "1", "title": "Engineer", "location": "Seattle, WA"},
+                {"job_id": "2", "title": "Accountant", "location": "Seattle, WA"},
+            ], 2)
+            jobs, _ = self.module.getAllJobs({}, ["engineer"], ["Zillow"], max_jobs=1)
+        self.assertEqual([job["job_id"] for job in jobs], ["1"])
+        scrapers["getZillowJobs"].assert_called_once_with([])
+
     def test_database_setup_registers_every_scraper_company_idempotently(self):
         path = Path(__file__).resolve().parents[1] / "database" / "createTables.py"
         with patch.dict("sys.modules", {"connection": Mock()}):

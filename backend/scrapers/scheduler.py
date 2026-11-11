@@ -1,7 +1,4 @@
-from apscheduler.schedulers.blocking import BlockingScheduler
-from .getAllJobs import getAllJobs
+from backend.scrape_worker import run_forever
 
 def job():
-    scheduler = BlockingScheduler()
-    scheduler.add_job(getAllJobs, 'interval', hours=1)
-    scheduler.start()
+    run_forever()

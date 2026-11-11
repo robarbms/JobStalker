@@ -51,10 +51,11 @@ type CardProps = {
     summary: string;
     filterTags: (tag: string | string[], action: string) => void;
     filter: Filter;
+    companyData: {icon: React.ReactNode, color: string};
 }
 
 const Card = (props: CardProps) => {
-    const { company, date_posted, title, link, created_at, tags, salary_min, salary_max, tag_colors, summary, filterTags, filter } = props;
+    const { company, date_posted, title, link, created_at, tags, salary_min, salary_max, tag_colors, summary, filterTags, filter, companyData } = props;
     const [expand, setExpand] = useState(false);
     const useExpand = false;
 
@@ -62,9 +63,7 @@ const Card = (props: CardProps) => {
         <div className="job-card">
             <div className="job-card-layout">
                 <div className="col-1">
-                    {company in companyData &&
-                        companyData[company.replace(/ /g, '')].icon
-                    }
+                    {companyData && companyData.icon}
                 </div>
                 <div className="col-2">
                     <a href={link} target="_blank" rel="noreferrer">
